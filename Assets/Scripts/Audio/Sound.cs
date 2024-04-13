@@ -12,6 +12,9 @@ namespace StellarMass.Audio
         [SerializeField] private AudioClip[] clips;
         [SerializeField] private PlaybackType playbackType;
         
+        [SerializeField][Range(0, 1)] private float volume = 1;
+        public float Volume => volume;
+        
         [SerializeField] private bool loop;
         public bool Loop => loop;
         

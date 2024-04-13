@@ -17,12 +17,12 @@ namespace StellarMass.VFX
         {
             bloomSettings = new BloomSettings(volume.profile);
         }
-
+        
         private void Update()
         {
             BloomUpdate();
         }
-
+        
         private void BloomUpdate()
         {
             bloomSettings.Diffusion = bloomSettings.DiffusionInitialValue + (diffusionRange * Mathf.Sin(diffusionSpeed * Time.time));

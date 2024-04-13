@@ -15,5 +15,6 @@ MonoBehaviour:
   clips:
   - {fileID: 8300000, guid: 79d3743d00b8d2c4593fea3e1e6e03a5, type: 3}
   playbackType: 0
+  volume: 1
   loop: 1
   is3D: 0
