@@ -18,3 +18,7 @@ MonoBehaviour:
   volume: 0.01
   loop: 1
   is3D: 0
+  fadeInOnPlay: 1
+  fadeInTime: 3
+  fadeOutOnStop: 0
+  fadeOutTime: 0
