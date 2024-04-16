@@ -1,4 +1,4 @@
-using System;
+using StellarMass.Animation;
 using StellarMass.Input;
 using UnityEngine;
 
@@ -9,15 +9,13 @@ namespace StellarMass
         [SerializeField] private GameObject title;
         [SerializeField] private GameObject prompt;
         [SerializeField] private GameObject player;
-
-        private void Awake()
-        {
-            InputEvents.OnReturnDown += HandleReturnDown;
-        }
+        [SerializeField] private AnimatorController animatorController;
+        
+        private readonly int startupAnimation = Animator.StringToHash("Startup");
 
         private void OnDestroy()
         {
-            InputEvents.OnReturnDown -= HandleReturnDown;
+            InputReceiver.RemoveListeners(Inputs.Accept, HandleAcceptDown);
         }
 
         private void Start()
@@ -25,10 +23,19 @@ namespace StellarMass
 #if !UNITY_EDITOR
             Cursor.visible = false;
 #endif
+
+            animatorController.OnAnimationCompleted += handleAnimationCompleted;
+            animatorController.Play(startupAnimation);
+
+            void handleAnimationCompleted()
+            {
+                InputReceiver.AddListeners(Inputs.Accept, HandleAcceptDown);
+            }
         }
 
-        private void HandleReturnDown()
+        private void HandleAcceptDown()
         {
+            InputReceiver.RemoveListeners(Inputs.Accept, HandleAcceptDown);
             title.SetActive(false);
             prompt.SetActive(false);
             player.SetActive(true);

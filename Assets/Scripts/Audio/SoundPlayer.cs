@@ -95,15 +95,12 @@ namespace StellarMass.Audio
             
             inactiveAudioSource.Play();
 
-            Debug.Log(inactiveAudioSource.volume);
-            
             float elapsed = 0;
             while (inactiveAudioSource.isPlaying)
             {
                 if (sound.FadeInOnPlay && inactiveAudioSource.volume < destinationVolume)
                 {
                     inactiveAudioSource.volume = Mathf.Lerp(0, destinationVolume, Curves.SmoothStep(elapsed / sound.FadeInTime));
-                    Debug.Log(inactiveAudioSource.volume);
                 }
                 
                 yield return null;

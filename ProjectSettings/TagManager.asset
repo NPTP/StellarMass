@@ -41,12 +41,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
+  - name: Background (1)
     uniqueID: 2323597665
     locked: 0
-  - name: Layer2
+  - name: Environment (2)
+    uniqueID: 1074196839
+    locked: 0
+  - name: Bullets (3)
+    uniqueID: 2964912835
+    locked: 0
+  - name: Player L1 (4)
     uniqueID: 3164440995
     locked: 0
-  - name: Layer3
+  - name: Player L2 (5)
     uniqueID: 4250164061
+    locked: 0
+  - name: UI (6)
+    uniqueID: 4240826223
     locked: 0
