@@ -1,17 +1,14 @@
-using System;
 using System.Collections;
+using StellarMass.Input;
 using StellarMass.Utilities.Attributes;
 using UnityEngine;
 using UnityEngine.U2D;
 
-namespace StellarMass.Input
+namespace StellarMass.Ship
 {
-    [ExecuteAlways]
-    public class PlayerControl : MonoBehaviour
+    public class ShipMovement : MonoBehaviour
     {
         [SerializeField][Required] private Rigidbody2D shipRb;
-        [SerializeField] private SpriteShapeController[] spriteShapeControllers;
-        [SerializeField][GUIDisabled] private float spriteLineHeight = 0.5f;
         [Space]
         [SerializeField] private SpriteShapeRenderer jetsRenderer;
         [SerializeField] private GameObject bulletPrefab;
@@ -28,9 +25,28 @@ namespace StellarMass.Input
             InputReceiver.AddListeners(Inputs.Shoot, Shoot);
         }
 
+        private void OnDestroy()
+        {
+            InputReceiver.RemoveListeners(Inputs.ThrustForward, StartThrustForward, StopThrustForward);
+            InputReceiver.RemoveListeners(Inputs.Shoot, Shoot);
+        }
+
+        private void Update()
+        {
+            if (InputReceiver.GetKeyDown(Inputs.TurnLeft))
+            {
+                Turn(left: true);
+            }
+        
+            if (InputReceiver.GetKeyDown(Inputs.TurnRight))
+            {
+                Turn(left: false);
+            }
+        }
+
         private void Shoot()
         {
-            GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+            Instantiate(bulletPrefab, transform.position, transform.rotation);
         }
 
         private void OnDisable()
@@ -65,43 +81,6 @@ namespace StellarMass.Input
         private void StopThrustForward()
         {
             thrusting = false;
-        }
-        
-        private void Update()
-        {
-            SetSpriteHeight();
-
-            if (!Application.isPlaying)
-            {
-                return;
-            }
-            
-            if (InputReceiver.GetKeyDown(Inputs.TurnLeft))
-            {
-                Turn(left: true);
-            }
-        
-            if (InputReceiver.GetKeyDown(Inputs.TurnRight))
-            {
-                Turn(left: false);
-            }
-        }
-        
-        private void SetSpriteHeight()
-        {
-            float scale = transform.localScale.x;
-            spriteLineHeight = Mathf.Clamp(-(0.2f * scale) + 0.2f, 0.01f, 99f);
-            
-            for (int i = 0; i < spriteShapeControllers.Length; i++)
-            {
-                SpriteShapeController spriteShapeController = spriteShapeControllers[i];
-                int count = spriteShapeController.spline.GetPointCount();
-                for (int j = 0; j < count; j++)
-                {
-                    spriteShapeController.spline.SetHeight(i, spriteLineHeight);
-                }
-                spriteShapeController.UpdateSpriteShapeParameters();
-            }
         }
 
         private void PhysicsThrust(bool negative)

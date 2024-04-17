@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StellarMass.Combat
+namespace StellarMass.Ship
 {
     public class Bullet : MonoBehaviour
     {

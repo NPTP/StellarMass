@@ -2,7 +2,7 @@ using StellarMass.Utilities;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
 
-namespace StellarMass.Combat
+namespace StellarMass.Ship
 {
     public class BulletTrail : MonoBehaviour
     {
