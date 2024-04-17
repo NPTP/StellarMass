@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace StellarMass.Ship
 {
-    public class BulletTrail : MonoBehaviour
+    public class SpriteRendererTrail : MonoBehaviour
     {
         private const float FadeTime = 0.4f;
         
