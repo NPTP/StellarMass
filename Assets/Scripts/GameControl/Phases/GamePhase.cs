@@ -17,7 +17,7 @@ namespace StellarMass.GameControl.Phases
             CoroutineOwner.StartRoutine(ExecutionRoutine(gameController));
         }
 
-        IEnumerator ExecutionRoutine(GameController gameController)
+        private IEnumerator ExecutionRoutine(GameController gameController)
         {
             yield return Execution(gameController);
             GameController.ReturnToPreviousGameState();
