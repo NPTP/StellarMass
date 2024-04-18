@@ -241,10 +241,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 39765389}
-  - component: {fileID: 39765390}
   - component: {fileID: 39765391}
+  - component: {fileID: 39765390}
   - component: {fileID: 39765392}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -795,7 +795,7 @@ GameObject:
   - component: {fileID: 489882926}
   - component: {fileID: 489882928}
   - component: {fileID: 489882927}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: BorderColliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -945,7 +945,7 @@ GameObject:
   m_Component:
   - component: {fileID: 515257828}
   - component: {fileID: 515257829}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1267,10 +1267,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 636694234}
-  - component: {fileID: 636694235}
   - component: {fileID: 636694236}
+  - component: {fileID: 636694235}
   - component: {fileID: 636694237}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2540,7 +2540,6 @@ MonoBehaviour:
   rdrs:
   - {fileID: 954739374}
   - {fileID: 823125580}
-  - {fileID: 2101263611}
   - {fileID: 794664082}
   - {fileID: 5890537267416319793}
   - {fileID: 856374858}
@@ -2648,6 +2647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: {fileID: 823125578}
+  score: {fileID: 2101263608}
   prompt: {fileID: 794664078}
   stars: {fileID: 83973804}
   animatorController: {fileID: 979386065}
@@ -2766,6 +2766,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7b56578603bf670499e4679b5770bd97, type: 2}
   - {fileID: 11400000, guid: 9c10ae35999462346841e9d8084ec577, type: 2}
   - {fileID: 11400000, guid: 022d88553c90fc841bccec406ac92148, type: 2}
+  - {fileID: 11400000, guid: 54251a270805ee24ba234589def5f9eb, type: 2}
   startingPhaseIndex: 0
   executeGamePhases: 1
 --- !u!4 &1088639124
@@ -4021,10 +4022,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1893558876}
-  - component: {fileID: 1893558877}
   - component: {fileID: 1893558878}
+  - component: {fileID: 1893558877}
   - component: {fileID: 1893558879}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4235,10 +4236,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1975649188}
-  - component: {fileID: 1975649189}
   - component: {fileID: 1975649190}
+  - component: {fileID: 1975649189}
   - component: {fileID: 1975649191}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4506,7 +4507,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2101263609
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4546,7 +4547,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 6190
+  m_text: 0000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a282dcf8f2e533f4a8e6ceaa3b14803f, type: 2}
   m_sharedMaterial: {fileID: 5710647645577573601, guid: a282dcf8f2e533f4a8e6ceaa3b14803f, type: 2}

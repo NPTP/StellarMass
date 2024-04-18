@@ -1,3 +1,4 @@
+using StellarMass.ScreenLoop;
 using StellarMass.Ship;
 using UnityEngine;
 
@@ -8,6 +9,11 @@ namespace StellarMass.Utilities.Extensions
         public static bool IsPlayer(this Collider2D collider2D)
         {
             return collider2D == ShipMovement.PlayerCollider2DReference;
+        }
+
+        public static bool IsLoopableCollider(this Collider2D collider2D)
+        {
+            return LoopableCollider.IsLoopableCollider(collider2D);
         }
     }
 }

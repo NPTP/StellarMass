@@ -38,10 +38,10 @@ namespace StellarMass.GameControl
             Cursor.visible = false;
 #endif
 
-            ExecuteGamePhase(startingPhaseIndex);
+            ExecuteGamePhases(startingPhaseIndex);
         }
 
-        private void ExecuteGamePhase(int index)
+        private void ExecuteGamePhases(int index)
         {
             if (!executeGamePhases || index >= gamePhases.Length)
             {
@@ -55,7 +55,7 @@ namespace StellarMass.GameControl
             void handlePhaseCompleted()
             {
                 phase.OnCompleted -= handlePhaseCompleted;
-                ExecuteGamePhase(index + 1);
+                ExecuteGamePhases(index + 1);
             }
         }
 

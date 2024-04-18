@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 538603619187939597}
   - component: {fileID: 7653312417562342714}
   - component: {fileID: 601323994294342475}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,13 +179,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8870621119694315488}
+  - component: {fileID: 2720149395496242949}
   - component: {fileID: 4807523691656989946}
   - component: {fileID: 1456834877611217912}
   - component: {fileID: 4371728597910158860}
   - component: {fileID: 9077876321351803262}
   - component: {fileID: 1020468995643132274}
   - component: {fileID: 3496688744544337372}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -209,6 +210,19 @@ Transform:
   - {fileID: 7827503660143192271}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2720149395496242949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5648328996439604196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 528390e176ccebf44878a5c42ec09000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loopableCollider: {fileID: 9077876321351803262}
 --- !u!114 &4807523691656989946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,10 +254,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f59086b8927b09b4b92c3744bcc8ed7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteLineHeight: 0.18
   spriteShapeControllers:
   - {fileID: 3496688744544337372}
   - {fileID: 8128410788033824141}
-  spriteLineHeight: 0.18
 --- !u!50 &4371728597910158860
 Rigidbody2D:
   serializedVersion: 4
@@ -472,7 +486,7 @@ GameObject:
   - component: {fileID: 7827503660143192271}
   - component: {fileID: 1217147705123301576}
   - component: {fileID: 8128410788033824141}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Jets
   m_TagString: Untagged
   m_Icon: {fileID: 0}

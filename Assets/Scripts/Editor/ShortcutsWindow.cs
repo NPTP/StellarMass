@@ -10,8 +10,8 @@ namespace StellarMass.Editor
 	{
 		private class FolderShortcut
 		{
-			public string name;
-			public string path;
+			public readonly string name;
+			public readonly string path;
 
 			public FolderShortcut(string name, string path)
 			{
@@ -39,12 +39,23 @@ namespace StellarMass.Editor
 
 		private void Awake()
 		{
-			globalPostProcessing = FindObjectOfType<PostProcessingChanger>();
+			Refresh();
+		}
+
+		private void Refresh()
+		{
+			globalPostProcessing = FindObjectOfType<PostProcessingChanger>(includeInactive: true);
 			postProcessingEnabled = globalPostProcessing.gameObject.activeSelf;
+			GetData();
 		}
 
 		private void OnGUI()
 		{
+			if (GUILayout.Button("Refresh", GUILayout.Width(100)))
+			{
+				Refresh();
+			}
+			
 			postProcessingEnabled = EditorGUILayout.Toggle("Enable PostProcessing", postProcessingEnabled);
 			globalPostProcessing.gameObject.SetActive(postProcessingEnabled);
 				
@@ -68,11 +79,7 @@ namespace StellarMass.Editor
 		private void ShowDataShortcuts()
 		{
 			GUILayout.Label("Data");
-			if (dataScriptables.Count == 0)
-			{
-				GetData();
-			}
-
+			
 			foreach (DataScriptable data in dataScriptables)
 			{
 				if (data == null)

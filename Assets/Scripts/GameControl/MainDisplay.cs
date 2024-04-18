@@ -7,6 +7,8 @@ namespace StellarMass.GameControl
     {
         [SerializeField] private GameObject title;
         public GameObject Title => title;
+        [SerializeField] private GameObject score;
+        public GameObject Score => score;
         [SerializeField] private GameObject prompt;
         public GameObject Prompt => prompt;
         [SerializeField] private GameObject stars;

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace StellarMass.ScreenLoop
 {
     [RequireComponent(typeof(BoxCollider2D))]
-    public class LoopCollider : MonoBehaviour
+    public class ScreenLoopBoundaryTrigger : MonoBehaviour
     {
         [SerializeField] [Required] private BoxCollider2D boxCollider2D;
         
@@ -15,10 +15,9 @@ namespace StellarMass.ScreenLoop
 
         public Bounds Bounds => boxCollider2D.bounds;
         
-        // NP TODO: allow bullets, enemies, etc to loop
         private void OnTriggerEnter2D(Collider2D col)
         {
-            if (col.IsPlayer())
+            if (col.IsLoopableCollider())
             {
                 OnEntered?.Invoke(col);
             }
@@ -26,7 +25,7 @@ namespace StellarMass.ScreenLoop
 
         private void OnTriggerExit2D(Collider2D col)
         {
-            if (col.IsPlayer())
+            if (col.IsLoopableCollider())
             {
                 OnExited?.Invoke(col);
             }

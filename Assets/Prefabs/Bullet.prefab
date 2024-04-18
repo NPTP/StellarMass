@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6152330231711335938}
   - component: {fileID: 3185813125399848346}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1247950132212825173}
   - component: {fileID: -1004814744617694325}
-  m_Layer: 0
+  - component: {fileID: 6807753794218287208}
+  - component: {fileID: 6988643101506213492}
+  m_Layer: 8
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,6 +134,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletTrailPrefab: {fileID: 8040479116215429442, guid: 559c957404fbac2438b368edad13cbb8, type: 3}
   lensFlare: {fileID: 4445547123520234430}
+--- !u!114 &6807753794218287208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7658113245964081943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 528390e176ccebf44878a5c42ec09000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loopableCollider: {fileID: 6988643101506213492}
+--- !u!58 &6988643101506213492
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7658113245964081943}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.021
 --- !u!1 &7791205426871928985
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4445547123520234430}
   - component: {fileID: 4197923410728868360}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LensFlare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
