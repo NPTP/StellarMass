@@ -5,41 +5,59 @@ namespace StellarMass.Input
 {
     public class InputEvent
     {
-        public event Action OnInputDown;
-        public event Action OnInputUp;
-        
-        public KeyCode KeyCode { get; }
-        
+        public event Action OnKeyDown;
+        public event Action OnKeyUp;
+
         public bool KeyDown { get; private set; }
+        public InputMap InputMap { get; }
+        private KeyCode[] KeyCodes { get; }
+        private bool IgnoreKeyUp { get; }
 
-        public InputEvent(KeyCode keyCode)
+        public InputEvent(InputInfo inputInfo)
         {
-            KeyCode = keyCode;
+            InputMap = inputInfo.InputMap;
+            KeyCodes = inputInfo.KeyCodes;
+            IgnoreKeyUp = inputInfo.IgnoreKeyUp;
         }
-
+        
         public void AddListeners(Action keyDownListener, Action keyUpListener)
         {
-            if (keyDownListener != null) OnInputDown += keyDownListener;
-            if (keyUpListener != null) OnInputUp += keyUpListener;
+            if (keyDownListener != null) OnKeyDown += keyDownListener;
+            if (keyUpListener != null) OnKeyUp += keyUpListener;
         }
         
         public void RemoveListeners(Action keyDownListener, Action keyUpListener)
         {
-            if (keyDownListener != null) OnInputDown -= keyDownListener;
-            if (keyUpListener != null) OnInputUp -= keyUpListener;
+            if (keyDownListener != null) OnKeyDown -= keyDownListener;
+            if (keyUpListener != null) OnKeyUp -= keyUpListener;
+        }
+
+        public void ForceKeyUp()
+        {
+            if (!IgnoreKeyUp)
+            {
+                KeyDown = false;
+                OnKeyUp?.Invoke();
+            }
         }
 
         public void PollInput()
         {
-            if (UnityEngine.Input.GetKeyDown(KeyCode))
+            for (int i = 0; i < KeyCodes.Length; i++)
             {
-                KeyDown = true;
-                OnInputDown?.Invoke();
-            }
-            else if (UnityEngine.Input.GetKeyUp(KeyCode))
-            {
-                KeyDown = false;
-                OnInputUp?.Invoke();
+                KeyCode keyCode = KeyCodes[i];
+                if (UnityEngine.Input.GetKeyDown(keyCode))
+                {
+                    KeyDown = true;
+                    OnKeyDown?.Invoke();
+                    break;
+                }
+                else if (UnityEngine.Input.GetKeyUp(keyCode))
+                {
+                    KeyDown = false;
+                    if (!IgnoreKeyUp) OnKeyUp?.Invoke();
+                    break;
+                }
             }
         }
     }

@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.nptp.unityplayerlooputility": {
+      "version": "https://github.com/NPTP/UnityPlayerLoopUtility.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "4d4f07f2dd6f9003e8b1c894f639e279498a04ee"
+    },
     "com.unity.2d.animation": {
       "version": "9.1.0",
       "depth": 1,

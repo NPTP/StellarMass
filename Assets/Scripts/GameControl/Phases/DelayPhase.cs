@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace StellarMass.GameControl
+namespace StellarMass.GameControl.Phases
 {
     [CreateAssetMenu]
     public class DelayPhase : GamePhase

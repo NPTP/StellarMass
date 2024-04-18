@@ -3,7 +3,7 @@ using StellarMass.Animation;
 using StellarMass.Input;
 using UnityEngine;
 
-namespace StellarMass.GameControl
+namespace StellarMass.GameControl.Phases
 {
     [CreateAssetMenu]
     public class IntroPhase : GamePhase
@@ -22,12 +22,12 @@ namespace StellarMass.GameControl
             
             void handleAnimationCompleted()
             {
-                InputReceiver.AddListeners(Inputs.Accept, handleAcceptDown);
+                InputReceiver.OnAnyKeyDown += handleAcceptDown;
             }
             
             void handleAcceptDown()
             {
-                InputReceiver.RemoveListeners(Inputs.Accept, handleAcceptDown);
+                InputReceiver.OnAnyKeyDown -= handleAcceptDown;
                 inputReceived = true;
                 gameController.MainDisplay.Title.SetActive(false);
                 gameController.MainDisplay.Prompt.SetActive(false);

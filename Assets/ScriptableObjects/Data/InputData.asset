@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d242278d05f493c41921af3a11678f67, type: 3}
+  m_Name: InputData
+  m_EditorClassIdentifier: 
+  inputInfos:
+  - inputMap: 0
+    inputType: 1
+    keyCodes: 7700000011010000
+    ignoreKeyUp: 0
+  - inputMap: 0
+    inputType: 2
+    keyCodes: 68000000
+    ignoreKeyUp: 1
+  - inputMap: 0
+    inputType: 3
+    keyCodes: 6100000014010000
+    ignoreKeyUp: 0
+  - inputMap: 0
+    inputType: 4
+    keyCodes: 6400000013010000
+    ignoreKeyUp: 0
+  - inputMap: 0
+    inputType: 5
+    keyCodes: 200000003201000031010000
+    ignoreKeyUp: 0
+  - inputMap: 0
+    inputType: 6
+    keyCodes: 1b000000
+    ignoreKeyUp: 1
+  - inputMap: 1
+    inputType: 0
+    keyCodes: 0d000000
+    ignoreKeyUp: 1
+  - inputMap: 1
+    inputType: 7
+    keyCodes: 1b000000
+    ignoreKeyUp: 1
+  - inputMap: 1
+    inputType: 8
+    keyCodes: 7700000011010000
+    ignoreKeyUp: 1
+  - inputMap: 1
+    inputType: 9
+    keyCodes: 7300000012010000
+    ignoreKeyUp: 1

@@ -179,7 +179,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8870621119694315488}
-  - component: {fileID: 3559241292002588619}
   - component: {fileID: 4807523691656989946}
   - component: {fileID: 1456834877611217912}
   - component: {fileID: 4371728597910158860}
@@ -210,18 +209,6 @@ Transform:
   - {fileID: 7827503660143192271}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3559241292002588619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5648328996439604196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ede3e3d587eff3748aee6015768d6141, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4807523691656989946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shipRb: {fileID: 4371728597910158860}
+  playerCollider2D: {fileID: 9077876321351803262}
   jetsRenderer: {fileID: 1217147705123301576}
   bulletPrefab: {fileID: 7658113245964081943, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
   flickerTime: 0.04
@@ -255,7 +243,7 @@ MonoBehaviour:
   spriteShapeControllers:
   - {fileID: 3496688744544337372}
   - {fileID: 8128410788033824141}
-  spriteLineHeight: 0.01
+  spriteLineHeight: 0.18
 --- !u!50 &4371728597910158860
 Rigidbody2D:
   serializedVersion: 4
@@ -327,13 +315,13 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.8735664, y: -1.4020481}
+    - - {x: -0.8609342, y: -1.4448001}
       - {x: -1.8606635, y: -2.120481}
       - {x: -1.8739736, y: -2.0362961}
       - {x: -0.025146484, y: 2.1113281}
       - {x: 1.9125977, y: -2.203125}
       - {x: 0.8598794, y: -1.4203343}
-      - {x: -0.8735664, y: -1.4020481}
+      - {x: -0.8609342, y: -1.4448001}
   m_UseDelaunayMesh: 0
 --- !u!1971053207 &1020468995643132274
 SpriteShapeRenderer:
@@ -413,7 +401,7 @@ MonoBehaviour:
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
-      height: 0.01
+      height: 0.18
       spriteIndex: 0
       corner: 1
       m_CornerMode: 2
@@ -466,13 +454,13 @@ MonoBehaviour:
   m_Creator: {fileID: 0}
   m_Modifiers: []
   m_ColliderSegment:
-  - {x: -0.8735664, y: -1.4020481}
+  - {x: -0.8609342, y: -1.4448001}
   - {x: -1.8606635, y: -2.120481}
   - {x: -1.8739736, y: -2.0362961}
   - {x: -0.025146484, y: 2.1113281}
   - {x: 1.9125977, y: -2.203125}
   - {x: 0.8598794, y: -1.4203343}
-  - {x: -0.8735664, y: -1.4020481}
+  - {x: -0.8609342, y: -1.4448001}
 --- !u!1 &8647349775581425297
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,7 +580,7 @@ MonoBehaviour:
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
-      height: 0.01
+      height: 0.18
       spriteIndex: 0
       corner: 1
       m_CornerMode: 2

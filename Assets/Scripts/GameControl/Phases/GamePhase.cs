@@ -3,20 +3,24 @@ using System.Collections;
 using UnityEngine;
 using Utilities;
 
-namespace StellarMass.GameControl
+namespace StellarMass.GameControl.Phases
 {
     public abstract class GamePhase : ScriptableObject
     {
+        [SerializeField] private GameState phaseState;
+        
         public event Action OnCompleted;
 
         public void Execute(GameController gameController)
         {
+            GameController.GameState = phaseState;
             CoroutineOwner.StartRoutine(ExecutionRoutine(gameController));
         }
 
         IEnumerator ExecutionRoutine(GameController gameController)
         {
             yield return Execution(gameController);
+            GameController.ReturnToPreviousGameState();
             OnCompleted?.Invoke();
         }
 

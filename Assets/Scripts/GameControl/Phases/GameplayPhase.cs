@@ -1,15 +1,17 @@
 using System.Collections;
 using UnityEngine;
 
-namespace StellarMass.GameControl
+namespace StellarMass.GameControl.Phases
 {
     [CreateAssetMenu]
-    public class DisableDisplayPhase : GamePhase
+    public class GameplayPhase : GamePhase
     {
         protected override IEnumerator Execution(GameController gameController)
         {
-            gameController.MainDisplay.TurnOff();
-            yield break;
+            while (true)
+            {
+                yield return null;
+            }
         }
     }
 }

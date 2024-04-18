@@ -7,7 +7,7 @@ using Utilities;
 
 namespace StellarMass.Audio
 {
-    public class SoundPlayer : Singleton<SoundPlayer>
+    public class SoundPlayer : ClosedSingleton<SoundPlayer>
     {
         [SerializeField] private int audioSourcePoolSize = 32;
         [SerializeField] private Sound[] startingSounds;
@@ -42,7 +42,7 @@ namespace StellarMass.Audio
             }
         }
 
-        public static void StopAll(Sound sound) => Instance.StopAllInternal(sound);
+        public static void StopAll(Sound sound) => PrivateInstance.StopAllInternal(sound);
         private void StopAllInternal(Sound sound)
         {
             if (!soundToAudioSources.TryGetValue(sound, out List<AudioSource> audioSources))
@@ -56,7 +56,7 @@ namespace StellarMass.Audio
             }
         }
 
-        public static void PlaySound(Sound sound) => Instance.PlaySoundInternal(sound);
+        public static void PlaySound(Sound sound) => PrivateInstance.PlaySoundInternal(sound);
         private void PlaySoundInternal(Sound sound)
         {
             StartCoroutine(PlaySoundRoutine(sound));

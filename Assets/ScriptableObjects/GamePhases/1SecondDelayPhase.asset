@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf39696ee5cd0da42b2ea44452e92176, type: 3}
   m_Name: 1SecondDelayPhase
   m_EditorClassIdentifier: 
+  phaseState: 3
   delayTime: 1

@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace StellarMass.ScreenLoop
 {
+    // TODO: Colliders turn off and on again for nicer positioning
     public class ScreenLooper : MonoBehaviour
     {
         private const float BUFFER_SPACING = 0.01f;

@@ -1,3 +1,5 @@
+using StellarMass.GameControl.Phases;
+using StellarMass.Input;
 using UnityEngine;
 
 namespace StellarMass.GameControl
@@ -12,6 +14,23 @@ namespace StellarMass.GameControl
         [SerializeField] private GamePhase[] gamePhases;
         [SerializeField] private int startingPhaseIndex = 0;
         [SerializeField] private bool executeGamePhases = true;
+
+        private static GameState previousGameState = GameState.Undefined;
+        private static GameState gameState = GameState.Undefined;
+        public static GameState GameState
+        {
+            get => gameState;
+            set
+            {
+                previousGameState = gameState;
+                gameState = value;
+            }
+        }
+
+        private void Awake()
+        {
+            InputReceiver.Initialize();
+        }
 
         private void Start()
         {
@@ -38,6 +57,11 @@ namespace StellarMass.GameControl
                 phase.OnCompleted -= handlePhaseCompleted;
                 ExecuteGamePhase(index + 1);
             }
+        }
+
+        public static void ReturnToPreviousGameState()
+        {
+            GameState = previousGameState;
         }
     }
 }

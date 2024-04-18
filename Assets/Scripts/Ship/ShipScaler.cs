@@ -7,8 +7,9 @@ namespace StellarMass.Ship
     [ExecuteAlways]
     public class ShipScaler : MonoBehaviour
     {
-        [SerializeField] private SpriteShapeController[] spriteShapeControllers;
         [SerializeField][GUIDisabled] private float spriteLineHeight = 0.5f;
+        [Space]
+        [SerializeField] private SpriteShapeController[] spriteShapeControllers;
 
         private void Update()
         {

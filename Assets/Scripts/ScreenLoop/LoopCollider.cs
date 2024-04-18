@@ -1,6 +1,6 @@
 using System;
-using StellarMass.Ship;
 using StellarMass.Utilities.Attributes;
+using StellarMass.Utilities.Extensions;
 using UnityEngine;
 
 namespace StellarMass.ScreenLoop
@@ -15,6 +15,7 @@ namespace StellarMass.ScreenLoop
 
         public Bounds Bounds => boxCollider2D.bounds;
         
+        // NP TODO: allow bullets, enemies, etc to loop
         private void OnTriggerEnter2D(Collider2D col)
         {
             if (col.IsPlayer())
