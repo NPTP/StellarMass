@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using StellarMass.Data;
+using StellarMass.Utilities.Extensions;
 using StellarMass.VFX;
 using UnityEditor;
 using UnityEngine;
@@ -28,6 +29,8 @@ namespace StellarMass.Editor
 			new FolderShortcut("Sounds", "Assets/ScriptableObjects/Audio"),
 		};
 
+		private bool RefreshRequired => globalPostProcessing == null || dataScriptables.IsEmpty();
+
 		private PostProcessingChanger globalPostProcessing;
 		private bool postProcessingEnabled;
 		
@@ -51,11 +54,11 @@ namespace StellarMass.Editor
 
 		private void OnGUI()
 		{
-			if (GUILayout.Button("Refresh", GUILayout.Width(100)))
+			if (RefreshRequired)
 			{
 				Refresh();
 			}
-			
+
 			postProcessingEnabled = EditorGUILayout.Toggle("Enable PostProcessing", postProcessingEnabled);
 			globalPostProcessing.gameObject.SetActive(postProcessingEnabled);
 				
