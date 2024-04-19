@@ -27,7 +27,6 @@ namespace StellarMass.Input
         
         public static void Initialize()
         {
-            // NP TODO: Don't add every possible input, let it be defined by who subscribes, only
             foreach (InputInfo inputInfo in RTD.InputData.InputInfos)
             {
                 inputEvents.Add(inputInfo.InputType, new InputEvent(inputInfo));
