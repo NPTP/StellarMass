@@ -179,9 +179,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8870621119694315488}
-  - component: {fileID: 2720149395496242949}
   - component: {fileID: 4807523691656989946}
   - component: {fileID: 1456834877611217912}
+  - component: {fileID: 1994425372800601142}
+  - component: {fileID: 2720149395496242949}
   - component: {fileID: 4371728597910158860}
   - component: {fileID: 9077876321351803262}
   - component: {fileID: 1020468995643132274}
@@ -210,19 +211,6 @@ Transform:
   - {fileID: 7827503660143192271}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2720149395496242949
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5648328996439604196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 528390e176ccebf44878a5c42ec09000, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loopableCollider: {fileID: 9077876321351803262}
 --- !u!114 &4807523691656989946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,11 +225,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shipRb: {fileID: 4371728597910158860}
   playerCollider2D: {fileID: 9077876321351803262}
+  rendererController: {fileID: 1994425372800601142}
   jetsRenderer: {fileID: 1217147705123301576}
   bulletPrefab: {fileID: 7658113245964081943, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
   flickerTime: 0.04
   forwardSpeed: 200
   turnSpeed: 20
+  hyperspaceTime: 0.5
 --- !u!114 &1456834877611217912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,6 +248,35 @@ MonoBehaviour:
   spriteShapeControllers:
   - {fileID: 3496688744544337372}
   - {fileID: 8128410788033824141}
+--- !u!114 &1994425372800601142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5648328996439604196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e87a4d2991fd342bcce874781c8da8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 1020468995643132274}
+  - {fileID: 7653312417562342714}
+  - {fileID: 1217147705123301576}
+--- !u!114 &2720149395496242949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5648328996439604196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 528390e176ccebf44878a5c42ec09000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loopableCollider: {fileID: 9077876321351803262}
 --- !u!50 &4371728597910158860
 Rigidbody2D:
   serializedVersion: 4

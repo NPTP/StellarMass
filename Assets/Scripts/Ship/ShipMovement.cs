@@ -1,6 +1,7 @@
 using System.Collections;
 using StellarMass.Input;
 using StellarMass.Utilities.Attributes;
+using StellarMass.VFX;
 using UnityEngine;
 using UnityEngine.U2D;
 
@@ -14,11 +15,13 @@ namespace StellarMass.Ship
         [SerializeField][Required] private Rigidbody2D shipRb;
         [SerializeField][Required] private Collider2D playerCollider2D;
         [Space]
+        [SerializeField] private RendererController rendererController;
         [SerializeField] private SpriteShapeRenderer jetsRenderer;
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private float flickerTime = 0.01f;
         [SerializeField] private float forwardSpeed;
         [SerializeField] private float turnSpeed;
+        [SerializeField] private float hyperspaceTime = 0.5f;
 
         private bool thrusting;
 
@@ -30,12 +33,22 @@ namespace StellarMass.Ship
         private void Start()
         {
             jetsRenderer.enabled = false;
+            AddInputListeners();
+        }
+
+        private void OnDestroy()
+        {
+            RemoveInputListeners();
+        }
+
+        private void AddInputListeners()
+        {
             InputReceiver.AddListeners(InputType.ThrustForward, StartThrustForward, StopThrustForward);
             InputReceiver.AddListeners(InputType.Shoot, Shoot);
             InputReceiver.AddListeners(InputType.Hyperspace, Hyperspace);
         }
 
-        private void OnDestroy()
+        private void RemoveInputListeners()
         {
             InputReceiver.RemoveListeners(InputType.ThrustForward, StartThrustForward, StopThrustForward);
             InputReceiver.RemoveListeners(InputType.Shoot, Shoot);
@@ -63,7 +76,41 @@ namespace StellarMass.Ship
         
         private void Hyperspace()
         {
-            Debug.Log(nameof(Hyperspace));
+            StartCoroutine(HyperspaceRoutine());
+        }
+
+        private IEnumerator HyperspaceRoutine()
+        {
+            bool wasThrusting = thrusting;
+            
+            StopThrustForward();
+            RemoveInputListeners();
+            
+            playerCollider2D.enabled = false;
+            shipRb.isKinematic = true;
+            Vector2 velocity = shipRb.velocity;
+            float angularVelocity = shipRb.angularVelocity;
+            shipRb.velocity = Vector2.zero;
+            shipRb.angularVelocity = 0;
+            rendererController.DisableRenderers();
+
+            yield return new WaitForSeconds(hyperspaceTime);
+            
+            // NP TODO: make this respond to the world boundaries dynamically
+            transform.position = new Vector3(Random.Range(-6, 6), Random.Range(-4, 4), transform.position.z);
+            
+            playerCollider2D.enabled = true;
+            shipRb.isKinematic = false;
+            shipRb.velocity = velocity;
+            shipRb.angularVelocity = angularVelocity;
+            rendererController.EnableRenderers();
+            
+            AddInputListeners();
+            
+            if (wasThrusting && InputReceiver.GetKeyDown(InputType.ThrustForward))
+            {
+                StartThrustForward();
+            }
         }
 
         private void OnDisable()
@@ -75,6 +122,11 @@ namespace StellarMass.Ship
         {
             thrusting = true; 
             StartCoroutine(ThrustRoutine());
+        }
+
+        private void StopThrustForward()
+        {
+            thrusting = false;
         }
 
         private IEnumerator ThrustRoutine()
@@ -94,11 +146,6 @@ namespace StellarMass.Ship
             }
 
             jetsRenderer.enabled = false;
-        }
-
-        private void StopThrustForward()
-        {
-            thrusting = false;
         }
 
         private void PhysicsThrust(bool negative)
