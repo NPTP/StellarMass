@@ -4,6 +4,7 @@ using StellarMass.Utilities.Attributes;
 using StellarMass.VFX;
 using UnityEngine;
 using UnityEngine.U2D;
+using Random = UnityEngine.Random;
 
 namespace StellarMass.Ship
 {
@@ -15,19 +16,22 @@ namespace StellarMass.Ship
         [SerializeField][Required] private Rigidbody2D shipRb;
         [SerializeField][Required] private Collider2D playerCollider2D;
         [Space]
-        [SerializeField] private RendererController rendererController;
+        [SerializeField] private VisibilityFlasher visibilityFlasher;
         [SerializeField] private SpriteShapeRenderer jetsRenderer;
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private float flickerTime = 0.01f;
-        [SerializeField] private float forwardSpeed;
-        [SerializeField] private float turnSpeed;
+        [SerializeField] private float forwardForce = 200f;
+        [SerializeField] private float maxVelocityMagnitude = 10f;
+        [SerializeField] private float turnSpeed = 25f;
         [SerializeField] private float hyperspaceTime = 0.5f;
 
+        private float sqrMaxVelocityMagnitude;
         private bool thrusting;
 
         private void Awake()
         {
             playerCollider2DReference = playerCollider2D;
+            sqrMaxVelocityMagnitude = maxVelocityMagnitude * maxVelocityMagnitude;
         }
 
         private void Start()
@@ -65,6 +69,20 @@ namespace StellarMass.Ship
             if (InputReceiver.GetKeyDown(InputType.TurnRight))
             {
                 Turn(left: false);
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            ClampRBVelocity();
+        }
+
+        private void ClampRBVelocity()
+        {
+            Vector2 shipVelocity = shipRb.velocity;
+            if (shipVelocity.sqrMagnitude > sqrMaxVelocityMagnitude)
+            {
+                shipRb.velocity = shipVelocity.normalized * maxVelocityMagnitude;
             }
         }
 
@@ -149,7 +167,7 @@ namespace StellarMass.Ship
 
         private void PhysicsThrust(bool negative)
         {
-            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (forwardSpeed * Time.deltaTime)), ForceMode2D.Force);
+            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (forwardForce * Time.deltaTime)), ForceMode2D.Force);
         }
 
         private void Turn(bool left)

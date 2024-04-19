@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 8870621119694315488}
   - component: {fileID: 4807523691656989946}
   - component: {fileID: 1456834877611217912}
-  - component: {fileID: 1994425372800601142}
+  - component: {fileID: 5321846409717724625}
   - component: {fileID: 2720149395496242949}
   - component: {fileID: 4371728597910158860}
   - component: {fileID: 9077876321351803262}
@@ -225,12 +225,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shipRb: {fileID: 4371728597910158860}
   playerCollider2D: {fileID: 9077876321351803262}
-  rendererController: {fileID: 1994425372800601142}
+  visibilityFlasher: {fileID: 5321846409717724625}
   jetsRenderer: {fileID: 1217147705123301576}
   bulletPrefab: {fileID: 7658113245964081943, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
   flickerTime: 0.04
-  forwardSpeed: 200
-  turnSpeed: 20
+  forwardForce: 200
+  maxVelocityMagnitude: 10
+  turnSpeed: 25
   hyperspaceTime: 0.5
 --- !u!114 &1456834877611217912
 MonoBehaviour:
@@ -248,7 +249,7 @@ MonoBehaviour:
   spriteShapeControllers:
   - {fileID: 3496688744544337372}
   - {fileID: 8128410788033824141}
---- !u!114 &1994425372800601142
+--- !u!114 &5321846409717724625
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -257,13 +258,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5648328996439604196}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18e87a4d2991fd342bcce874781c8da8, type: 3}
+  m_Script: {fileID: 11500000, guid: f68da3255b8fe084cb32a64bcf47d977, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   renderers:
   - {fileID: 1020468995643132274}
   - {fileID: 7653312417562342714}
   - {fileID: 1217147705123301576}
+  flashingActive: 0
+  onTime: 0.1
+  offTime: 0.1
+  usePattern: 0
+  charTime: 0.1
+  pattern: mmamammmmammamamaaamammma
 --- !u!114 &2720149395496242949
 MonoBehaviour:
   m_ObjectHideFlags: 0

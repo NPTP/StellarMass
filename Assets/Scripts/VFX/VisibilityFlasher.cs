@@ -2,10 +2,9 @@ using UnityEngine;
 
 namespace StellarMass.VFX
 {
-    public class VisibilityFlasher : MonoBehaviour
+    public class VisibilityFlasher : RendererController
     {
-        [SerializeField] private Renderer[] rdrs;
-        [SerializeField] private bool isActive = true;
+        [SerializeField] private bool flashingActive = true;
         [Space]
         [SerializeField] private float onTime;
         [SerializeField] private float offTime;
@@ -18,17 +17,12 @@ namespace StellarMass.VFX
         private float currentStateDuration;
         private int patternIndex;
 
-        public void Activate() => isActive = true;
-        public void Deactivate() => isActive = false;
-
-        private void OnValidate()
-        {
-            rdrs = GetComponentsInChildren<Renderer>();
-        }
+        public void ActivateFlashing() => flashingActive = true;
+        public void DeactivateFlashing() => flashingActive = false;
 
         private void Update()
         {
-            if (!isActive)
+            if (!flashingActive)
             {
                 return;
             }
@@ -39,10 +33,10 @@ namespace StellarMass.VFX
                 switch (patternChar)
                 {
                     case 'm':
-                        MakeVisible();
+                        EnableRenderers();
                         break;
                     case 'a':
-                        MakeInvisible();
+                        DisableRenderers();
                         break;
                 }
                 currentStateDuration += Time.deltaTime;
@@ -55,8 +49,8 @@ namespace StellarMass.VFX
             }
             else
             {
-                if (isOn) MakeVisible();
-                else MakeInvisible();
+                if (isOn) EnableRenderers();
+                else DisableRenderers();
                 
                 currentStateDuration += Time.deltaTime;
 
@@ -65,22 +59,6 @@ namespace StellarMass.VFX
                     currentStateDuration = 0;
                     isOn = !isOn;
                 }
-            }
-        }
-
-        private void MakeVisible()
-        {
-            foreach (Renderer rdr in rdrs)
-            {
-                rdr.enabled = true;
-            }
-        }
-
-        private void MakeInvisible()
-        {
-            foreach (Renderer rdr in rdrs)
-            {
-                rdr.enabled = false;
             }
         }
     }

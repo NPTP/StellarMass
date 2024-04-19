@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 
 namespace StellarMass.VFX
 {
     public class RendererController : MonoBehaviour
     {
-        [SerializeField] private Renderer[] renderers;
+        [SerializeField] protected Renderer[] renderers;
 
         private bool[] lastActiveStatus;
         
