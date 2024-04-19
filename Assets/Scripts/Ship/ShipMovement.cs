@@ -109,7 +109,7 @@ namespace StellarMass.Ship
             float angularVelocity = shipRb.angularVelocity;
             shipRb.velocity = Vector2.zero;
             shipRb.angularVelocity = 0;
-            rendererController.DisableRenderers();
+            visibilityFlasher.DisableRenderers();
 
             yield return new WaitForSeconds(hyperspaceTime);
             
@@ -120,7 +120,7 @@ namespace StellarMass.Ship
             shipRb.isKinematic = false;
             shipRb.velocity = velocity;
             shipRb.angularVelocity = angularVelocity;
-            rendererController.EnableRenderers();
+            visibilityFlasher.EnableRenderers();
             
             AddInputListeners();
             
