@@ -70,7 +70,6 @@ namespace StellarMass.Ship
 
         private void Shoot()
         {
-            // NP TODO: Why is this messing with ship flight? Layers shouldn't be colliding...
             Instantiate(bulletPrefab, transform.position, transform.rotation);
         }
         
