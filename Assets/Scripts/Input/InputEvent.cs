@@ -10,6 +10,7 @@ namespace StellarMass.Input
 
         public bool KeyDown { get; private set; }
         public InputMap InputMap { get; }
+        public bool StopFollowingInputsOnFrame { get; }
         private KeyCode[] KeyCodes { get; }
         private bool IgnoreKeyUp { get; }
 
@@ -18,6 +19,7 @@ namespace StellarMass.Input
             InputMap = inputInfo.InputMap;
             KeyCodes = inputInfo.KeyCodes;
             IgnoreKeyUp = inputInfo.IgnoreKeyUp;
+            StopFollowingInputsOnFrame = inputInfo.StopFollowingInputsOnFrame;
         }
         
         public void AddListeners(Action keyDownListener, Action keyUpListener)
@@ -41,7 +43,10 @@ namespace StellarMass.Input
             }
         }
 
-        public void PollInput()
+        /// <summary>
+        /// Return true if an input (key down or up) was received.
+        /// </summary>
+        public bool PollInput()
         {
             for (int i = 0; i < KeyCodes.Length; i++)
             {
@@ -50,15 +55,20 @@ namespace StellarMass.Input
                 {
                     KeyDown = true;
                     OnKeyDown?.Invoke();
-                    break;
+                    return true;
                 }
                 else if (UnityEngine.Input.GetKeyUp(keyCode))
                 {
                     KeyDown = false;
-                    if (!IgnoreKeyUp) OnKeyUp?.Invoke();
-                    break;
+                    if (!IgnoreKeyUp)
+                    {
+                        OnKeyUp?.Invoke();
+                        return true;
+                    }
                 }
             }
+
+            return false;
         }
     }
 }

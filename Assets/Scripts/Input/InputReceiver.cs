@@ -10,7 +10,7 @@ namespace StellarMass.Input
         public static event Action OnAnyKeyDown;
         
         private static Dictionary<InputType, InputEvent> inputEvents = new();
-
+        
         private static InputMap activeInputMap = InputMap.Gameplay;
         public static InputMap ActiveInputMap
         {
@@ -43,8 +43,11 @@ namespace StellarMass.Input
                 {
                     continue;
                 }
-                
-                inputEvent.PollInput();
+
+                if (inputEvent.PollInput() && inputEvent.StopFollowingInputsOnFrame)
+                {
+                    return;
+                }
             }
 
             if (UnityEngine.Input.anyKeyDown)

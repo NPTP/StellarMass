@@ -17,5 +17,8 @@ namespace StellarMass.Input
         
         [SerializeField] private bool ignoreKeyUp;
         public bool IgnoreKeyUp => ignoreKeyUp;
+
+        [SerializeField] private bool stopFollowingInputsOnFrame;
+        public bool StopFollowingInputsOnFrame => stopFollowingInputsOnFrame;
     }
 }

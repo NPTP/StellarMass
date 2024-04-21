@@ -17,39 +17,49 @@ MonoBehaviour:
     inputType: 1
     keyCodes: 7700000011010000
     ignoreKeyUp: 0
+    stopFollowingInputsOnFrame: 0
   - inputMap: 0
     inputType: 2
     keyCodes: 68000000
     ignoreKeyUp: 1
+    stopFollowingInputsOnFrame: 1
   - inputMap: 0
     inputType: 3
     keyCodes: 6100000014010000
     ignoreKeyUp: 0
+    stopFollowingInputsOnFrame: 0
   - inputMap: 0
     inputType: 4
     keyCodes: 6400000013010000
     ignoreKeyUp: 0
+    stopFollowingInputsOnFrame: 0
   - inputMap: 0
     inputType: 5
     keyCodes: 200000003201000031010000
-    ignoreKeyUp: 0
+    ignoreKeyUp: 1
+    stopFollowingInputsOnFrame: 0
   - inputMap: 0
     inputType: 6
-    keyCodes: 1b000000
+    keyCodes: 1b00000070000000
     ignoreKeyUp: 1
+    stopFollowingInputsOnFrame: 1
   - inputMap: 1
     inputType: 0
     keyCodes: 0d000000
     ignoreKeyUp: 1
+    stopFollowingInputsOnFrame: 1
   - inputMap: 1
     inputType: 7
-    keyCodes: 1b000000
+    keyCodes: 1b00000070000000
     ignoreKeyUp: 1
+    stopFollowingInputsOnFrame: 1
   - inputMap: 1
     inputType: 8
     keyCodes: 7700000011010000
     ignoreKeyUp: 1
+    stopFollowingInputsOnFrame: 0
   - inputMap: 1
     inputType: 9
     keyCodes: 7300000012010000
     ignoreKeyUp: 1
+    stopFollowingInputsOnFrame: 0
