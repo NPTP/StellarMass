@@ -134,6 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletTrailPrefab: {fileID: 8040479116215429442, guid: 559c957404fbac2438b368edad13cbb8, type: 3}
   lensFlare: {fileID: 4445547123520234430}
+  loopableCollider: {fileID: 6807753794218287208}
 --- !u!114 &6807753794218287208
 MonoBehaviour:
   m_ObjectHideFlags: 0

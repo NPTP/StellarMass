@@ -12,6 +12,9 @@ namespace StellarMass.ScreenLoop
 
         [SerializeField][Required] private Collider2D loopableCollider;
 
+        public void EnableCollider() => loopableCollider.enabled = true;
+        public void DisableCollider() => loopableCollider.enabled = false;
+
         private void OnEnable()
         {
             loopableColliders.Add(loopableCollider);

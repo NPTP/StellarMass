@@ -1,5 +1,7 @@
 using System.Collections;
 using StellarMass.Input;
+using StellarMass.LoopBoundaries;
+using StellarMass.Utilities;
 using StellarMass.Utilities.Attributes;
 using StellarMass.VFX;
 using UnityEngine;
@@ -8,7 +10,7 @@ using Random = UnityEngine.Random;
 
 namespace StellarMass.Ship
 {
-    public class ShipMovement : MonoBehaviour
+    public class ShipMovement : TransformCacher
     {
         private static Collider2D playerCollider2DReference;
         public static Collider2D PlayerCollider2DReference => playerCollider2DReference;
@@ -28,8 +30,9 @@ namespace StellarMass.Ship
         private float sqrMaxVelocityMagnitude;
         private bool thrusting;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             playerCollider2DReference = playerCollider2D;
             sqrMaxVelocityMagnitude = maxVelocityMagnitude * maxVelocityMagnitude;
         }
@@ -93,7 +96,24 @@ namespace StellarMass.Ship
         
         private void Hyperspace()
         {
-            StartCoroutine(HyperspaceRoutine());
+            shipRb.isKinematic = true;
+
+            Bounds boxBounds = LoopBoundingBox.Bounds;
+            Vector3 boxMin = boxBounds.min;
+            Vector3 boxMax = boxBounds.max;
+
+            Vector3 shipExtents = playerCollider2D.bounds.extents;
+            Transform shipTransform = transform;
+            
+            shipTransform.position = new Vector3(
+                Random.Range(boxMin.x + shipExtents.x, boxMax.x - shipExtents.x),
+                Random.Range(boxMin.y + shipExtents.y, boxMax.y - shipExtents.y),
+                shipTransform.position.z);
+                
+            shipRb.isKinematic = false;
+
+            // NP TODO: Re-implement delay, if necessary
+            // StartCoroutine(HyperspaceRoutine());
         }
 
         private IEnumerator HyperspaceRoutine()

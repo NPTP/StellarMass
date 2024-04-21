@@ -10,6 +10,7 @@ namespace StellarMass.GameControl
         public GameObject Player => player;
         [SerializeField] private MainDisplay mainDisplay;
         public MainDisplay MainDisplay => mainDisplay;
+
         [Space]
         [SerializeField] private GamePhase[] gamePhases;
         [SerializeField] private int startingPhaseIndex = 0;
