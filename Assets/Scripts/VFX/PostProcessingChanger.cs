@@ -6,6 +6,7 @@ namespace StellarMass.VFX
     public class PostProcessingChanger : MonoBehaviour
     {
         [SerializeField] private PostProcessVolume volume;
+        public PostProcessVolume Volume => volume;
 
         [Header("Bloom")]
         [SerializeField] private float diffusionRange = 0.25f;

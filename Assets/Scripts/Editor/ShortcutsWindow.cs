@@ -48,7 +48,7 @@ namespace StellarMass.Editor
 		private void Refresh()
 		{
 			globalPostProcessing = FindObjectOfType<PostProcessingChanger>(includeInactive: true);
-			postProcessingEnabled = globalPostProcessing.gameObject.activeSelf;
+			postProcessingEnabled = globalPostProcessing.Volume.enabled;
 			GetData();
 		}
 
@@ -59,8 +59,13 @@ namespace StellarMass.Editor
 				Refresh();
 			}
 
+			bool prevEnabledValue = postProcessingEnabled;
 			postProcessingEnabled = EditorGUILayout.Toggle("Enable PostProcessing", postProcessingEnabled);
-			globalPostProcessing.gameObject.SetActive(postProcessingEnabled);
+			globalPostProcessing.Volume.enabled = postProcessingEnabled;
+			if (postProcessingEnabled != prevEnabledValue)
+			{
+				EditorUtility.SetDirty(globalPostProcessing.gameObject);
+			}
 				
 			GUILayout.BeginHorizontal();
 			{
