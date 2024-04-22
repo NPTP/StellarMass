@@ -39,7 +39,7 @@ namespace StellarMass.VFX
                         DisableRenderers();
                         break;
                 }
-                currentStateDuration += Time.deltaTime;
+                currentStateDuration += Time.unscaledDeltaTime;
 
                 if (currentStateDuration >= charTime)
                 {
@@ -52,7 +52,7 @@ namespace StellarMass.VFX
                 if (isOn) EnableRenderers();
                 else DisableRenderers();
                 
-                currentStateDuration += Time.deltaTime;
+                currentStateDuration += Time.unscaledDeltaTime;
 
                 if (currentStateDuration >= (isOn ? onTime : offTime))
                 {

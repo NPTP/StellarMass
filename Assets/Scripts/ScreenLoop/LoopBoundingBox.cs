@@ -8,27 +8,17 @@ namespace StellarMass.LoopBoundaries
     public class LoopBoundingBox : ClosedSingleton<LoopBoundingBox>
     {
         private const float BUFFER_SPACING = 0f;
-        private const int X = 0;
-        private const int Y = 1;
+        private const int X_INDEX = 0;
+        private const int Y_INDEX = 1;
         
         public static Bounds Bounds => PrivateInstance.boxCollider2D.bounds;
 
         [SerializeField][Required] private BoxCollider2D boxCollider2D;
 
-        private void OnTriggerEnter2D(Collider2D col)
-        {
-            if (col.IsLoopableCollider())
-            {
-                Debug.Log($"Enter: {col.name}");
-            }
-        }
-
         private void OnTriggerExit2D(Collider2D col)
         {
             if (col.IsLoopableCollider())
             {
-                Debug.Log($"Exit: {col.name}");
-
                 OnExited(col);
             }
         }
@@ -53,13 +43,13 @@ namespace StellarMass.LoopBoundaries
             float xMin = boxPos.x - colExtents.x;
             
             if (colPos.x > xMax)
-                HandleLoop(col, X, transform.position.x - colExtents.x + BUFFER_SPACING);
+                HandleLoop(col, X_INDEX, transform.position.x - colExtents.x + BUFFER_SPACING);
             else if (colPos.x < xMin)
-                HandleLoop(col, X, transform.position.x + colExtents.x - BUFFER_SPACING);
+                HandleLoop(col, X_INDEX, transform.position.x + colExtents.x - BUFFER_SPACING);
             else if (colPos.y > yMax)
-                HandleLoop(col, Y, transform.position.y - colExtents.y + BUFFER_SPACING);
+                HandleLoop(col, Y_INDEX, transform.position.y - colExtents.y + BUFFER_SPACING);
             else if (colPos.y < yMin)
-                HandleLoop(col, Y, transform.position.y + colExtents.y - BUFFER_SPACING);
+                HandleLoop(col, Y_INDEX, transform.position.y + colExtents.y - BUFFER_SPACING);
         }
     }
 }

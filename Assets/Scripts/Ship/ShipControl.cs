@@ -1,16 +1,17 @@
 using System.Collections;
+using StellarMass.Data;
 using StellarMass.Input;
 using StellarMass.LoopBoundaries;
 using StellarMass.Utilities;
 using StellarMass.Utilities.Attributes;
-using StellarMass.VFX;
+using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.U2D;
 using Random = UnityEngine.Random;
 
 namespace StellarMass.Ship
 {
-    public class ShipMovement : TransformCacher
+    public class ShipControl : TransformCacher
     {
         private static Collider2D playerCollider2DReference;
         public static Collider2D PlayerCollider2DReference => playerCollider2DReference;
@@ -18,23 +19,18 @@ namespace StellarMass.Ship
         [SerializeField][Required] private Rigidbody2D shipRb;
         [SerializeField][Required] private Collider2D playerCollider2D;
         [Space]
-        [SerializeField] private VisibilityFlasher visibilityFlasher;
         [SerializeField] private SpriteShapeRenderer jetsRenderer;
         [SerializeField] private GameObject bulletPrefab;
-        [SerializeField] private float flickerTime = 0.01f;
-        [SerializeField] private float forwardForce = 200f;
-        [SerializeField] private float maxVelocityMagnitude = 10f;
-        [SerializeField] private float turnSpeed = 25f;
-        [SerializeField] private float hyperspaceTime = 0.5f;
 
         private float sqrMaxVelocityMagnitude;
         private bool thrusting;
+        private float lastShotTime;
 
         protected override void Awake()
         {
             base.Awake();
             playerCollider2DReference = playerCollider2D;
-            sqrMaxVelocityMagnitude = maxVelocityMagnitude * maxVelocityMagnitude;
+            sqrMaxVelocityMagnitude = RTD.PlayerData.MaxVelocityMagnitude.Squared();
         }
 
         private void Start()
@@ -51,14 +47,14 @@ namespace StellarMass.Ship
         private void AddInputListeners()
         {
             InputReceiver.AddListeners(InputType.ThrustForward, StartThrustForward, StopThrustForward);
-            InputReceiver.AddListeners(InputType.Shoot, Shoot);
+            InputReceiver.AddListeners(InputType.Shoot, TryShoot);
             InputReceiver.AddListeners(InputType.Hyperspace, Hyperspace);
         }
 
         private void RemoveInputListeners()
         {
             InputReceiver.RemoveListeners(InputType.ThrustForward, StartThrustForward, StopThrustForward);
-            InputReceiver.RemoveListeners(InputType.Shoot, Shoot);
+            InputReceiver.RemoveListeners(InputType.Shoot, TryShoot);
             InputReceiver.RemoveListeners(InputType.Hyperspace, Hyperspace);
         }
 
@@ -85,13 +81,17 @@ namespace StellarMass.Ship
             Vector2 shipVelocity = shipRb.velocity;
             if (shipVelocity.sqrMagnitude > sqrMaxVelocityMagnitude)
             {
-                shipRb.velocity = shipVelocity.normalized * maxVelocityMagnitude;
+                shipRb.velocity = shipVelocity.normalized * RTD.PlayerData.MaxVelocityMagnitude;
             }
         }
 
-        private void Shoot()
+        private void TryShoot()
         {
-            Instantiate(bulletPrefab, transform.position, transform.rotation);
+            if (Time.time - lastShotTime >= RTD.PlayerData.ShootCooldown)
+            {
+                Instantiate(bulletPrefab, transform.position, transform.rotation);
+                lastShotTime = Time.time;
+            }
         }
         
         private void Hyperspace()
@@ -111,43 +111,6 @@ namespace StellarMass.Ship
                 shipTransform.position.z);
                 
             shipRb.isKinematic = false;
-
-            // NP TODO: Re-implement delay, if necessary
-            // StartCoroutine(HyperspaceRoutine());
-        }
-
-        private IEnumerator HyperspaceRoutine()
-        {
-            bool wasThrusting = thrusting;
-            
-            StopThrustForward();
-            RemoveInputListeners();
-            
-            playerCollider2D.enabled = false;
-            shipRb.isKinematic = true;
-            Vector2 velocity = shipRb.velocity;
-            float angularVelocity = shipRb.angularVelocity;
-            shipRb.velocity = Vector2.zero;
-            shipRb.angularVelocity = 0;
-            visibilityFlasher.DisableRenderers();
-
-            yield return new WaitForSeconds(hyperspaceTime);
-            
-            // NP TODO: make this respond to the world boundaries dynamically
-            transform.position = new Vector3(Random.Range(-6, 6), Random.Range(-4, 4), transform.position.z);
-            
-            playerCollider2D.enabled = true;
-            shipRb.isKinematic = false;
-            shipRb.velocity = velocity;
-            shipRb.angularVelocity = angularVelocity;
-            visibilityFlasher.EnableRenderers();
-            
-            AddInputListeners();
-            
-            if (wasThrusting && InputReceiver.GetKeyDown(InputType.ThrustForward))
-            {
-                StartThrustForward();
-            }
         }
 
         private void OnDisable()
@@ -172,14 +135,14 @@ namespace StellarMass.Ship
             float flickerElapsed = 0f;
             while (thrusting)
             {
-                if (flickerElapsed >= flickerTime)
+                if (flickerElapsed >= RTD.PlayerData.ThrustFlickerTime)
                 {
                     flickerElapsed = 0;
                     jetsRenderer.enabled = !jetsRenderer.enabled;
                 }
                 PhysicsThrust(negative: false);
-                yield return null;
-                flickerElapsed += Time.deltaTime;
+                yield return new WaitForFixedUpdate();
+                flickerElapsed += Time.fixedDeltaTime;
             }
 
             jetsRenderer.enabled = false;
@@ -187,12 +150,12 @@ namespace StellarMass.Ship
 
         private void PhysicsThrust(bool negative)
         {
-            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (forwardForce * Time.deltaTime)), ForceMode2D.Force);
+            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (RTD.PlayerData.ForwardForce * Time.deltaTime)), ForceMode2D.Force);
         }
 
         private void Turn(bool left)
         {
-            shipRb.transform.rotation *= Quaternion.Euler(new Vector3(0, 0, (left ? 1 : -1) * 10 * (turnSpeed * Time.deltaTime)));
+            shipRb.transform.rotation *= Quaternion.Euler(new Vector3(0, 0, (left ? 1 : -1) * 10 * (RTD.PlayerData.TurnSpeed * Time.deltaTime)));
         }
     }
 }

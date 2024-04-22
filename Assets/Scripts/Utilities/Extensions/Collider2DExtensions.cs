@@ -8,7 +8,7 @@ namespace StellarMass.Utilities.Extensions
     {
         public static bool IsPlayer(this Collider2D collider2D)
         {
-            return collider2D == ShipMovement.PlayerCollider2DReference;
+            return collider2D == ShipControl.PlayerCollider2DReference;
         }
 
         public static bool IsLoopableCollider(this Collider2D collider2D)
