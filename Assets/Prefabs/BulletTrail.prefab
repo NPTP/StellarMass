@@ -44,6 +44,7 @@ PrefabInstance:
     - {fileID: -1004814744617694325, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
     - {fileID: 6807753794218287208, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
     - {fileID: 6988643101506213492, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
+    - {fileID: 4538052915576928831, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -74,3 +75,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 3018775571546806223}
+  fadeTime: 0.4

@@ -1,9 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using StellarMass.Data;
+using StellarMass.LoopBoundaries;
 using StellarMass.Utilities.Extensions;
 using StellarMass.VFX;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace StellarMass.Editor
 {
@@ -26,13 +30,16 @@ namespace StellarMass.Editor
 		{
 			new FolderShortcut("Resources", "Assets/Resources"),
 			new FolderShortcut("Game Phases", "Assets/ScriptableObjects/GamePhases"),
+			new FolderShortcut("Prefabs", "Assets/Prefabs"),
 			new FolderShortcut("Sounds", "Assets/ScriptableObjects/Audio"),
 		};
 
-		private bool RefreshRequired => globalPostProcessing == null || dataScriptables.IsEmpty();
+		private bool RefreshRequired => globalPostProcessing == null || loopBoundingBox == null || dataScriptables.IsEmpty();
 
 		private PostProcessingChanger globalPostProcessing;
 		private bool postProcessingEnabled;
+		private LoopBoundingBox loopBoundingBox;
+		private bool loopBoundingBoxVisualizerEnabled;
 		
 		[MenuItem(EditorToolNames.SHORTCUTS_WINDOW)]
 		public static void ShowWindow()
@@ -49,6 +56,8 @@ namespace StellarMass.Editor
 		{
 			globalPostProcessing = FindObjectOfType<PostProcessingChanger>(includeInactive: true);
 			postProcessingEnabled = globalPostProcessing.Volume.enabled;
+			loopBoundingBox = FindObjectOfType<LoopBoundingBox>(includeInactive: true);
+			loopBoundingBoxVisualizerEnabled = loopBoundingBox.BoundsVisualizer.enabled;
 			GetData();
 		}
 
@@ -59,14 +68,13 @@ namespace StellarMass.Editor
 				Refresh();
 			}
 
-			bool prevEnabledValue = postProcessingEnabled;
-			postProcessingEnabled = EditorGUILayout.Toggle("Enable PostProcessing", postProcessingEnabled);
-			globalPostProcessing.Volume.enabled = postProcessingEnabled;
-			if (postProcessingEnabled != prevEnabledValue)
+			GUILayout.BeginHorizontal();
 			{
-				EditorUtility.SetDirty(globalPostProcessing.gameObject);
+				PostProcessingToggle();
+				BoundsVisualizeToggle();
 			}
-				
+			GUILayout.EndHorizontal();
+
 			GUILayout.BeginHorizontal();
 			{
 				GUILayout.BeginVertical();
@@ -82,6 +90,31 @@ namespace StellarMass.Editor
 				GUILayout.EndVertical();
 			}
 			GUILayout.EndHorizontal();
+		}
+
+		private void PostProcessingToggle() => ValueToggle(ref postProcessingEnabled, globalPostProcessing.Volume, "Enable PostProcessing");
+		private void BoundsVisualizeToggle() => ValueToggle(ref loopBoundingBoxVisualizerEnabled, loopBoundingBox.BoundsVisualizer, "Visualize Loop Bounds");
+
+		private void ValueToggle(ref bool toggle, Behaviour toggleable, string label)
+		{
+			bool previousValue = toggle;
+			toggle = EditorGUILayout.Toggle(label, toggle);
+			toggleable.enabled = toggle;
+			if (toggle != previousValue)
+			{
+				EditorUtility.SetDirty(toggleable.gameObject);
+			}
+		}
+		
+		private void ValueToggle(ref bool toggle, Renderer toggleable, string label)
+		{
+			bool previousValue = toggle;
+			toggle = EditorGUILayout.Toggle(label, toggle);
+			toggleable.enabled = toggle;
+			if (toggle != previousValue)
+			{
+				EditorUtility.SetDirty(toggleable.gameObject);
+			}
 		}
 
 		private void ShowDataShortcuts()
@@ -110,10 +143,30 @@ namespace StellarMass.Editor
 			{
 				if (GUILayout.Button(folderShortcut.name))
 				{
-					EditorUtility.FocusProjectWindow();
-					Object obj = AssetDatabase.LoadAssetAtPath<Object>(folderShortcut.path);
-					Selection.activeObject = obj;
+					OpenFolder(folderShortcut.path);
 				}
+			}
+		}
+
+		private void OpenFolder(string folderPath)
+		{
+			EditorUtility.FocusProjectWindow();
+			Object folder = AssetDatabase.LoadAssetAtPath<Object>(folderPath);
+			Type projectBrowserType = Type.GetType("UnityEditor.ProjectBrowser,UnityEditor");
+			object lastInteractedBrowser = projectBrowserType.GetField("s_LastInteractedProjectBrowser", BindingFlags.Static | BindingFlags.Public).GetValue(null);
+			MethodInfo showFolderContentsMethod = projectBrowserType.GetMethod("ShowFolderContents", BindingFlags.NonPublic | BindingFlags.Instance);
+			showFolderContentsMethod?.Invoke(lastInteractedBrowser, new object[] { folder.GetInstanceID(), true });
+
+			// Puts us at the top of the folder we just opened.
+			EditorWindow projectWindow = GetWindow(projectBrowserType);
+			if (projectWindow != null)
+			{
+				Event e = new()
+				{
+					type = EventType.KeyDown,
+					keyCode = KeyCode.Home
+				};
+				projectWindow.SendEvent(e);
 			}
 		}
 

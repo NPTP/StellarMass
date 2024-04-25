@@ -26,6 +26,6 @@ namespace StellarMass.Data
         public static InputData Input => PrivateInstance.inputData;
         
         [SerializeField] private PlayerData playerData;
-        public static PlayerData PlayerData => PrivateInstance.playerData;
+        public static PlayerData Player => PrivateInstance.playerData;
     }
 }

@@ -5,6 +5,8 @@ namespace StellarMass.Data
     [CreateAssetMenu]
     public class PlayerData : DataScriptable
     {
+        [Header("Player Ship")]
+        
         [SerializeField] private float thrustFlickerTime = 0.04f;
         public float ThrustFlickerTime => thrustFlickerTime;
         
@@ -22,5 +24,16 @@ namespace StellarMass.Data
         
         [SerializeField] private float shootCooldown = 0.1f;
         public float ShootCooldown => shootCooldown;
+
+        [Header("Bullet")]
+        
+        [SerializeField] private float bulletLifetime = 1f;
+        public float BulletLifetime => bulletLifetime;
+
+        [SerializeField] private float bulletSpeed = 15f;
+        public float BulletSpeed => bulletSpeed;
+
+        [SerializeField] private float trailFrequency = 0.01f;
+        public float TrailFrequency => trailFrequency;
     }
 }

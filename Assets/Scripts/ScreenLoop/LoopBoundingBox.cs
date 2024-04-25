@@ -1,3 +1,4 @@
+using System;
 using StellarMass.Utilities.Attributes;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
@@ -14,6 +15,15 @@ namespace StellarMass.LoopBoundaries
         public static Bounds Bounds => PrivateInstance.boxCollider2D.bounds;
 
         [SerializeField][Required] private BoxCollider2D boxCollider2D;
+        [SerializeField][Required] private SpriteRenderer boundsVisualizer;
+        public SpriteRenderer BoundsVisualizer => boundsVisualizer;
+
+        protected override void AwakeInitialize()
+        {
+            base.AwakeInitialize();
+
+            boundsVisualizer.enabled = false;
+        }
 
         private void OnTriggerExit2D(Collider2D col)
         {

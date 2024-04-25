@@ -30,7 +30,7 @@ namespace StellarMass.Ship
         {
             base.Awake();
             playerCollider2DReference = playerCollider2D;
-            sqrMaxVelocityMagnitude = RTD.PlayerData.MaxVelocityMagnitude.Squared();
+            sqrMaxVelocityMagnitude = RTD.Player.MaxVelocityMagnitude.Squared();
         }
 
         private void Start()
@@ -81,13 +81,13 @@ namespace StellarMass.Ship
             Vector2 shipVelocity = shipRb.velocity;
             if (shipVelocity.sqrMagnitude > sqrMaxVelocityMagnitude)
             {
-                shipRb.velocity = shipVelocity.normalized * RTD.PlayerData.MaxVelocityMagnitude;
+                shipRb.velocity = shipVelocity.normalized * RTD.Player.MaxVelocityMagnitude;
             }
         }
 
         private void TryShoot()
         {
-            if (Time.time - lastShotTime >= RTD.PlayerData.ShootCooldown)
+            if (Time.time - lastShotTime >= RTD.Player.ShootCooldown)
             {
                 Instantiate(bulletPrefab, transform.position, transform.rotation);
                 lastShotTime = Time.time;
@@ -135,7 +135,7 @@ namespace StellarMass.Ship
             float flickerElapsed = 0f;
             while (thrusting)
             {
-                if (flickerElapsed >= RTD.PlayerData.ThrustFlickerTime)
+                if (flickerElapsed >= RTD.Player.ThrustFlickerTime)
                 {
                     flickerElapsed = 0;
                     jetsRenderer.enabled = !jetsRenderer.enabled;
@@ -150,12 +150,12 @@ namespace StellarMass.Ship
 
         private void PhysicsThrust(bool negative)
         {
-            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (RTD.PlayerData.ForwardForce * Time.deltaTime)), ForceMode2D.Force);
+            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (RTD.Player.ForwardForce * Time.deltaTime)), ForceMode2D.Force);
         }
 
         private void Turn(bool left)
         {
-            shipRb.transform.rotation *= Quaternion.Euler(new Vector3(0, 0, (left ? 1 : -1) * 10 * (RTD.PlayerData.TurnSpeed * Time.deltaTime)));
+            shipRb.transform.rotation *= Quaternion.Euler(new Vector3(0, 0, (left ? 1 : -1) * 10 * (RTD.Player.TurnSpeed * Time.deltaTime)));
         }
     }
 }

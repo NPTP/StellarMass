@@ -18,3 +18,6 @@ MonoBehaviour:
   turnSpeed: 25
   hyperspaceTime: 0.5
   shootCooldown: 0.1
+  bulletLifetime: 0.5
+  bulletSpeed: 15
+  trailFrequency: 0.01
