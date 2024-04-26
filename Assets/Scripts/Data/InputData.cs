@@ -1,4 +1,4 @@
-using StellarMass.Input;
+using StellarMass.OldInput;
 using UnityEngine;
 
 namespace StellarMass.Data

@@ -1,4 +1,4 @@
-namespace StellarMass.Input
+namespace StellarMass.OldInput
 {
     public enum InputType
     {

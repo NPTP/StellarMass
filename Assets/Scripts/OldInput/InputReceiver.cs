@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NPTP.PlayerLoopUtilities;
 using StellarMass.Data;
 
-namespace StellarMass.Input
+namespace StellarMass.OldInput
 {
     public static class InputReceiver
     {

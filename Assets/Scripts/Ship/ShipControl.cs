@@ -1,6 +1,6 @@
 using System.Collections;
 using StellarMass.Data;
-using StellarMass.Input;
+using StellarMass.OldInput;
 using StellarMass.LoopBoundaries;
 using StellarMass.Utilities;
 using StellarMass.Utilities.Attributes;

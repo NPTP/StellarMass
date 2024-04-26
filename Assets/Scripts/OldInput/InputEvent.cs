@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace StellarMass.Input
+namespace StellarMass.OldInput
 {
     public class InputEvent
     {

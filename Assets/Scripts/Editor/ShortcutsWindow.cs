@@ -28,6 +28,7 @@ namespace StellarMass.Editor
 		private readonly List<DataScriptable> dataScriptables = new List<DataScriptable>();
 		private readonly FolderShortcut[] folderShortcuts = new[]
 		{
+			new FolderShortcut("Scripts", "Assets/Scripts"),
 			new FolderShortcut("Resources", "Assets/Resources"),
 			new FolderShortcut("Game Phases", "Assets/ScriptableObjects/GamePhases"),
 			new FolderShortcut("Prefabs", "Assets/Prefabs"),

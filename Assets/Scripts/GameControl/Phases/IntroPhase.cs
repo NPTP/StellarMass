@@ -1,6 +1,6 @@
 using System.Collections;
 using StellarMass.Animation;
-using StellarMass.Input;
+using StellarMass.OldInput;
 using UnityEngine;
 
 namespace StellarMass.GameControl.Phases

@@ -1,5 +1,5 @@
 using StellarMass.GameControl.Phases;
-using StellarMass.Input;
+using StellarMass.OldInput;
 using UnityEngine;
 
 namespace StellarMass.GameControl
