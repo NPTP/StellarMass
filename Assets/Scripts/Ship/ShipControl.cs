@@ -1,6 +1,6 @@
 using System.Collections;
 using StellarMass.Data;
-using StellarMass.OldInput;
+using StellarMass.InputManagement;
 using StellarMass.LoopBoundaries;
 using StellarMass.Utilities;
 using StellarMass.Utilities.Attributes;
@@ -23,8 +23,9 @@ namespace StellarMass.Ship
         [SerializeField] private GameObject bulletPrefab;
 
         private float sqrMaxVelocityMagnitude;
-        private bool thrusting;
         private float lastShotTime;
+        private bool thrusting;
+        private bool turning;
 
         protected override void Awake()
         {
@@ -39,6 +40,12 @@ namespace StellarMass.Ship
             AddInputListeners();
         }
 
+        private void OnDisable()
+        {
+            thrusting = false;
+            turning = false;
+        }
+
         private void OnDestroy()
         {
             RemoveInputListeners();
@@ -46,29 +53,18 @@ namespace StellarMass.Ship
 
         private void AddInputListeners()
         {
-            InputReceiver.AddListeners(InputType.ThrustForward, StartThrustForward, StopThrustForward);
-            InputReceiver.AddListeners(InputType.Shoot, TryShoot);
-            InputReceiver.AddListeners(InputType.Hyperspace, Hyperspace);
+            InputManager.OnThrustChanged += HandleThrustChanged;
+            InputManager.OnShootChanged += TryShoot;
+            InputManager.OnTurnChanged += HandleTurnChanged;
+            InputManager.OnHyperspaceChanged += Hyperspace;
         }
 
         private void RemoveInputListeners()
         {
-            InputReceiver.RemoveListeners(InputType.ThrustForward, StartThrustForward, StopThrustForward);
-            InputReceiver.RemoveListeners(InputType.Shoot, TryShoot);
-            InputReceiver.RemoveListeners(InputType.Hyperspace, Hyperspace);
-        }
-
-        private void Update()
-        {
-            if (InputReceiver.GetKeyDown(InputType.TurnLeft))
-            {
-                Turn(left: true);
-            }
-        
-            if (InputReceiver.GetKeyDown(InputType.TurnRight))
-            {
-                Turn(left: false);
-            }
+            InputManager.OnThrustChanged -= HandleThrustChanged;
+            InputManager.OnShootChanged -= TryShoot;
+            InputManager.OnTurnChanged -= HandleTurnChanged;
+            InputManager.OnHyperspaceChanged -= Hyperspace;
         }
 
         private void FixedUpdate()
@@ -85,8 +81,13 @@ namespace StellarMass.Ship
             }
         }
 
-        private void TryShoot()
+        private void TryShoot(InputState inputState)
         {
+            if (inputState is not InputState.Started)
+            {
+                return;
+            }
+            
             if (Time.time - lastShotTime >= RTD.Player.ShootCooldown)
             {
                 Instantiate(bulletPrefab, transform.position, transform.rotation);
@@ -94,8 +95,37 @@ namespace StellarMass.Ship
             }
         }
         
-        private void Hyperspace()
+        private void HandleTurnChanged(InputState inputState, float dir)
         {
+            switch (inputState)
+            {
+                case InputState.Started:
+                    turning = true;
+                    StartCoroutine(turnRoutine());
+                    break;
+                case InputState.Canceled:
+                    turning = false;
+                    break;
+            }
+            
+            IEnumerator turnRoutine()
+            {
+                while (turning)
+                {
+                    if (dir < 0) Turn(left: true);
+                    else if (dir > 0) Turn(left: false);
+                    yield return null;
+                }
+            }
+        }
+
+        private void Hyperspace(InputState inputState)
+        {
+            if (inputState is not InputState.Started)
+            {
+                return;
+            }
+            
             shipRb.isKinematic = true;
 
             Bounds boxBounds = LoopBoundingBox.Bounds;
@@ -113,41 +143,40 @@ namespace StellarMass.Ship
             shipRb.isKinematic = false;
         }
 
-        private void OnDisable()
+        
+        private void HandleThrustChanged(InputState inputState)
         {
-            StopThrustForward();
-        }
-
-        private void StartThrustForward()
-        {
-            thrusting = true; 
-            StartCoroutine(ThrustRoutine());
-        }
-
-        private void StopThrustForward()
-        {
-            thrusting = false;
-        }
-
-        private IEnumerator ThrustRoutine()
-        {
-            jetsRenderer.enabled = true;
-            float flickerElapsed = 0f;
-            while (thrusting)
+            switch (inputState)
             {
-                if (flickerElapsed >= RTD.Player.ThrustFlickerTime)
-                {
-                    flickerElapsed = 0;
-                    jetsRenderer.enabled = !jetsRenderer.enabled;
-                }
-                PhysicsThrust(negative: false);
-                yield return new WaitForFixedUpdate();
-                flickerElapsed += Time.fixedDeltaTime;
+                case InputState.Started:
+                    thrusting = true; 
+                    StartCoroutine(thrustRoutine());
+                    break;
+                case InputState.Canceled:
+                    thrusting = false;
+                    break;
             }
+            
+            IEnumerator thrustRoutine()
+            {
+                jetsRenderer.enabled = true;
+                float flickerElapsed = 0f;
+                while (thrusting)
+                {
+                    if (flickerElapsed >= RTD.Player.ThrustFlickerTime)
+                    {
+                        flickerElapsed = 0;
+                        jetsRenderer.enabled = !jetsRenderer.enabled;
+                    }
+                    PhysicsThrust(negative: false);
+                    yield return new WaitForFixedUpdate();
+                    flickerElapsed += Time.fixedDeltaTime;
+                }
 
-            jetsRenderer.enabled = false;
+                jetsRenderer.enabled = false;
+            }
         }
-
+        
         private void PhysicsThrust(bool negative)
         {
             shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (RTD.Player.ForwardForce * Time.deltaTime)), ForceMode2D.Force);

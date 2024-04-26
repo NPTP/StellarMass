@@ -1,4 +1,5 @@
 using StellarMass.GameControl.Phases;
+using StellarMass.InputManagement;
 using StellarMass.OldInput;
 using UnityEngine;
 
@@ -28,17 +29,12 @@ namespace StellarMass.GameControl
             }
         }
 
-        private void Awake()
-        {
-            InputReceiver.Initialize();
-        }
-
         private void Start()
         {
 #if !UNITY_EDITOR
             Cursor.visible = false;
 #endif
-
+            
             ExecuteGamePhases(startingPhaseIndex);
         }
 

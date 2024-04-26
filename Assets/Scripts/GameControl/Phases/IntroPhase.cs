@@ -1,6 +1,6 @@
 using System.Collections;
 using StellarMass.Animation;
-using StellarMass.OldInput;
+using StellarMass.InputManagement;
 using UnityEngine;
 
 namespace StellarMass.GameControl.Phases
@@ -22,12 +22,18 @@ namespace StellarMass.GameControl.Phases
             
             void handleAnimationCompleted()
             {
-                InputReceiver.OnAnyKeyDown += handleAcceptDown;
+                InputManager.OnThrustChanged += handleAnyKey; // NP TODO: any key! Not this!
             }
             
-            void handleAcceptDown()
+            void handleAnyKey(InputState inputState)
             {
-                InputReceiver.OnAnyKeyDown -= handleAcceptDown;
+                if (inputState is not InputState.Started)
+                {
+                    return;
+                }
+                
+                InputManager.OnThrustChanged -= handleAnyKey;
+                
                 inputReceived = true;
                 gameController.MainDisplay.Title.SetActive(false);
                 gameController.MainDisplay.Prompt.SetActive(false);
