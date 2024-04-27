@@ -1,5 +1,4 @@
 using StellarMass.InputManagement;
-using StellarMass.OldInput;
 using UnityEngine;
 
 namespace StellarMass.GameControl
@@ -36,7 +35,7 @@ namespace StellarMass.GameControl
                 return;
             }
 
-            InputReceiver.ActiveInputMap = InputMap.Menu;
+            InputManager.PauseMenu.Enable();
             GameController.GameState = GameState.PauseMenu;
             menuParent.SetActive(true);
             
@@ -60,7 +59,7 @@ namespace StellarMass.GameControl
                 return;
             }
 
-            InputReceiver.ActiveInputMap = InputMap.Gameplay;
+            InputManager.Gameplay.Enable();
             GameController.ReturnToPreviousGameState();
             menuParent.SetActive(false);
         }
