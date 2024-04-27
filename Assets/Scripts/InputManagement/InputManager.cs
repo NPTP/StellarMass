@@ -20,8 +20,8 @@ namespace StellarMass.InputManagement
         
         /// <summary>
         /// Set the map the game will start with, here.
-        /// NP TODO: Find a way to put this setting into data.
         /// </summary>
+        // NP TODO: Find a way to put this setting into data.
         private static MapInstance DefaultMap => Gameplay;
         
         // MARKER.MapInstanceProperties.Start
@@ -70,6 +70,18 @@ namespace StellarMass.InputManagement
             
             anyButtonPressListener = InputSystem.onAnyButtonPress.Call(HandleAnyButtonPressed);
         }
+        
+        private static void Terminate()
+        {
+            ExecuteOnAllMapInstances(m =>
+            {
+                m.OnMapEnabled -= HandleMapEnabled;
+                m.Terminate();
+            });
+            
+            inputActions.Disable();
+            anyButtonPressListener.Dispose();
+        }
 
         private static void HandleMapEnabled(MapInstance enabledMap)
         {
@@ -110,18 +122,6 @@ namespace StellarMass.InputManagement
         private static void HandleAnyButtonPressed(InputControl inputControl)
         {
             OnAnyButtonPressed?.Invoke();
-        }
-
-        private static void Terminate()
-        {
-            ExecuteOnAllMapInstances(m =>
-            {
-                m.OnMapEnabled -= HandleMapEnabled;
-                m.Terminate();
-            });
-            
-            inputActions.Disable();
-            anyButtonPressListener.Dispose();
         }
 
         public static void DisableAllMaps()
