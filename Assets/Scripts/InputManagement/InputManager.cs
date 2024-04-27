@@ -64,7 +64,7 @@ namespace StellarMass.InputManagement
                 // MARKER.CollectionInitializer.End
             };
             
-            ExecuteOnAllMapInstances(m => m.OnMapEnabled += HandleMapEnabled);
+            mapInstances.ForEach(m => m.OnMapEnabled += HandleMapEnabled);
 
             DefaultMap.Enable();
             
@@ -73,7 +73,7 @@ namespace StellarMass.InputManagement
         
         private static void Terminate()
         {
-            ExecuteOnAllMapInstances(m =>
+            mapInstances.ForEach(m =>
             {
                 m.OnMapEnabled -= HandleMapEnabled;
                 m.Terminate();
@@ -85,7 +85,7 @@ namespace StellarMass.InputManagement
 
         private static void HandleMapEnabled(MapInstance enabledMap)
         {
-            ExecuteOnAllMapInstances(m =>
+            mapInstances.ForEach(m =>
             {
                 if (m != enabledMap)
                 {
@@ -126,15 +126,7 @@ namespace StellarMass.InputManagement
 
         public static void DisableAllMaps()
         {
-            ExecuteOnAllMapInstances(m => m.Disable());
-        }
-
-        private static void ExecuteOnAllMapInstances(Action<MapInstance> action)
-        {
-            foreach (MapInstance mapInstance in mapInstances)
-            {
-                action?.Invoke(mapInstance);
-            }
+            mapInstances.ForEach(m => m.Disable());
         }
     }
 }
