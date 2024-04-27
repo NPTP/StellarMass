@@ -1,3 +1,4 @@
+using StellarMass.InputManagement;
 using StellarMass.OldInput;
 using UnityEngine;
 
@@ -12,24 +13,24 @@ namespace StellarMass.GameControl
         
         private void Start()
         {
-            InputReceiver.AddListeners(InputType.Pause, HandlePause);
-            
-            InputReceiver.AddListeners(InputType.Unpause, HandleUnpause);
-            InputReceiver.AddListeners(InputType.MenuUp, HandleUp);
-            InputReceiver.AddListeners(InputType.MenuDown, HandleDown);
+            InputManager.Gameplay.OnPause += HandlePause;
+            InputManager.PauseMenu.OnNavigate += HandleNavigate;
+            InputManager.PauseMenu.OnSubmit += HandleSubmit;
+            InputManager.PauseMenu.OnUnpause += HandleUnpause;
         }
-
+        
         private void OnDestroy()
         {
-            InputReceiver.RemoveListeners(InputType.Pause, HandlePause);
-            
-            InputReceiver.RemoveListeners(InputType.Unpause, HandleUnpause);
-            InputReceiver.RemoveListeners(InputType.MenuUp, HandleUp);
-            InputReceiver.RemoveListeners(InputType.MenuDown, HandleDown);
+            InputManager.Gameplay.OnPause -= HandlePause;
+            InputManager.PauseMenu.OnNavigate -= HandleNavigate;
+            InputManager.PauseMenu.OnSubmit -= HandleSubmit;
+            InputManager.PauseMenu.OnUnpause -= HandleUnpause;
         }
 
-        private void HandlePause()
+        private void HandlePause(ActionState actionState)
         {
+            if (actionState is not ActionState.Started) return;
+            
             if (GameController.GameState != GameState.Gameplay && GameController.GameState != GameState.Cutscene)
             {
                 return;
@@ -42,8 +43,18 @@ namespace StellarMass.GameControl
             // NP TODO: create existing pause menu functionality
         }
 
-        private void HandleUnpause()
+        private void HandleNavigate(ActionState actionState, Vector2 direction)
         {
+        }
+
+        private void HandleSubmit(ActionState actionState)
+        {
+        }
+
+        private void HandleUnpause(ActionState actionState)
+        {
+            if (actionState is not ActionState.Started) return;
+            
             if (GameController.GameState != GameState.PauseMenu)
             {
                 return;
@@ -52,16 +63,6 @@ namespace StellarMass.GameControl
             InputReceiver.ActiveInputMap = InputMap.Gameplay;
             GameController.ReturnToPreviousGameState();
             menuParent.SetActive(false);
-        }
-        
-        private void HandleUp()
-        {
-            Debug.Log(nameof(HandleUp));
-        }
-
-        private void HandleDown()
-        {
-            Debug.Log(nameof(HandleDown));
         }
     }
 }

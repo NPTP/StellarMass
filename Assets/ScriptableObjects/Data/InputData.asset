@@ -12,6 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d242278d05f493c41921af3a11678f67, type: 3}
   m_Name: InputData
   m_EditorClassIdentifier: 
+  gameplay:
+    eventSystemActions:
+      point: {fileID: 0}
+      middleClick: {fileID: 0}
+      rightClick: {fileID: 0}
+      scrollWheel: {fileID: 0}
+      move: {fileID: 0}
+      submit: {fileID: 0}
+      cancel: {fileID: 0}
+      trackedDevicePosition: {fileID: 0}
+      trackedDeviceOrientation: {fileID: 0}
+      leftClick: {fileID: 0}
+  pauseMenu:
+    eventSystemActions:
+      point: {fileID: 0}
+      middleClick: {fileID: 0}
+      rightClick: {fileID: 0}
+      scrollWheel: {fileID: 0}
+      move: {fileID: 0}
+      submit: {fileID: 0}
+      cancel: {fileID: 0}
+      trackedDevicePosition: {fileID: 0}
+      trackedDeviceOrientation: {fileID: 0}
+      leftClick: {fileID: 0}
   inputInfos:
   - inputMap: 0
     inputType: 1

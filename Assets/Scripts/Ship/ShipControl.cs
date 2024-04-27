@@ -53,18 +53,18 @@ namespace StellarMass.Ship
 
         private void AddInputListeners()
         {
-            InputManager.OnThrustChanged += HandleThrustChanged;
-            InputManager.OnShootChanged += TryShoot;
-            InputManager.OnTurnChanged += HandleTurnChanged;
-            InputManager.OnHyperspaceChanged += Hyperspace;
+            InputManager.Gameplay.OnThrust += OnThrust;
+            InputManager.Gameplay.OnShoot += OnShoot;
+            InputManager.Gameplay.OnTurn += OnTurn;
+            InputManager.Gameplay.OnHyperspace += OnHyperspace;
         }
 
         private void RemoveInputListeners()
         {
-            InputManager.OnThrustChanged -= HandleThrustChanged;
-            InputManager.OnShootChanged -= TryShoot;
-            InputManager.OnTurnChanged -= HandleTurnChanged;
-            InputManager.OnHyperspaceChanged -= Hyperspace;
+            InputManager.Gameplay.OnThrust -= OnThrust;
+            InputManager.Gameplay.OnShoot -= OnShoot;
+            InputManager.Gameplay.OnTurn -= OnTurn;
+            InputManager.Gameplay.OnHyperspace -= OnHyperspace;
         }
 
         private void FixedUpdate()
@@ -81,9 +81,9 @@ namespace StellarMass.Ship
             }
         }
 
-        private void TryShoot(InputState inputState)
+        private void OnShoot(ActionState actionState)
         {
-            if (inputState is not InputState.Started)
+            if (actionState is not ActionState.Started)
             {
                 return;
             }
@@ -95,15 +95,15 @@ namespace StellarMass.Ship
             }
         }
         
-        private void HandleTurnChanged(InputState inputState, float dir)
+        private void OnTurn(ActionState actionState, float dir)
         {
-            switch (inputState)
+            switch (actionState)
             {
-                case InputState.Started:
+                case ActionState.Started:
                     turning = true;
                     StartCoroutine(turnRoutine());
                     break;
-                case InputState.Canceled:
+                case ActionState.Canceled:
                     turning = false;
                     break;
             }
@@ -119,9 +119,9 @@ namespace StellarMass.Ship
             }
         }
 
-        private void Hyperspace(InputState inputState)
+        private void OnHyperspace(ActionState actionState)
         {
-            if (inputState is not InputState.Started)
+            if (actionState is not ActionState.Started)
             {
                 return;
             }
@@ -144,15 +144,15 @@ namespace StellarMass.Ship
         }
 
         
-        private void HandleThrustChanged(InputState inputState)
+        private void OnThrust(ActionState actionState)
         {
-            switch (inputState)
+            switch (actionState)
             {
-                case InputState.Started:
+                case ActionState.Started:
                     thrusting = true; 
                     StartCoroutine(thrustRoutine());
                     break;
-                case InputState.Canceled:
+                case ActionState.Canceled:
                     thrusting = false;
                     break;
             }

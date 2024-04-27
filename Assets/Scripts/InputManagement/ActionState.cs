@@ -1,6 +1,6 @@
 ﻿namespace StellarMass.InputManagement
 {
-    public enum InputState
+    public enum ActionState
     {
         Started = 0,
         Performed,

@@ -1,76 +1,140 @@
 using System;
+using System.Collections.Generic;
+using StellarMass.InputManagement.MapInstances;
+using StellarMass.UI;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem.Utilities;
 
 namespace StellarMass.InputManagement
 {
-    public class InputManager : MonoBehaviour, InputActions.IGameplayActions, InputActions.IPauseMenuActions
+    public static class InputManager
     {
         /// <summary>
-        /// CreateScriptableObjectInstanceFromType is not allowed to be called from a MonoBehaviour
-        /// constructor (or instance field initializer), so call new() on it in Awake or Start instead.
+        /// This event will always fire on the button press of ANY device, regardless of which
+        /// actions maps are enabled or disabled.
         /// </summary>
+        public static event Action OnAnyButtonPressed;
+        
+        /// <summary>
+        /// Set the map the game will start with, here.
+        /// NP TODO: Find a way to put this setting into data.
+        /// </summary>
+        private static MapInstance DefaultMap => Gameplay;
+        
+        // MARKER.MapInstanceProperties.Start
+        public static Gameplay Gameplay { get; private set; }
+        public static PauseMenu PauseMenu { get; private set; }
+        // MARKER.MapInstanceProperties.End
+        
         private static InputActions inputActions;
-
-        private void Awake()
+        private static List<MapInstance> mapInstances;
+        private static IDisposable anyButtonPressListener;
+        
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void InitializeOnLoad()
         {
-            inputActions = new();
-            inputActions.Gameplay.AddCallbacks(this);
-            inputActions.PauseMenu.AddCallbacks(this);
-            inputActions.Enable();
+#if UNITY_EDITOR
+            EditorApplication.playModeStateChanged -= handlePlayModeStateChanged;
+            EditorApplication.playModeStateChanged += handlePlayModeStateChanged;
+
+            void handlePlayModeStateChanged(PlayModeStateChange playModeStateChange)
+            {
+                if (playModeStateChange is PlayModeStateChange.ExitingPlayMode) Terminate();
+            }
+#else
+            Application.quitting -= Terminate;
+            Application.quitting += Terminate;
+#endif
             
-            EnableGameplayMap();
+            inputActions = new InputActions();
+
+            // MARKER.InstantiateMapInstances.Start
+            Gameplay = new Gameplay(inputActions.Gameplay);
+            PauseMenu = new PauseMenu(inputActions.PauseMenu);
+            // MARKER.InstantiateMapInstances.End
+
+            mapInstances = new List<MapInstance>
+            {
+                // MARKER.CollectionInitializer.Start
+                Gameplay,
+                PauseMenu
+                // MARKER.CollectionInitializer.End
+            };
+            
+            ExecuteOnAllMapInstances(m => m.OnMapEnabled += HandleMapEnabled);
+
+            DefaultMap.Enable();
+            
+            anyButtonPressListener = InputSystem.onAnyButtonPress.Call(HandleAnyButtonPressed);
         }
 
-        private void OnDestroy()
+        private static void HandleMapEnabled(MapInstance enabledMap)
         {
-            inputActions.Gameplay.RemoveCallbacks(this);
-            inputActions.PauseMenu.RemoveCallbacks(this);
+            ExecuteOnAllMapInstances(m =>
+            {
+                if (m != enabledMap)
+                {
+                    m.Disable();
+                }
+            });
+            
+            ConfigureEventSystemForMap(enabledMap);
+        }
+        
+        // NP TODO: Full event system swapping support
+        private static void ConfigureEventSystemForMap(MapInstance mapInstance)
+        {
+            if (!mapInstance.ActionMapEnabled || mapInstance.EventSystemActions == null)
+            {
+                return;
+            }
+
+            InputSystemUIInputModule uiInputModule = UIController.UIInputModule;
+            EventSystemActions eventSystemActions = mapInstance.EventSystemActions;
+            
+            uiInputModule.point = eventSystemActions.Point;
+            uiInputModule.leftClick = eventSystemActions.LeftClick;
+            uiInputModule.middleClick = eventSystemActions.MiddleClick;
+            uiInputModule.rightClick = eventSystemActions.RightClick;
+            uiInputModule.scrollWheel = eventSystemActions.ScrollWheel;
+            uiInputModule.move = eventSystemActions.Move;
+            uiInputModule.submit = eventSystemActions.Submit;
+            uiInputModule.cancel = eventSystemActions.Cancel;
+            uiInputModule.trackedDevicePosition = eventSystemActions.TrackedDevicePosition;
+            uiInputModule.trackedDeviceOrientation = eventSystemActions.TrackedDeviceOrientation;
+        }
+
+        private static void HandleAnyButtonPressed(InputControl inputControl)
+        {
+            OnAnyButtonPressed?.Invoke();
+        }
+
+        private static void Terminate()
+        {
+            ExecuteOnAllMapInstances(m =>
+            {
+                m.OnMapEnabled -= HandleMapEnabled;
+                m.Terminate();
+            });
+            
             inputActions.Disable();
+            anyButtonPressListener.Dispose();
         }
 
-        public static void EnableGameplayMap()
+        public static void DisableAllMaps()
         {
-            inputActions.Gameplay.Enable();
-            inputActions.PauseMenu.Disable();
+            ExecuteOnAllMapInstances(m => m.Disable());
         }
-        
-        public static void EnablePauseMenuMap()
+
+        private static void ExecuteOnAllMapInstances(Action<MapInstance> action)
         {
-            inputActions.Gameplay.Disable();
-            inputActions.PauseMenu.Enable();
+            foreach (MapInstance mapInstance in mapInstances)
+            {
+                action?.Invoke(mapInstance);
+            }
         }
-
-        private static InputState GetInputState(InputAction.CallbackContext context)
-        {
-            if (context.started) return InputState.Started;
-            else if (context.performed) return InputState.Performed;
-            else return InputState.Canceled;
-        }
-
-        #region Gameplay
-        
-        public static event Action<InputState> OnThrustChanged;
-        public void OnThrust(InputAction.CallbackContext context) => OnThrustChanged?.Invoke(GetInputState(context));
-
-        public static event Action<InputState> OnShootChanged;
-        public void OnShoot(InputAction.CallbackContext context) => OnShootChanged?.Invoke(GetInputState(context));
-
-        public static event Action<InputState> OnHyperspaceChanged;
-        public void OnHyperspace(InputAction.CallbackContext context) => OnHyperspaceChanged?.Invoke(GetInputState(context));
-        public static event Action<InputState, float> OnTurnChanged;
-        public void OnTurn(InputAction.CallbackContext context) => OnTurnChanged?.Invoke(GetInputState(context), context.ReadValue<float>());
-
-        #endregion
-        
-        #region PauseMenu
-
-        public static event Action<InputState> OnNavigateChanged;
-        public void OnNavigate(InputAction.CallbackContext context) => OnNavigateChanged?.Invoke(GetInputState(context));
-
-        public static event Action<InputState> OnSubmitChanged;
-        public void OnSubmit(InputAction.CallbackContext context) => OnSubmitChanged?.Invoke(GetInputState(context));
-        
-        #endregion
     }
 }

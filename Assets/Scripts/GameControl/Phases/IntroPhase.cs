@@ -22,17 +22,12 @@ namespace StellarMass.GameControl.Phases
             
             void handleAnimationCompleted()
             {
-                InputManager.OnThrustChanged += handleAnyKey; // NP TODO: any key! Not this!
+                InputManager.OnAnyButtonPressed += handleAnyButtonPressed;
             }
             
-            void handleAnyKey(InputState inputState)
+            void handleAnyButtonPressed()
             {
-                if (inputState is not InputState.Started)
-                {
-                    return;
-                }
-                
-                InputManager.OnThrustChanged -= handleAnyKey;
+                InputManager.OnAnyButtonPressed -= handleAnyButtonPressed;
                 
                 inputReceived = true;
                 gameController.MainDisplay.Title.SetActive(false);
