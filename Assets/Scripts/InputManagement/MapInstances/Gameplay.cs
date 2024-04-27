@@ -7,7 +7,6 @@ namespace StellarMass.InputManagement.MapInstances
     public class Gameplay : MapInstance, InputActions.IGameplayActions
     {
         private InputActions.GameplayActions GameplayActions { get; }
-        protected override InputActionMap ActionMap { get; }
 
         public event Action<ActionState> @OnThrust;
         public event Action<ActionState> @OnShoot;
@@ -18,11 +17,12 @@ namespace StellarMass.InputManagement.MapInstances
         public Gameplay(InputActions.GameplayActions gameplayActions)
         {
             GameplayActions = gameplayActions;
-            GameplayActions.AddCallbacks(this);
             ActionMap = GameplayActions.Get();
+            AddCallbacks();
         }
 
-        public override void Terminate() => GameplayActions.RemoveCallbacks(this);
+        protected sealed override void AddCallbacks() => GameplayActions.AddCallbacks(this);
+        protected sealed override void RemoveCallbacks() => GameplayActions.RemoveCallbacks(this);
 
         void InputActions.IGameplayActions.OnThrust(InputAction.CallbackContext context) =>
             OnThrust?.Invoke(GetActionState(context));

@@ -1,5 +1,4 @@
 ﻿using System;
-using StellarMass.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,8 +8,7 @@ namespace StellarMass.InputManagement.MapInstances
     public abstract class MapInstance
     {
         public event Action<MapInstance> OnMapEnabled;
-        protected abstract InputActionMap ActionMap { get; }
-        public abstract void Terminate();
+        protected InputActionMap ActionMap { private get; set; }
 
         public bool ActionMapEnabled => ActionMap.enabled;
 
@@ -21,12 +19,17 @@ namespace StellarMass.InputManagement.MapInstances
         {
             ActionMap.Enable();
             OnMapEnabled?.Invoke(this);
+            RemoveCallbacks();
+            AddCallbacks();
         }
 
         public void Disable()
         {
             ActionMap.Disable();
+            RemoveCallbacks();
         }
+
+        public void Terminate() => RemoveCallbacks();
 
         protected static ActionState GetActionState(InputAction.CallbackContext context)
         {
@@ -34,5 +37,8 @@ namespace StellarMass.InputManagement.MapInstances
             else if (context.performed) return ActionState.Performed;
             else return ActionState.Canceled;
         }
+
+        protected abstract void AddCallbacks();
+        protected abstract void RemoveCallbacks();
     }
 }

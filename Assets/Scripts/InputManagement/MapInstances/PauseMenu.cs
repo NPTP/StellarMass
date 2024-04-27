@@ -8,7 +8,6 @@ namespace StellarMass.InputManagement.MapInstances
     public class PauseMenu : MapInstance, InputActions.IPauseMenuActions
     {
         private InputActions.PauseMenuActions PauseMenuActions { get; }
-        protected override InputActionMap ActionMap { get; }
 
         public event Action<ActionState, Vector2> @OnNavigate;
         public event Action<ActionState> @OnSubmit;
@@ -17,11 +16,12 @@ namespace StellarMass.InputManagement.MapInstances
         public PauseMenu(InputActions.PauseMenuActions pauseMenuActions)
         {
             PauseMenuActions = pauseMenuActions;
-            PauseMenuActions.AddCallbacks(this);
             ActionMap = PauseMenuActions.Get();
+            AddCallbacks();
         }
 
-        public override void Terminate() => PauseMenuActions.RemoveCallbacks(this);
+        protected sealed override void AddCallbacks() => PauseMenuActions.AddCallbacks(this);
+        protected sealed override void RemoveCallbacks() => PauseMenuActions.RemoveCallbacks(this);
 
         void InputActions.IPauseMenuActions.OnNavigate(InputAction.CallbackContext context) =>
             OnNavigate?.Invoke(GetActionState(context), context.ReadValue<Vector2>());
