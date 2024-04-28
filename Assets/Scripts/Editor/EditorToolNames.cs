@@ -2,8 +2,8 @@ namespace StellarMass.Editor
 {
     public static class EditorToolNames
     {
-        public const string TOOLBAR_NAME = "Stellar Mass";
+        private const string TOOLBAR_NAME = "Stellar Mass";
         public const string SHORTCUTS_WINDOW = TOOLBAR_NAME + "/Shortcuts";
-        public const string GENERATOR_FEATURE = TOOLBAR_NAME + "/Input Map Generator";
+        public const string GENERATOR_FEATURE = TOOLBAR_NAME + "/Regenerate C# Input Map Classes";
     }
 }

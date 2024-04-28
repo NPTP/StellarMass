@@ -33,6 +33,7 @@ namespace StellarMass.Editor
 			new FolderShortcut("Game Phases", "Assets/ScriptableObjects/GamePhases"),
 			new FolderShortcut("Prefabs", "Assets/Prefabs"),
 			new FolderShortcut("Sounds", "Assets/ScriptableObjects/Audio"),
+			new FolderShortcut("Input Management", "Assets/Scripts/InputManagement"),
 		};
 
 		private bool RefreshRequired => globalPostProcessing == null || loopBoundingBox == null || dataScriptables.IsEmpty();
