@@ -8,16 +8,13 @@ namespace StellarMass.InputManagement.MapInstances
     /// <summary>
     /// This script is used by the map instance code generator as a template to generate new C# input classes
     /// and their respective .cs files. Do not modify it unless you know what you're doing!
-    /// (Also, don't instantiate it in your code! It will throw an exception if you try.)
+    /// (Also, don't instantiate it in your code - it will throw an exception if you try.)
     /// </summary>
     // MARKER.Ignore.End
-    // MARKER.ClassName.Start
+    // MARKER.ClassSignature.Start
     [Serializable]
-    public class MapInstanceTemplate : MapInstance,
-    // MARKER.ClassName.End
-    // MARKER.InterfaceName.Start
-    InputActionsGenerated.IGameplayActions
-    // MARKER.InterfaceName.End
+    public class MapInstanceTemplate : MapInstance, InputActionsGenerated.IGameplayActions
+    // MARKER.ClassSignature.End
     {
         // MARKER.ActionsGetterProperty.Start
         private InputActionsGenerated.GameplayActions GameplayActions { get; }
@@ -50,16 +47,12 @@ namespace StellarMass.InputManagement.MapInstances
             // MARKER.Ignore.End
         }
 
-        protected sealed override void AddCallbacks() => 
-            // MARKER.ActionsPropertyName.Start
-            GameplayActions
-            // MARKER.ActionsPropertyName.End
-                .AddCallbacks(this);
-        protected sealed override void RemoveCallbacks() => 
-            // MARKER.ActionsPropertyName.Start
-            GameplayActions
-            // MARKER.ActionsPropertyName.End
-                .RemoveCallbacks(this);
+        // MARKER.AddCallbacks.Start
+        protected sealed override void AddCallbacks() => GameplayActions.AddCallbacks(this);
+        // MARKER.AddCallbacks.End
+        // MARKER.RemoveCallbacks.Start
+        protected sealed override void RemoveCallbacks() => GameplayActions.RemoveCallbacks(this);
+        // MARKER.RemoveCallbacks.End
 
         // MARKER.InterfaceMethods.Start
         void InputActionsGenerated.IGameplayActions.OnThrust(InputAction.CallbackContext context) => OnThrust?.Invoke(context.phase);
