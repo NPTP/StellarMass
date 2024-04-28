@@ -1,5 +1,6 @@
 using StellarMass.InputManagement;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace StellarMass.GameControl
 {
@@ -26,9 +27,9 @@ namespace StellarMass.GameControl
             InputManager.PauseMenu.OnUnpause -= HandleUnpause;
         }
 
-        private void HandlePause(ActionState actionState)
+        private void HandlePause(InputActionPhase actionState)
         {
-            if (actionState is not ActionState.Started) return;
+            if (actionState is not InputActionPhase.Started) return;
             
             if (GameController.GameState != GameState.Gameplay && GameController.GameState != GameState.Cutscene)
             {
@@ -42,17 +43,17 @@ namespace StellarMass.GameControl
             // NP TODO: create existing pause menu functionality
         }
 
-        private void HandleNavigate(ActionState actionState, Vector2 direction)
+        private void HandleNavigate(InputActionPhase actionState, Vector2 direction)
         {
         }
 
-        private void HandleSubmit(ActionState actionState)
+        private void HandleSubmit(InputActionPhase actionState)
         {
         }
 
-        private void HandleUnpause(ActionState actionState)
+        private void HandleUnpause(InputActionPhase actionState)
         {
-            if (actionState is not ActionState.Started) return;
+            if (actionState is not InputActionPhase.Started) return;
             
             if (GameController.GameState != GameState.PauseMenu)
             {

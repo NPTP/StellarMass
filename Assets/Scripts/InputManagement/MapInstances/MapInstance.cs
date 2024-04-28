@@ -31,13 +31,6 @@ namespace StellarMass.InputManagement.MapInstances
 
         public void Terminate() => RemoveCallbacks();
 
-        protected static ActionState GetActionState(InputAction.CallbackContext context)
-        {
-            if (context.started) return ActionState.Started;
-            else if (context.performed) return ActionState.Performed;
-            else return ActionState.Canceled;
-        }
-
         protected abstract void AddCallbacks();
         protected abstract void RemoveCallbacks();
     }

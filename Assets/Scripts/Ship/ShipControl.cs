@@ -6,6 +6,7 @@ using StellarMass.Utilities;
 using StellarMass.Utilities.Attributes;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.U2D;
 using Random = UnityEngine.Random;
 
@@ -81,9 +82,9 @@ namespace StellarMass.Ship
             }
         }
 
-        private void OnShoot(ActionState actionState)
+        private void OnShoot(InputActionPhase actionState)
         {
-            if (actionState is not ActionState.Started)
+            if (actionState is not InputActionPhase.Started)
             {
                 return;
             }
@@ -95,15 +96,15 @@ namespace StellarMass.Ship
             }
         }
         
-        private void OnTurn(ActionState actionState, float dir)
+        private void OnTurn(InputActionPhase actionState, float dir)
         {
             switch (actionState)
             {
-                case ActionState.Started:
+                case InputActionPhase.Started:
                     turning = true;
                     StartCoroutine(turnRoutine());
                     break;
-                case ActionState.Canceled:
+                case InputActionPhase.Canceled:
                     turning = false;
                     break;
             }
@@ -119,9 +120,9 @@ namespace StellarMass.Ship
             }
         }
 
-        private void OnHyperspace(ActionState actionState)
+        private void OnHyperspace(InputActionPhase actionState)
         {
-            if (actionState is not ActionState.Started)
+            if (actionState is not InputActionPhase.Started)
             {
                 return;
             }
@@ -144,15 +145,15 @@ namespace StellarMass.Ship
         }
 
         
-        private void OnThrust(ActionState actionState)
+        private void OnThrust(InputActionPhase actionState)
         {
             switch (actionState)
             {
-                case ActionState.Started:
+                case InputActionPhase.Started:
                     thrusting = true; 
                     StartCoroutine(thrustRoutine());
                     break;
-                case ActionState.Canceled:
+                case InputActionPhase.Canceled:
                     thrusting = false;
                     break;
             }
@@ -179,7 +180,7 @@ namespace StellarMass.Ship
         
         private void PhysicsThrust(bool negative)
         {
-            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (RTD.Player.ForwardForce * Time.deltaTime)), ForceMode2D.Force);
+            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (RTD.Player.ForwardForce * Time.fixedDeltaTime)), ForceMode2D.Force);
         }
 
         private void Turn(bool left)

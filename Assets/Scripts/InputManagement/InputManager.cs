@@ -29,7 +29,7 @@ namespace StellarMass.InputManagement
         public static PauseMenu PauseMenu { get; private set; }
         // MARKER.MapInstanceProperties.End
         
-        private static InputActions inputActions;
+        private static InputActionsGenerated inputActions;
         private static List<MapInstance> mapInstances;
         private static IDisposable anyButtonPressListener;
         
@@ -37,19 +37,15 @@ namespace StellarMass.InputManagement
         private static void InitializeOnLoad()
         {
 #if UNITY_EDITOR
-            EditorApplication.playModeStateChanged -= handlePlayModeStateChanged;
-            EditorApplication.playModeStateChanged += handlePlayModeStateChanged;
+            EditorApplication.playModeStateChanged -= HandlePlayModeStateChanged;
+            EditorApplication.playModeStateChanged += HandlePlayModeStateChanged;
 
-            void handlePlayModeStateChanged(PlayModeStateChange playModeStateChange)
-            {
-                if (playModeStateChange is PlayModeStateChange.ExitingPlayMode) Terminate();
-            }
 #else
             Application.quitting -= Terminate;
             Application.quitting += Terminate;
 #endif
             
-            inputActions = new InputActions();
+            inputActions = new InputActionsGenerated();
 
             // MARKER.InstantiateMapInstances.Start
             Gameplay = new Gameplay(inputActions.Gameplay);
@@ -70,7 +66,14 @@ namespace StellarMass.InputManagement
             
             anyButtonPressListener = InputSystem.onAnyButtonPress.Call(HandleAnyButtonPressed);
         }
-        
+
+#if UNITY_EDITOR
+        private static void HandlePlayModeStateChanged(PlayModeStateChange playModeStateChange)
+        {
+            if (playModeStateChange is PlayModeStateChange.ExitingPlayMode) Terminate();
+        }
+#endif
+
         private static void Terminate()
         {
             mapInstances.ForEach(m =>

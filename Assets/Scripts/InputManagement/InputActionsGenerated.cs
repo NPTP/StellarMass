@@ -15,12 +15,14 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-public partial class @InputActions: IInputActionCollection2, IDisposable
+namespace StellarMass.InputManagement
 {
-    public InputActionAsset asset { get; }
-    public @InputActions()
+    public partial class @InputActionsGenerated: IInputActionCollection2, IDisposable
     {
-        asset = InputActionAsset.FromJson(@"{
+        public InputActionAsset asset { get; }
+        public @InputActionsGenerated()
+        {
+            asset = InputActionAsset.FromJson(@"{
     ""name"": ""InputActions"",
     ""maps"": [
         {
@@ -708,236 +710,237 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     ]
 }");
+            // Gameplay
+            m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
+            m_Gameplay_Thrust = m_Gameplay.FindAction("Thrust", throwIfNotFound: true);
+            m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
+            m_Gameplay_Hyperspace = m_Gameplay.FindAction("Hyperspace", throwIfNotFound: true);
+            m_Gameplay_Turn = m_Gameplay.FindAction("Turn", throwIfNotFound: true);
+            m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+            // PauseMenu
+            m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
+            m_PauseMenu_Navigate = m_PauseMenu.FindAction("Navigate", throwIfNotFound: true);
+            m_PauseMenu_Submit = m_PauseMenu.FindAction("Submit", throwIfNotFound: true);
+            m_PauseMenu_Unpause = m_PauseMenu.FindAction("Unpause", throwIfNotFound: true);
+        }
+
+        public void Dispose()
+        {
+            UnityEngine.Object.Destroy(asset);
+        }
+
+        public InputBinding? bindingMask
+        {
+            get => asset.bindingMask;
+            set => asset.bindingMask = value;
+        }
+
+        public ReadOnlyArray<InputDevice>? devices
+        {
+            get => asset.devices;
+            set => asset.devices = value;
+        }
+
+        public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
+
+        public bool Contains(InputAction action)
+        {
+            return asset.Contains(action);
+        }
+
+        public IEnumerator<InputAction> GetEnumerator()
+        {
+            return asset.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Enable()
+        {
+            asset.Enable();
+        }
+
+        public void Disable()
+        {
+            asset.Disable();
+        }
+
+        public IEnumerable<InputBinding> bindings => asset.bindings;
+
+        public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
+        {
+            return asset.FindAction(actionNameOrId, throwIfNotFound);
+        }
+
+        public int FindBinding(InputBinding bindingMask, out InputAction action)
+        {
+            return asset.FindBinding(bindingMask, out action);
+        }
+
         // Gameplay
-        m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-        m_Gameplay_Thrust = m_Gameplay.FindAction("Thrust", throwIfNotFound: true);
-        m_Gameplay_Shoot = m_Gameplay.FindAction("Shoot", throwIfNotFound: true);
-        m_Gameplay_Hyperspace = m_Gameplay.FindAction("Hyperspace", throwIfNotFound: true);
-        m_Gameplay_Turn = m_Gameplay.FindAction("Turn", throwIfNotFound: true);
-        m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
+        private readonly InputActionMap m_Gameplay;
+        private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
+        private readonly InputAction m_Gameplay_Thrust;
+        private readonly InputAction m_Gameplay_Shoot;
+        private readonly InputAction m_Gameplay_Hyperspace;
+        private readonly InputAction m_Gameplay_Turn;
+        private readonly InputAction m_Gameplay_Pause;
+        public struct GameplayActions
+        {
+            private @InputActionsGenerated m_Wrapper;
+            public GameplayActions(@InputActionsGenerated wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Thrust => m_Wrapper.m_Gameplay_Thrust;
+            public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
+            public InputAction @Hyperspace => m_Wrapper.m_Gameplay_Hyperspace;
+            public InputAction @Turn => m_Wrapper.m_Gameplay_Turn;
+            public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
+            public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(GameplayActions set) { return set.Get(); }
+            public void AddCallbacks(IGameplayActions instance)
+            {
+                if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
+                @Thrust.started += instance.OnThrust;
+                @Thrust.performed += instance.OnThrust;
+                @Thrust.canceled += instance.OnThrust;
+                @Shoot.started += instance.OnShoot;
+                @Shoot.performed += instance.OnShoot;
+                @Shoot.canceled += instance.OnShoot;
+                @Hyperspace.started += instance.OnHyperspace;
+                @Hyperspace.performed += instance.OnHyperspace;
+                @Hyperspace.canceled += instance.OnHyperspace;
+                @Turn.started += instance.OnTurn;
+                @Turn.performed += instance.OnTurn;
+                @Turn.canceled += instance.OnTurn;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+            }
+
+            private void UnregisterCallbacks(IGameplayActions instance)
+            {
+                @Thrust.started -= instance.OnThrust;
+                @Thrust.performed -= instance.OnThrust;
+                @Thrust.canceled -= instance.OnThrust;
+                @Shoot.started -= instance.OnShoot;
+                @Shoot.performed -= instance.OnShoot;
+                @Shoot.canceled -= instance.OnShoot;
+                @Hyperspace.started -= instance.OnHyperspace;
+                @Hyperspace.performed -= instance.OnHyperspace;
+                @Hyperspace.canceled -= instance.OnHyperspace;
+                @Turn.started -= instance.OnTurn;
+                @Turn.performed -= instance.OnTurn;
+                @Turn.canceled -= instance.OnTurn;
+                @Pause.started -= instance.OnPause;
+                @Pause.performed -= instance.OnPause;
+                @Pause.canceled -= instance.OnPause;
+            }
+
+            public void RemoveCallbacks(IGameplayActions instance)
+            {
+                if (m_Wrapper.m_GameplayActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IGameplayActions instance)
+            {
+                foreach (var item in m_Wrapper.m_GameplayActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_GameplayActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public GameplayActions @Gameplay => new GameplayActions(this);
+
         // PauseMenu
-        m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
-        m_PauseMenu_Navigate = m_PauseMenu.FindAction("Navigate", throwIfNotFound: true);
-        m_PauseMenu_Submit = m_PauseMenu.FindAction("Submit", throwIfNotFound: true);
-        m_PauseMenu_Unpause = m_PauseMenu.FindAction("Unpause", throwIfNotFound: true);
-    }
-
-    public void Dispose()
-    {
-        UnityEngine.Object.Destroy(asset);
-    }
-
-    public InputBinding? bindingMask
-    {
-        get => asset.bindingMask;
-        set => asset.bindingMask = value;
-    }
-
-    public ReadOnlyArray<InputDevice>? devices
-    {
-        get => asset.devices;
-        set => asset.devices = value;
-    }
-
-    public ReadOnlyArray<InputControlScheme> controlSchemes => asset.controlSchemes;
-
-    public bool Contains(InputAction action)
-    {
-        return asset.Contains(action);
-    }
-
-    public IEnumerator<InputAction> GetEnumerator()
-    {
-        return asset.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
-    }
-
-    public void Enable()
-    {
-        asset.Enable();
-    }
-
-    public void Disable()
-    {
-        asset.Disable();
-    }
-
-    public IEnumerable<InputBinding> bindings => asset.bindings;
-
-    public InputAction FindAction(string actionNameOrId, bool throwIfNotFound = false)
-    {
-        return asset.FindAction(actionNameOrId, throwIfNotFound);
-    }
-
-    public int FindBinding(InputBinding bindingMask, out InputAction action)
-    {
-        return asset.FindBinding(bindingMask, out action);
-    }
-
-    // Gameplay
-    private readonly InputActionMap m_Gameplay;
-    private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-    private readonly InputAction m_Gameplay_Thrust;
-    private readonly InputAction m_Gameplay_Shoot;
-    private readonly InputAction m_Gameplay_Hyperspace;
-    private readonly InputAction m_Gameplay_Turn;
-    private readonly InputAction m_Gameplay_Pause;
-    public struct GameplayActions
-    {
-        private @InputActions m_Wrapper;
-        public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Thrust => m_Wrapper.m_Gameplay_Thrust;
-        public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
-        public InputAction @Hyperspace => m_Wrapper.m_Gameplay_Hyperspace;
-        public InputAction @Turn => m_Wrapper.m_Gameplay_Turn;
-        public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
-        public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(GameplayActions set) { return set.Get(); }
-        public void AddCallbacks(IGameplayActions instance)
+        private readonly InputActionMap m_PauseMenu;
+        private List<IPauseMenuActions> m_PauseMenuActionsCallbackInterfaces = new List<IPauseMenuActions>();
+        private readonly InputAction m_PauseMenu_Navigate;
+        private readonly InputAction m_PauseMenu_Submit;
+        private readonly InputAction m_PauseMenu_Unpause;
+        public struct PauseMenuActions
         {
-            if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-            @Thrust.started += instance.OnThrust;
-            @Thrust.performed += instance.OnThrust;
-            @Thrust.canceled += instance.OnThrust;
-            @Shoot.started += instance.OnShoot;
-            @Shoot.performed += instance.OnShoot;
-            @Shoot.canceled += instance.OnShoot;
-            @Hyperspace.started += instance.OnHyperspace;
-            @Hyperspace.performed += instance.OnHyperspace;
-            @Hyperspace.canceled += instance.OnHyperspace;
-            @Turn.started += instance.OnTurn;
-            @Turn.performed += instance.OnTurn;
-            @Turn.canceled += instance.OnTurn;
-            @Pause.started += instance.OnPause;
-            @Pause.performed += instance.OnPause;
-            @Pause.canceled += instance.OnPause;
-        }
+            private @InputActionsGenerated m_Wrapper;
+            public PauseMenuActions(@InputActionsGenerated wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Navigate => m_Wrapper.m_PauseMenu_Navigate;
+            public InputAction @Submit => m_Wrapper.m_PauseMenu_Submit;
+            public InputAction @Unpause => m_Wrapper.m_PauseMenu_Unpause;
+            public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(PauseMenuActions set) { return set.Get(); }
+            public void AddCallbacks(IPauseMenuActions instance)
+            {
+                if (instance == null || m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Add(instance);
+                @Navigate.started += instance.OnNavigate;
+                @Navigate.performed += instance.OnNavigate;
+                @Navigate.canceled += instance.OnNavigate;
+                @Submit.started += instance.OnSubmit;
+                @Submit.performed += instance.OnSubmit;
+                @Submit.canceled += instance.OnSubmit;
+                @Unpause.started += instance.OnUnpause;
+                @Unpause.performed += instance.OnUnpause;
+                @Unpause.canceled += instance.OnUnpause;
+            }
 
-        private void UnregisterCallbacks(IGameplayActions instance)
-        {
-            @Thrust.started -= instance.OnThrust;
-            @Thrust.performed -= instance.OnThrust;
-            @Thrust.canceled -= instance.OnThrust;
-            @Shoot.started -= instance.OnShoot;
-            @Shoot.performed -= instance.OnShoot;
-            @Shoot.canceled -= instance.OnShoot;
-            @Hyperspace.started -= instance.OnHyperspace;
-            @Hyperspace.performed -= instance.OnHyperspace;
-            @Hyperspace.canceled -= instance.OnHyperspace;
-            @Turn.started -= instance.OnTurn;
-            @Turn.performed -= instance.OnTurn;
-            @Turn.canceled -= instance.OnTurn;
-            @Pause.started -= instance.OnPause;
-            @Pause.performed -= instance.OnPause;
-            @Pause.canceled -= instance.OnPause;
-        }
+            private void UnregisterCallbacks(IPauseMenuActions instance)
+            {
+                @Navigate.started -= instance.OnNavigate;
+                @Navigate.performed -= instance.OnNavigate;
+                @Navigate.canceled -= instance.OnNavigate;
+                @Submit.started -= instance.OnSubmit;
+                @Submit.performed -= instance.OnSubmit;
+                @Submit.canceled -= instance.OnSubmit;
+                @Unpause.started -= instance.OnUnpause;
+                @Unpause.performed -= instance.OnUnpause;
+                @Unpause.canceled -= instance.OnUnpause;
+            }
 
-        public void RemoveCallbacks(IGameplayActions instance)
-        {
-            if (m_Wrapper.m_GameplayActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
-        }
+            public void RemoveCallbacks(IPauseMenuActions instance)
+            {
+                if (m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
 
-        public void SetCallbacks(IGameplayActions instance)
-        {
-            foreach (var item in m_Wrapper.m_GameplayActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_GameplayActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
+            public void SetCallbacks(IPauseMenuActions instance)
+            {
+                foreach (var item in m_Wrapper.m_PauseMenuActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
         }
-    }
-    public GameplayActions @Gameplay => new GameplayActions(this);
-
-    // PauseMenu
-    private readonly InputActionMap m_PauseMenu;
-    private List<IPauseMenuActions> m_PauseMenuActionsCallbackInterfaces = new List<IPauseMenuActions>();
-    private readonly InputAction m_PauseMenu_Navigate;
-    private readonly InputAction m_PauseMenu_Submit;
-    private readonly InputAction m_PauseMenu_Unpause;
-    public struct PauseMenuActions
-    {
-        private @InputActions m_Wrapper;
-        public PauseMenuActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Navigate => m_Wrapper.m_PauseMenu_Navigate;
-        public InputAction @Submit => m_Wrapper.m_PauseMenu_Submit;
-        public InputAction @Unpause => m_Wrapper.m_PauseMenu_Unpause;
-        public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PauseMenuActions set) { return set.Get(); }
-        public void AddCallbacks(IPauseMenuActions instance)
+        public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
+        private int m_MainSchemeIndex = -1;
+        public InputControlScheme MainScheme
         {
-            if (instance == null || m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Add(instance);
-            @Navigate.started += instance.OnNavigate;
-            @Navigate.performed += instance.OnNavigate;
-            @Navigate.canceled += instance.OnNavigate;
-            @Submit.started += instance.OnSubmit;
-            @Submit.performed += instance.OnSubmit;
-            @Submit.canceled += instance.OnSubmit;
-            @Unpause.started += instance.OnUnpause;
-            @Unpause.performed += instance.OnUnpause;
-            @Unpause.canceled += instance.OnUnpause;
+            get
+            {
+                if (m_MainSchemeIndex == -1) m_MainSchemeIndex = asset.FindControlSchemeIndex("Main");
+                return asset.controlSchemes[m_MainSchemeIndex];
+            }
         }
-
-        private void UnregisterCallbacks(IPauseMenuActions instance)
+        public interface IGameplayActions
         {
-            @Navigate.started -= instance.OnNavigate;
-            @Navigate.performed -= instance.OnNavigate;
-            @Navigate.canceled -= instance.OnNavigate;
-            @Submit.started -= instance.OnSubmit;
-            @Submit.performed -= instance.OnSubmit;
-            @Submit.canceled -= instance.OnSubmit;
-            @Unpause.started -= instance.OnUnpause;
-            @Unpause.performed -= instance.OnUnpause;
-            @Unpause.canceled -= instance.OnUnpause;
+            void OnThrust(InputAction.CallbackContext context);
+            void OnShoot(InputAction.CallbackContext context);
+            void OnHyperspace(InputAction.CallbackContext context);
+            void OnTurn(InputAction.CallbackContext context);
+            void OnPause(InputAction.CallbackContext context);
         }
-
-        public void RemoveCallbacks(IPauseMenuActions instance)
+        public interface IPauseMenuActions
         {
-            if (m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Remove(instance))
-                UnregisterCallbacks(instance);
+            void OnNavigate(InputAction.CallbackContext context);
+            void OnSubmit(InputAction.CallbackContext context);
+            void OnUnpause(InputAction.CallbackContext context);
         }
-
-        public void SetCallbacks(IPauseMenuActions instance)
-        {
-            foreach (var item in m_Wrapper.m_PauseMenuActionsCallbackInterfaces)
-                UnregisterCallbacks(item);
-            m_Wrapper.m_PauseMenuActionsCallbackInterfaces.Clear();
-            AddCallbacks(instance);
-        }
-    }
-    public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
-    private int m_MainSchemeIndex = -1;
-    public InputControlScheme MainScheme
-    {
-        get
-        {
-            if (m_MainSchemeIndex == -1) m_MainSchemeIndex = asset.FindControlSchemeIndex("Main");
-            return asset.controlSchemes[m_MainSchemeIndex];
-        }
-    }
-    public interface IGameplayActions
-    {
-        void OnThrust(InputAction.CallbackContext context);
-        void OnShoot(InputAction.CallbackContext context);
-        void OnHyperspace(InputAction.CallbackContext context);
-        void OnTurn(InputAction.CallbackContext context);
-        void OnPause(InputAction.CallbackContext context);
-    }
-    public interface IPauseMenuActions
-    {
-        void OnNavigate(InputAction.CallbackContext context);
-        void OnSubmit(InputAction.CallbackContext context);
-        void OnUnpause(InputAction.CallbackContext context);
     }
 }

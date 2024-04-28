@@ -3,44 +3,63 @@ using UnityEngine.InputSystem;
 
 namespace StellarMass.InputManagement.MapInstances
 {
-    // [Serializable]
-    // MARKER.ClassDefinition.Start
-    // public class MapInstanceTemplate : MapInstance
-        // MARKER.CommaAndInterfaceName.Start
-        // , InputActions.ITemplateActions
-        // MARKER.CommaAndInterfaceName.End
-    // {
-        // MARKER.ActionsStructProperty.Start
-        // private InputActions.TemplateActions TemplateActions { get; }
-        // MARKER.ActionsStructProperty.End
+    // MARKER.ClassName.Start
+    [Serializable]
+    public class MapInstanceTemplate : MapInstance,
+    // MARKER.ClassName.End
+    // MARKER.InterfaceName.Start
+    InputActionsGenerated.IGameplayActions
+    // MARKER.InterfaceName.End
+    {
+        // MARKER.ActionsGetterProperty.Start
+        private InputActionsGenerated.GameplayActions GameplayActions { get; }
+        // MARKER.ActionsGetterProperty.End
 
-        // MARKER.EventFields.Start
-        // public event Action<ActionState, Vector2> @@OnMove;
-        // public event Action<ActionState, float> @OnTurn;
-        // public event Action<ActionState> @OnShoot;
-        // MARKER.EventFields.End
-        
-        // MARKER.Constructor.Start
-        // public Template(InputActions.TemplateActions templateActions)
-        // {
-        // TemplateActions = gameplayActions;
-        // TemplateActions.AddCallbacks(this);
-        // ActionMap = TemplateActions.Get();
-        // }
-        // MARKER.Constructor.End
+        // MARKER.PublicEvents.Start
+        public event Action<InputActionPhase> @OnThrust;
+        public event Action<InputActionPhase> @OnShoot;
+        public event Action<InputActionPhase> @OnHyperspace;
+        public event Action<InputActionPhase, float> @OnTurn;
+        public event Action<InputActionPhase> @OnPause;
+        // MARKER.PublicEvents.End
 
-        // MARKER.AddCallbacks.Start
-        // protected sealed override void AddCallbacks() => InputActions.GameplayActions.AddCallbacks(this);
-        // MARKER.AddCallbacks.End
-        // MARKER.RemoveCallbacks.Start
-        // protected sealed override void RemoveCallbacks() => InputActions.GameplayActions.RemoveCallbacks(this);
-        // MARKER.RemoveCallbacks.End
-        
+        // MARKER.ConstructorSignature.Start
+        public MapInstanceTemplate(InputActionsGenerated.GameplayActions gameplayActions)
+        // MARKER.ConstructorSignature.End
+        {
+            // MARKER.SetUpActions.Start
+            GameplayActions = gameplayActions;
+            ActionMap = GameplayActions.Get();
+            // MARKER.SetUpActions.End
+            AddCallbacks();
+        }
+
+        protected sealed override void AddCallbacks() => 
+            // MARKER.ActionsPropertyName.Start
+            GameplayActions
+            // MARKER.ActionsPropertyName.End
+                .AddCallbacks(this);
+        protected sealed override void RemoveCallbacks() => 
+            // MARKER.ActionsPropertyName.Start
+            GameplayActions
+            // MARKER.ActionsPropertyName.End
+                .RemoveCallbacks(this);
+
         // MARKER.InterfaceMethods.Start
-        // void InputActions.ITemplateActions.OnMove(InputAction.CallbackContext context) => OnMove?.Invoke(GetActionState(context), context.ReadValue<Vector2>());
-        // void InputActions.ITemplateActions.OnTurn(InputAction.CallbackContext context) => OnTurn?.Invoke(GetActionState(context), context.ReadValue<float>());
-        // void InputActions.ITemplateActions.OnShoot(InputAction.CallbackContext context) => OnShoot?.Invoke(GetActionState(context));
+        void InputActionsGenerated.IGameplayActions.OnThrust(InputAction.CallbackContext context) =>
+            OnThrust?.Invoke(context.phase);
+
+        void InputActionsGenerated.IGameplayActions.OnShoot(InputAction.CallbackContext context) =>
+            OnShoot?.Invoke(context.phase);
+
+        void InputActionsGenerated.IGameplayActions.OnHyperspace(InputAction.CallbackContext context) =>
+            OnHyperspace?.Invoke(context.phase);
+
+        void InputActionsGenerated.IGameplayActions.OnTurn(InputAction.CallbackContext context) =>
+            OnTurn?.Invoke(context.phase, context.ReadValue<float>());
+
+        void InputActionsGenerated.IGameplayActions.OnPause(InputAction.CallbackContext context) =>
+            OnPause?.Invoke(context.phase);
         // MARKER.InterfaceMethods.End
-    // }
-    // MARKER.ClassDefinition.End
+    }
 }
