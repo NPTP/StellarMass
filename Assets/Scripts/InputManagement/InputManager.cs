@@ -56,7 +56,7 @@ namespace StellarMass.InputManagement
             {
                 // MARKER.CollectionInitializer.Start
                 Gameplay,
-                PauseMenu
+                PauseMenu,
                 // MARKER.CollectionInitializer.End
             };
             
