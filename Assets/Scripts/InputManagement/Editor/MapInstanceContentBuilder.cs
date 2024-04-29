@@ -10,7 +10,7 @@ namespace StellarMass.InputManagement.Editor
     {
         public static void AddContentForMapInstance(string markerName, InputActionMap map, List<string> lines)
         {
-            string mapName = map.name;
+            string mapName = map.name.AllWhitespaceTrimmed();
             string interfaceName = $"I{mapName}Actions";
             string inputActionsGeneratedName = nameof(InputActionsGenerated);
             

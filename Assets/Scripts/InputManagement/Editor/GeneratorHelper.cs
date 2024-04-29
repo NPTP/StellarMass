@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using StellarMass.Utilities.Extensions;
 using UnityEngine;
 
 namespace StellarMass.InputManagement.Editor
@@ -33,7 +34,7 @@ namespace StellarMass.InputManagement.Editor
 
         public static string GetFilePathForMapName(string mapName)
         {
-            return Application.dataPath + MapInstancesPath + mapName + ".cs";
+            return Application.dataPath + MapInstancesPath + mapName.AllWhitespaceTrimmed() + ".cs";
         }
 
         public static bool IsMarkerStart(string line, out string markerName)
