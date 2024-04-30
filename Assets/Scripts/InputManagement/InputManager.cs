@@ -12,7 +12,6 @@ using UnityEditor;
 #endif
 
 //// NP TODO: Find a way to put the DefaultMap setting into data.
-//// NP TODO: Find a way to call the generator after the input asset is saved.
 //// NP TODO: Full event system swapping support
 //// NP TODO: Fill out null entries in ControlTypeTranslator with correct types
 namespace StellarMass.InputManagement
