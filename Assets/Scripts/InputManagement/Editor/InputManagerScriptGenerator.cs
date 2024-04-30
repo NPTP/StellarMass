@@ -26,10 +26,49 @@ namespace StellarMass.InputManagement.Editor
             string json = File.ReadAllText(Application.dataPath + $"{S}InputConfig{S}InputActions.inputactions");
             InputActionAsset asset = FromJson(json); // inputActions.asset;
             GenerateMapInstanceClasses(asset);
-
+            UpdateActionMapEnum(asset);
             ModifyInputManager(asset);
             
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+        }
+
+        private static void UpdateActionMapEnum(InputActionAsset asset)
+        {
+            List<string> newLines = new();
+
+            try
+            {
+                using StreamReader sr = new(GeneratorHelper.GetEnumFilePath());
+                ReadState readState = ReadState.Normal;
+                while (sr.ReadLine() is { } line)
+                {
+                    switch (readState)
+                    {
+                        case ReadState.Normal:
+                            if (GeneratorHelper.IsMarkerStart(line, out string markerName))
+                            {
+                                ActionMapEnumContentBuilder.AddContentForActionMapEnum(asset, markerName, newLines);
+                                readState = ReadState.WaitingForMarkerEnd;
+                            }
+                            else
+                            {
+                                newLines.Add(line);
+                            }
+                            break;
+                        case ReadState.WaitingForMarkerEnd:
+                            if (GeneratorHelper.IsMarkerEnd(line)) readState = ReadState.Normal;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"The file could not be read: {e.Message}");
+            }
+
+            GeneratorHelper.WriteLinesToFile(newLines, GeneratorHelper.GetEnumFilePath());
         }
 
 
