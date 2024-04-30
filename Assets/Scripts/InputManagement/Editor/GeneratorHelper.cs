@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using StellarMass.InputManagement.MapInstances;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
 
@@ -14,15 +15,38 @@ namespace StellarMass.InputManagement.Editor
         private const string END = "End";
         
         private static char S => Path.DirectorySeparatorChar;
-        private static string MapInstancesPath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}";
+        private static string MapTemplatePath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}{nameof(MapInstanceTemplate)}.cs";
+        private static string GeneratedMapsPath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}Generated{S}";
+
+        public static void ClearGeneratedFolder()
+        {
+            string fullSystemPath = Application.dataPath + GeneratedMapsPath;
+            if (!Directory.Exists(fullSystemPath))
+            {
+                Directory.CreateDirectory(fullSystemPath);
+            }
+            else
+            {
+                string[] filePaths = Directory.GetFiles(fullSystemPath);
+
+                foreach (string filePath in filePaths)
+                {
+                    File.Delete(filePath);
+                }
+            }
+        }
 
         public static void WriteLinesToFile(List<string> newLines, string filePath)
         {
             try
             {
                 using (StreamWriter sw = new(filePath))
+                {
                     foreach (string line in newLines)
+                    {
                         sw.WriteLine(line);
+                    }
+                }
 
                 Debug.Log($"{filePath} written successfully!");
             }
@@ -32,9 +56,14 @@ namespace StellarMass.InputManagement.Editor
             }
         }
 
-        public static string GetFilePathForMapName(string mapName)
+        public static string GetTemplateFilePath()
         {
-            return Application.dataPath + MapInstancesPath + mapName.AllWhitespaceTrimmed() + ".cs";
+            return Application.dataPath + MapTemplatePath;
+        }
+        
+        public static string GetPathForGeneratedMap(string mapName)
+        {
+            return Application.dataPath + GeneratedMapsPath + mapName.AllWhitespaceTrimmed() + ".cs";
         }
 
         public static bool IsMarkerStart(string line, out string markerName)
