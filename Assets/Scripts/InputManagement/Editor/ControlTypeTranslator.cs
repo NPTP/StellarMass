@@ -12,7 +12,6 @@ namespace StellarMass.InputManagement.Editor
         {
             return controlTypeName switch
             {
-                // NP TODO: Fill out null entries with correct types
                 "Analog" => null,
                 "Axis" => "float",
                 "Bone" => null,

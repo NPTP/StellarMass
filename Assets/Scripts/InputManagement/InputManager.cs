@@ -2,12 +2,19 @@ using System;
 using System.Collections.Generic;
 using StellarMass.InputManagement.MapInstances;
 using StellarMass.UI;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Utilities;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+//// NP TODO: Find a way to put the DefaultMap setting into data.
+//// NP TODO: Find a way to call the generator after the input asset is saved.
+//// NP TODO: Full event system swapping support
+//// NP TODO: Fill out null entries in ControlTypeTranslator with correct types
 namespace StellarMass.InputManagement
 {
     public static class InputManager
@@ -21,7 +28,6 @@ namespace StellarMass.InputManagement
         /// <summary>
         /// Set the map the game will start with, here.
         /// </summary>
-        // NP TODO: Find a way to put this setting into data.
         private static MapInstance DefaultMap => Gameplay;
         
         // MARKER.MapInstanceProperties.Start
@@ -99,7 +105,6 @@ namespace StellarMass.InputManagement
             ConfigureEventSystemForMap(enabledMap);
         }
         
-        // NP TODO: Full event system swapping support
         private static void ConfigureEventSystemForMap(MapInstance mapInstance)
         {
             if (!mapInstance.ActionMapEnabled || mapInstance.EventSystemActions == null)

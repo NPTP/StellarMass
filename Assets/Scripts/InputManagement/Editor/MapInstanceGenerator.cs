@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using StellarMass.Editor;
-using StellarMass.InputManagement.MapInstances;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,8 +19,6 @@ namespace StellarMass.InputManagement.Editor
         private static char S => Path.DirectorySeparatorChar;
         private static string InputManagerPath => Application.dataPath + $@"{S}Scripts{S}InputManagement{S}{nameof(InputManager)}.cs";
 
-        // NP TODO: Find a way to call the generator after the input asset is saved.
-        // Had issues using AssetPostProcessor where the input asset classes this draws from weren't ready yet, ie this got called too early.
         [MenuItem(EditorToolNames.GENERATOR_FEATURE)]
         public static void GenerateMapInstances()
         {
