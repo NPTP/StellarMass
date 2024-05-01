@@ -15,6 +15,7 @@ using UnityEditor;
 //// NP TODO: Full event system swapping support
 //// NP TODO: Fill out null entries in ControlTypeTranslator with correct types
 //// NP TODO: Support "Context switching": a layer above Action Maps where each context can use several maps together
+//// NP TODO: Consolidate the read/write logic in InputManagerScriptGenerator.cs
 namespace StellarMass.InputManagement
 {
     public static class InputManager

@@ -77,23 +77,12 @@ namespace StellarMass.InputManagement
             ],
             ""bindings"": [
                 {
-                    ""name"": ""Keyboard"",
-                    ""id"": ""677f1e51-9c4f-4a35-881e-bd8c592be67e"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Thrust"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": """",
                     ""id"": ""7ccae9c7-a689-4bf2-aaf5-5cc7ba6e2796"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Thrust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -104,7 +93,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Thrust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -115,7 +104,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Thrust"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -126,51 +115,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e22436fc-ca66-4d59-912c-1dced638f9dc"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""a2acbfcc-1bee-4138-948a-a8bfa8525f49"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""941b7422-47b6-4550-bf66-fe3f8477f208"",
-                    ""path"": ""<Gamepad>/rightTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3b50fba0-c2be-4f6c-aed9-e50d0031735c"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -181,7 +126,51 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e22436fc-ca66-4d59-912c-1dced638f9dc"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a2acbfcc-1bee-4138-948a-a8bfa8525f49"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""941b7422-47b6-4550-bf66-fe3f8477f208"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3b50fba0-c2be-4f6c-aed9-e50d0031735c"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -192,7 +181,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/h"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Hyperspace"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -203,7 +192,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Hyperspace"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -225,7 +214,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/dpad/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -236,7 +225,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -247,7 +236,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -258,7 +247,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -269,7 +258,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -280,7 +269,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -291,7 +280,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -302,7 +291,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Turn"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -313,7 +302,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/start"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -324,7 +313,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -381,7 +370,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/leftStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -392,7 +381,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/rightStick/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -403,7 +392,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/leftStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -414,7 +403,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/rightStick/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -425,7 +414,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/leftStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -436,7 +425,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/rightStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -447,7 +436,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/leftStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -458,7 +447,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/rightStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -469,65 +458,10 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Gamepad>/dpad"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Joystick"",
-                    ""id"": ""2731817b-9984-440b-8a4c-2df3f2ef9c5f"",
-                    ""path"": ""2DVector"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""64215d06-de6d-490d-8031-550dce45e874"",
-                    ""path"": ""<Joystick>/stick/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""a1c96aca-a37a-4b45-b5a9-98fe99e0ed8e"",
-                    ""path"": ""<Joystick>/stick/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""7b2f6da0-507d-455a-9b10-f634f8de4d65"",
-                    ""path"": ""<Joystick>/stick/left"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""5f8397d1-27c8-4b0c-98d5-e5b11b76659d"",
-                    ""path"": ""<Joystick>/stick/right"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Navigate"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""Keyboard"",
@@ -546,7 +480,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -557,7 +491,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -568,7 +502,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -579,7 +513,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -590,7 +524,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -601,7 +535,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -612,7 +546,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -623,7 +557,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Navigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -634,18 +568,7 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""14b1ee46-4825-40bb-8ad9-94d2a44eaac0"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -656,19 +579,19 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
                     ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0c152160-016b-4129-b6c1-7671a00cb3db"",
-                    ""path"": ""<Gamepad>/start"",
+                    ""id"": ""14b1ee46-4825-40bb-8ad9-94d2a44eaac0"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
-                    ""action"": ""Unpause"",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Submit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -678,7 +601,18 @@ namespace StellarMass.InputManagement
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""Main"",
+                    ""groups"": ""MouseKeyboard"",
+                    ""action"": ""Unpause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c152160-016b-4129-b6c1-7671a00cb3db"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
                     ""action"": ""Unpause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -688,8 +622,8 @@ namespace StellarMass.InputManagement
     ],
     ""controlSchemes"": [
         {
-            ""name"": ""Main"",
-            ""bindingGroup"": ""Main"",
+            ""name"": ""MouseKeyboard"",
+            ""bindingGroup"": ""MouseKeyboard"",
             ""devices"": [
                 {
                     ""devicePath"": ""<Keyboard>"",
@@ -697,12 +631,18 @@ namespace StellarMass.InputManagement
                     ""isOR"": false
                 },
                 {
-                    ""devicePath"": ""<Gamepad>"",
+                    ""devicePath"": ""<Mouse>"",
                     ""isOptional"": true,
                     ""isOR"": false
-                },
+                }
+            ]
+        },
+        {
+            ""name"": ""Gamepad"",
+            ""bindingGroup"": ""Gamepad"",
+            ""devices"": [
                 {
-                    ""devicePath"": ""<Mouse>"",
+                    ""devicePath"": ""<Gamepad>"",
                     ""isOptional"": true,
                     ""isOR"": false
                 }
@@ -919,13 +859,22 @@ namespace StellarMass.InputManagement
             }
         }
         public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
-        private int m_MainSchemeIndex = -1;
-        public InputControlScheme MainScheme
+        private int m_MouseKeyboardSchemeIndex = -1;
+        public InputControlScheme MouseKeyboardScheme
         {
             get
             {
-                if (m_MainSchemeIndex == -1) m_MainSchemeIndex = asset.FindControlSchemeIndex("Main");
-                return asset.controlSchemes[m_MainSchemeIndex];
+                if (m_MouseKeyboardSchemeIndex == -1) m_MouseKeyboardSchemeIndex = asset.FindControlSchemeIndex("MouseKeyboard");
+                return asset.controlSchemes[m_MouseKeyboardSchemeIndex];
+            }
+        }
+        private int m_GamepadSchemeIndex = -1;
+        public InputControlScheme GamepadScheme
+        {
+            get
+            {
+                if (m_GamepadSchemeIndex == -1) m_GamepadSchemeIndex = asset.FindControlSchemeIndex("Gamepad");
+                return asset.controlSchemes[m_GamepadSchemeIndex];
             }
         }
         public interface IGameplayActions

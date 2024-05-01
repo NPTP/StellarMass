@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace StellarMass.InputManagement.Editor
 {
-    public static class MapInstanceGenerator
+    public static class InputManagerScriptGenerator
     {
         private enum ReadState
         {
@@ -17,61 +17,23 @@ namespace StellarMass.InputManagement.Editor
         }
         
         private static char S => Path.DirectorySeparatorChar;
-        private static string InputManagerPath => Application.dataPath + $@"{S}Scripts{S}InputManagement{S}{nameof(InputManager)}.cs";
+        private static string FolderFilePath => Application.dataPath + $@"{S}Scripts{S}InputManagement{S}";
+        private static string InputManagerFilePath => $"{FolderFilePath}{nameof(InputManager)}.cs";
+        private static string EnumFilePath => $"{FolderFilePath}{nameof(ActionMapEnum)}.cs";
+        private static string InputAssetPath => Application.dataPath + $"{S}InputConfig{S}InputActions.inputactions";
 
         [MenuItem(EditorToolNames.GENERATOR_FEATURE)]
         public static void GenerateMapInstances()
         {
-            // InputActionsGenerated inputActions = new();
-            string json = File.ReadAllText(Application.dataPath + $"{S}InputConfig{S}InputActions.inputactions");
-            InputActionAsset asset = FromJson(json); // inputActions.asset;
+            string json = File.ReadAllText(InputAssetPath);
+            InputActionAsset asset = FromJson(json);
             GenerateMapInstanceClasses(asset);
-            UpdateActionMapEnum(asset);
-            ModifyInputManager(asset);
+            ModifyExistingFile(asset, EnumFilePath, ActionMapEnumContentBuilder.AddContentForActionMapEnum);
+            ModifyExistingFile(asset, InputManagerFilePath, InputManagerContentBuilder.AddContentForInputManager);
             
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
-
-        private static void UpdateActionMapEnum(InputActionAsset asset)
-        {
-            List<string> newLines = new();
-
-            try
-            {
-                using StreamReader sr = new(GeneratorHelper.GetEnumFilePath());
-                ReadState readState = ReadState.Normal;
-                while (sr.ReadLine() is { } line)
-                {
-                    switch (readState)
-                    {
-                        case ReadState.Normal:
-                            if (GeneratorHelper.IsMarkerStart(line, out string markerName))
-                            {
-                                ActionMapEnumContentBuilder.AddContentForActionMapEnum(asset, markerName, newLines);
-                                readState = ReadState.WaitingForMarkerEnd;
-                            }
-                            else
-                            {
-                                newLines.Add(line);
-                            }
-                            break;
-                        case ReadState.WaitingForMarkerEnd:
-                            if (GeneratorHelper.IsMarkerEnd(line)) readState = ReadState.Normal;
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log($"The file could not be read: {e.Message}");
-            }
-
-            GeneratorHelper.WriteLinesToFile(newLines, GeneratorHelper.GetEnumFilePath());
-        }
-
-
+        
         private static InputActionAsset FromJson(string json)
         {
             if (string.IsNullOrEmpty(json))
@@ -133,13 +95,13 @@ namespace StellarMass.InputManagement.Editor
             GeneratorHelper.WriteLinesToFile(newLines, GeneratorHelper.GetPathForGeneratedMap(map.name));
         }
         
-        private static void ModifyInputManager(InputActionAsset asset)
+        private static void ModifyExistingFile(InputActionAsset asset, string filePath, Action<InputActionAsset, string, List<string>> markerSectionAction)
         {
             List<string> newLines = new();
 
             try
             {
-                using StreamReader sr = new(InputManagerPath);
+                using StreamReader sr = new(filePath);
                 ReadState readState = ReadState.Normal;
                 while (sr.ReadLine() is { } line)
                 {
@@ -149,7 +111,7 @@ namespace StellarMass.InputManagement.Editor
                             newLines.Add(line);
                             if (GeneratorHelper.IsMarkerStart(line, out string markerName))
                             {
-                                InputManagerContentBuilder.AddContentForInputManager(asset, markerName, newLines);
+                                markerSectionAction?.Invoke(asset, markerName, newLines);
                                 readState = ReadState.WaitingForMarkerEnd;
                             }
                             break;
@@ -170,7 +132,7 @@ namespace StellarMass.InputManagement.Editor
                 Debug.Log($"The file could not be read: {e.Message}");
             }
 
-            GeneratorHelper.WriteLinesToFile(newLines, InputManagerPath);
+            GeneratorHelper.WriteLinesToFile(newLines, filePath);
         }
     }
 }

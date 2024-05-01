@@ -65,7 +65,7 @@ namespace StellarMass.InputManagement.Editor
         {
             return Application.dataPath + GeneratedMapsPath + mapName.AllWhitespaceTrimmed() + ".cs";
         }
-
+        
         public static bool IsMarkerStart(string line, out string markerName)
         {
             string trimmedLine = line.Trim();

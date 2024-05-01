@@ -11,7 +11,7 @@ namespace StellarMass.InputManagement.Editor
             if (importedAssets.Any(importedAsset =>
                     importedAsset.StartsWith("Assets/InputConfig") && importedAsset.EndsWith(".inputactions")))
             {
-                MapInstanceGenerator.GenerateMapInstances();
+                InputManagerScriptGenerator.GenerateMapInstances();
             }
         }
     }
