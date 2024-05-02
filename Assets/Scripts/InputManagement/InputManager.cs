@@ -16,7 +16,6 @@ using UnityEditor;
 //// NP TODO: Find a way to put the DefaultMap setting into data.
 //// NP TODO: Full event system swapping support
 //// NP TODO: Fill out null entries in ControlTypeTranslator with correct types
-//// NP TODO: Support "Context switching": a layer above Action Maps where each context can use several maps together
 //// NP TODO: Change MARKER to #region for better C# support
 //// NP TODO: Change action map enum from enum to property drawer of viable strings based on the input asset.
 namespace StellarMass.InputManagement
