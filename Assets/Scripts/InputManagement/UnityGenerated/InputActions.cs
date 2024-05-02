@@ -17,10 +17,10 @@ using UnityEngine.InputSystem.Utilities;
 
 namespace StellarMass.InputManagement
 {
-    public partial class @InputActionsGenerated: IInputActionCollection2, IDisposable
+    public partial class @InputActions: IInputActionCollection2, IDisposable
     {
         public InputActionAsset asset { get; }
-        public @InputActionsGenerated()
+        public @InputActions()
         {
             asset = InputActionAsset.FromJson(@"{
     ""name"": ""InputActions"",
@@ -730,8 +730,8 @@ namespace StellarMass.InputManagement
         private readonly InputAction m_Gameplay_Pause;
         public struct GameplayActions
         {
-            private @InputActionsGenerated m_Wrapper;
-            public GameplayActions(@InputActionsGenerated wrapper) { m_Wrapper = wrapper; }
+            private @InputActions m_Wrapper;
+            public GameplayActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Thrust => m_Wrapper.m_Gameplay_Thrust;
             public InputAction @Shoot => m_Wrapper.m_Gameplay_Shoot;
             public InputAction @Hyperspace => m_Wrapper.m_Gameplay_Hyperspace;
@@ -806,8 +806,8 @@ namespace StellarMass.InputManagement
         private readonly InputAction m_PauseMenu_Unpause;
         public struct PauseMenuActions
         {
-            private @InputActionsGenerated m_Wrapper;
-            public PauseMenuActions(@InputActionsGenerated wrapper) { m_Wrapper = wrapper; }
+            private @InputActions m_Wrapper;
+            public PauseMenuActions(@InputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @Navigate => m_Wrapper.m_PauseMenu_Navigate;
             public InputAction @Submit => m_Wrapper.m_PauseMenu_Submit;
             public InputAction @Unpause => m_Wrapper.m_PauseMenu_Unpause;

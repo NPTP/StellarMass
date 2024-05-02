@@ -21,9 +21,6 @@ namespace StellarMass.Data
 
         [SerializeField] private AudioData audioData;
         public static AudioData Audio => PrivateInstance.audioData;
-
-        [SerializeField] private InputData inputData;
-        public static InputData Input => PrivateInstance.inputData;
         
         [SerializeField] private PlayerData playerData;
         public static PlayerData Player => PrivateInstance.playerData;

@@ -13,11 +13,11 @@ namespace StellarMass.InputManagement.MapInstances
     // MARKER.Ignore.End
     // MARKER.ClassSignature.Start
     [Serializable]
-    public class MapInstanceTemplate : MapInstance, InputActionsGenerated.IGameplayActions
+    public class MapInstanceTemplate : MapInstance, InputActions.IGameplayActions
     // MARKER.ClassSignature.End
     {
         // MARKER.ActionsGetterProperty.Start
-        private InputActionsGenerated.GameplayActions GameplayActions { get; }
+        private InputActions.GameplayActions GameplayActions { get; }
         // MARKER.ActionsGetterProperty.End
 
         // MARKER.PublicEvents.Start
@@ -29,7 +29,7 @@ namespace StellarMass.InputManagement.MapInstances
         // MARKER.PublicEvents.End
 
         // MARKER.ConstructorSignature.Start
-        public MapInstanceTemplate(InputActionsGenerated.GameplayActions gameplayActions)
+        public MapInstanceTemplate(InputActions.GameplayActions gameplayActions)
         // MARKER.ConstructorSignature.End
         {
             // MARKER.Ignore.Start
@@ -55,11 +55,11 @@ namespace StellarMass.InputManagement.MapInstances
         // MARKER.RemoveCallbacks.End
 
         // MARKER.InterfaceMethods.Start
-        void InputActionsGenerated.IGameplayActions.OnThrust(InputAction.CallbackContext context) => OnThrust?.Invoke(context.phase);
-        void InputActionsGenerated.IGameplayActions.OnShoot(InputAction.CallbackContext context) => OnShoot?.Invoke(context.phase);
-        void InputActionsGenerated.IGameplayActions.OnHyperspace(InputAction.CallbackContext context) => OnHyperspace?.Invoke(context.phase);
-        void InputActionsGenerated.IGameplayActions.OnTurn(InputAction.CallbackContext context) => OnTurn?.Invoke(context.phase, context.ReadValue<float>());
-        void InputActionsGenerated.IGameplayActions.OnPause(InputAction.CallbackContext context) => OnPause?.Invoke(context.phase);
+        void InputActions.IGameplayActions.OnThrust(InputAction.CallbackContext context) => OnThrust?.Invoke(context.phase);
+        void InputActions.IGameplayActions.OnShoot(InputAction.CallbackContext context) => OnShoot?.Invoke(context.phase);
+        void InputActions.IGameplayActions.OnHyperspace(InputAction.CallbackContext context) => OnHyperspace?.Invoke(context.phase);
+        void InputActions.IGameplayActions.OnTurn(InputAction.CallbackContext context) => OnTurn?.Invoke(context.phase, context.ReadValue<float>());
+        void InputActions.IGameplayActions.OnPause(InputAction.CallbackContext context) => OnPause?.Invoke(context.phase);
         // MARKER.InterfaceMethods.End
     }
 }

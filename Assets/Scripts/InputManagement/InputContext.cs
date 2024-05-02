@@ -9,8 +9,8 @@ namespace StellarMass.InputManagement
         [SerializeField] private string name;
         public string Name => name;
 
-        [SerializeField] private ActionMapEnum[] activeMaps;
-        public ActionMapEnum[] ActiveMaps => activeMaps;
+        [SerializeField] private string[] activeMaps;
+        public string[] ActiveMaps => activeMaps;
         
 #if UNITY_EDITOR
         public void EDITOR_SetName(string n)

@@ -70,12 +70,12 @@ namespace StellarMass.Editor
 				Refresh();
 			}
 
-			GUILayout.BeginHorizontal();
+			GUILayout.BeginVertical();
 			{
 				PostProcessingToggle();
 				BoundsVisualizeToggle();
 			}
-			GUILayout.EndHorizontal();
+			GUILayout.EndVertical();
 
 			GUILayout.BeginHorizontal();
 			{

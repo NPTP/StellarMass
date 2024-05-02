@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using StellarMass.InputManagement.MapInstances;
 using StellarMass.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Utilities;
 
@@ -15,7 +17,8 @@ using UnityEditor;
 //// NP TODO: Full event system swapping support
 //// NP TODO: Fill out null entries in ControlTypeTranslator with correct types
 //// NP TODO: Support "Context switching": a layer above Action Maps where each context can use several maps together
-//// NP TODO: Consolidate the read/write logic in InputManagerScriptGenerator.cs
+//// NP TODO: Change MARKER to #region for better C# support
+//// NP TODO: Change action map enum from enum to property drawer of viable strings based on the input asset.
 namespace StellarMass.InputManagement
 {
     public static class InputManager
@@ -25,34 +28,41 @@ namespace StellarMass.InputManagement
         /// actions maps are enabled or disabled.
         /// </summary>
         public static event Action OnAnyButtonPressed;
-        
+
+        public static event Action OnLastUsedDeviceChanged;
+
         /// <summary>
         /// Set the map the game will start with, here.
         /// </summary>
         private static MapInstance DefaultMap => Gameplay;
-        
+
         // MARKER.MapInstanceProperties.Start
         public static Gameplay Gameplay { get; private set; }
         public static PauseMenu PauseMenu { get; private set; }
         // MARKER.MapInstanceProperties.End
-        
-        private static InputActionsGenerated inputActions;
+
+        private static InputActions inputActions;
         private static List<MapInstance> mapInstances;
         private static IDisposable anyButtonPressListener;
-        
+        private static InputDevice lastUsedDevice;
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void InitializeOnLoad()
         {
 #if UNITY_EDITOR
-            EditorApplication.playModeStateChanged -= HandlePlayModeStateChanged;
-            EditorApplication.playModeStateChanged += HandlePlayModeStateChanged;
+            EditorApplication.playModeStateChanged -= handlePlayModeStateChanged;
+            EditorApplication.playModeStateChanged += handlePlayModeStateChanged;
 
+            void handlePlayModeStateChanged(PlayModeStateChange playModeStateChange)
+            {
+                if (playModeStateChange is PlayModeStateChange.ExitingPlayMode) Terminate();
+            }
 #else
             Application.quitting -= Terminate;
             Application.quitting += Terminate;
 #endif
-            
-            inputActions = new InputActionsGenerated();
+
+            inputActions = new InputActions();
 
             // MARKER.InstantiateMapInstances.Start
             Gameplay = new Gameplay(inputActions.Gameplay);
@@ -66,46 +76,34 @@ namespace StellarMass.InputManagement
                 PauseMenu,
                 // MARKER.CollectionInitializer.End
             };
-            
-            mapInstances.ForEach(m => m.OnMapEnabled += HandleMapEnabled);
 
+            AddSubscriptions();
             DefaultMap.Enable();
-            
+        }
+
+        private static void AddSubscriptions()
+        {
+            InputSystem.onEvent += HandleEvent;
+            InputSystem.onDeviceChange += HandleDeviceChange;
             anyButtonPressListener = InputSystem.onAnyButtonPress.Call(HandleAnyButtonPressed);
         }
 
-#if UNITY_EDITOR
-        private static void HandlePlayModeStateChanged(PlayModeStateChange playModeStateChange)
+        private static void RemoveSubscriptions()
         {
-            if (playModeStateChange is PlayModeStateChange.ExitingPlayMode) Terminate();
+            mapInstances.ForEach(m => m.Terminate());
+
+            InputSystem.onEvent += HandleEvent;
+            InputSystem.onDeviceChange += HandleDeviceChange;
+            anyButtonPressListener.Dispose();
+
+            inputActions.Disable();
         }
-#endif
 
         private static void Terminate()
         {
-            mapInstances.ForEach(m =>
-            {
-                m.OnMapEnabled -= HandleMapEnabled;
-                m.Terminate();
-            });
-            
-            inputActions.Disable();
-            anyButtonPressListener.Dispose();
+            RemoveSubscriptions();
         }
 
-        private static void HandleMapEnabled(MapInstance enabledMap)
-        {
-            mapInstances.ForEach(m =>
-            {
-                if (m != enabledMap)
-                {
-                    m.Disable();
-                }
-            });
-            
-            ConfigureEventSystemForMap(enabledMap);
-        }
-        
         private static void ConfigureEventSystemForMap(MapInstance mapInstance)
         {
             if (!mapInstance.ActionMapEnabled || mapInstance.EventSystemActions == null)
@@ -115,7 +113,7 @@ namespace StellarMass.InputManagement
 
             InputSystemUIInputModule uiInputModule = UIController.UIInputModule;
             EventSystemActions eventSystemActions = mapInstance.EventSystemActions;
-            
+
             uiInputModule.point = eventSystemActions.Point;
             uiInputModule.leftClick = eventSystemActions.LeftClick;
             uiInputModule.middleClick = eventSystemActions.MiddleClick;
@@ -126,6 +124,7 @@ namespace StellarMass.InputManagement
             uiInputModule.cancel = eventSystemActions.Cancel;
             uiInputModule.trackedDevicePosition = eventSystemActions.TrackedDevicePosition;
             uiInputModule.trackedDeviceOrientation = eventSystemActions.TrackedDeviceOrientation;
+
         }
 
         private static void HandleAnyButtonPressed(InputControl inputControl)
@@ -133,9 +132,56 @@ namespace StellarMass.InputManagement
             OnAnyButtonPressed?.Invoke();
         }
 
-        public static void DisableAllMaps()
+        private static void HandleDeviceChange(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
         {
-            mapInstances.ForEach(m => m.Disable());
+            if (lastUsedDevice == inputDevice)
+            {
+                return;
+            }
+
+            lastUsedDevice = inputDevice;
+            OnLastUsedDeviceChanged?.Invoke();
         }
+
+        // Adapted from https://forum.unity.com/threads/detect-most-recent-input-device-type.753206/
+        private static void HandleEvent(InputEventPtr eventPtr, InputDevice device)
+        {
+            if (lastUsedDevice == device)
+            {
+                return;
+            }
+
+            if (eventPtr.type == StateEvent.Type)
+            {
+                // Prevents some devices which spit out noise from triggering our events.
+                if (!eventPtr.EnumerateChangedControls(device: device, magnitudeThreshold: 0.0001f).Any())
+                    return;
+            }
+
+            lastUsedDevice = device;
+            OnLastUsedDeviceChanged?.Invoke();
+        }
+
+        #region Auto-generated Context Enablers
+        // MARKER.ContextEnablers.Start
+        public static void EnableGameplayContext()
+        {
+            Gameplay.Enable();
+            PauseMenu.Disable();
+        }
+
+        public static void EnablePauseMenuContext()
+        {
+            Gameplay.Disable();
+            PauseMenu.Enable();
+        }
+
+        public static void EnableXContext()
+        {
+            Gameplay.Disable();
+            PauseMenu.Disable();
+        }
+        // MARKER.ContextEnablers.End
+        #endregion
     }
 }

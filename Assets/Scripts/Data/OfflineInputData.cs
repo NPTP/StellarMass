@@ -5,7 +5,7 @@ using UnityEngine;
 namespace StellarMass.Data
 {
     [CreateAssetMenu]
-    public class InputData : DataScriptable
+    public class OfflineInputData : DataScriptable
     {
         [SerializeField] private InputContext[] actionContexts;
         public InputContext[] ActionContexts => actionContexts;
