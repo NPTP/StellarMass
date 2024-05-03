@@ -7,17 +7,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-//// NP TODO: Find a way to put the DefaultMap setting into data.
 //// NP TODO: Full event system swapping support
 //// NP TODO: Fill out null entries in ControlTypeTranslator with correct types
-//// NP TODO: Change MARKER to #region for better C# support
-//// NP TODO: Change action map enum from enum to property drawer of viable strings based on the input asset.
 namespace StellarMass.InputManagement
 {
     public static class InputManager
@@ -28,12 +26,9 @@ namespace StellarMass.InputManagement
         /// </summary>
         public static event Action OnAnyButtonPressed;
 
-        public static event Action OnLastUsedDeviceChanged;
+        public static event Action<char> OnKeyboardTextInput;
 
-        /// <summary>
-        /// Set the map the game will start with, here.
-        /// </summary>
-        private static MapInstance DefaultMap => Gameplay;
+        public static event Action OnLastUsedDeviceChanged;
 
         // MARKER.MapInstanceProperties.Start
         public static Gameplay Gameplay { get; private set; }
@@ -60,7 +55,6 @@ namespace StellarMass.InputManagement
             Application.quitting -= Terminate;
             Application.quitting += Terminate;
 #endif
-
             inputActions = new InputActions();
 
             // MARKER.InstantiateMapInstances.Start
@@ -77,24 +71,27 @@ namespace StellarMass.InputManagement
             };
 
             AddSubscriptions();
-            DefaultMap.Enable();
+            EnableDefaultContext();
         }
 
         private static void AddSubscriptions()
         {
             InputSystem.onEvent += HandleEvent;
             InputSystem.onDeviceChange += HandleDeviceChange;
+            InputUser.onChange += HandleInputUserChange;
             anyButtonPressListener = InputSystem.onAnyButtonPress.Call(HandleAnyButtonPressed);
         }
-
+        
         private static void RemoveSubscriptions()
         {
             mapInstances.ForEach(m => m.Terminate());
 
             InputSystem.onEvent += HandleEvent;
             InputSystem.onDeviceChange += HandleDeviceChange;
+            InputUser.onChange += HandleInputUserChange;
             anyButtonPressListener.Dispose();
-
+            DisableKeyboardTextInput();
+            
             inputActions.Disable();
         }
 
@@ -103,15 +100,20 @@ namespace StellarMass.InputManagement
             RemoveSubscriptions();
         }
 
-        private static void ConfigureEventSystemForMap(MapInstance mapInstance)
+        private static void HandleAnyButtonPressed(InputControl inputControl) => OnAnyButtonPressed?.Invoke();
+        public static void EnableKeyboardTextInput() => Keyboard.current.onTextInput += HandleTextInput;
+        public static void DisableKeyboardTextInput() => Keyboard.current.onTextInput -= HandleTextInput;
+        private static void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);
+
+        private static void ConfigureEventSystemForContext(InputContext inputContext)
         {
-            if (!mapInstance.ActionMapEnabled || mapInstance.EventSystemActions == null)
+            if (inputContext == null || inputContext.EventSystemActions == null)
             {
                 return;
             }
 
             InputSystemUIInputModule uiInputModule = UIController.UIInputModule;
-            EventSystemActions eventSystemActions = mapInstance.EventSystemActions;
+            EventSystemActions eventSystemActions = inputContext.EventSystemActions;
 
             uiInputModule.point = eventSystemActions.Point;
             uiInputModule.leftClick = eventSystemActions.LeftClick;
@@ -123,14 +125,9 @@ namespace StellarMass.InputManagement
             uiInputModule.cancel = eventSystemActions.Cancel;
             uiInputModule.trackedDevicePosition = eventSystemActions.TrackedDevicePosition;
             uiInputModule.trackedDeviceOrientation = eventSystemActions.TrackedDeviceOrientation;
-
         }
 
-        private static void HandleAnyButtonPressed(InputControl inputControl)
-        {
-            OnAnyButtonPressed?.Invoke();
-        }
-
+        #region Device/Control Scheme Change Handlers
         private static void HandleDeviceChange(InputDevice inputDevice, InputDeviceChange inputDeviceChange)
         {
             if (lastUsedDevice == inputDevice)
@@ -140,6 +137,17 @@ namespace StellarMass.InputManagement
 
             lastUsedDevice = inputDevice;
             OnLastUsedDeviceChanged?.Invoke();
+        }
+        
+        /// <summary>
+        /// This will only be called if PlayerInput is being used.
+        /// </summary>
+        private static void HandleInputUserChange(InputUser user, InputUserChange change, InputDevice device)
+        {
+            if (change is InputUserChange.ControlSchemeChanged)
+            {
+                OnLastUsedDeviceChanged?.Invoke();
+            }
         }
 
         // Adapted from https://forum.unity.com/threads/detect-most-recent-input-device-type.753206/
@@ -152,7 +160,7 @@ namespace StellarMass.InputManagement
 
             if (eventPtr.type == StateEvent.Type)
             {
-                // Prevents some devices which spit out noise from triggering our events.
+                // Prevents triggering events for some devices which spit out noise, such as PS4/PS5 gamepads
                 if (!eventPtr.EnumerateChangedControls(device: device, magnitudeThreshold: 0.0001f).Any())
                     return;
             }
@@ -160,8 +168,13 @@ namespace StellarMass.InputManagement
             lastUsedDevice = device;
             OnLastUsedDeviceChanged?.Invoke();
         }
+        #endregion
 
         #region Auto-generated Context Enablers
+        // MARKER.DefaultContextEnabler.Start
+        private static void EnableDefaultContext() => EnableGameplayContext();
+        // MARKER.DefaultContextEnabler.End
+        
         // MARKER.ContextEnablers.Start
         public static void EnableGameplayContext()
         {
@@ -173,12 +186,6 @@ namespace StellarMass.InputManagement
         {
             Gameplay.Disable();
             PauseMenu.Enable();
-        }
-
-        public static void EnableXContext()
-        {
-            Gameplay.Disable();
-            PauseMenu.Disable();
         }
         // MARKER.ContextEnablers.End
         #endregion

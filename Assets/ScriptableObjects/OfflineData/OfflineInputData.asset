@@ -12,13 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f226b8c5334c7ec4e93fcab0ace58739, type: 3}
   m_Name: OfflineInputData
   m_EditorClassIdentifier: 
-  actionContexts:
+  defaultContext: Gameplay
+  inputContexts:
   - name: Gameplay
     activeMaps:
     - Gameplay
+    eventSystemActions:
+      point: {fileID: 0}
+      middleClick: {fileID: 0}
+      rightClick: {fileID: 0}
+      scrollWheel: {fileID: 0}
+      move: {fileID: 0}
+      submit: {fileID: 0}
+      cancel: {fileID: 0}
+      trackedDevicePosition: {fileID: 0}
+      trackedDeviceOrientation: {fileID: 0}
+      leftClick: {fileID: 0}
   - name: PauseMenu
     activeMaps:
     - PauseMenu
-  - name: X
-    activeMaps:
-    - x
+    eventSystemActions:
+      point: {fileID: 0}
+      middleClick: {fileID: 0}
+      rightClick: {fileID: 0}
+      scrollWheel: {fileID: 0}
+      move: {fileID: 0}
+      submit: {fileID: 0}
+      cancel: {fileID: 0}
+      trackedDevicePosition: {fileID: 0}
+      trackedDeviceOrientation: {fileID: 0}
+      leftClick: {fileID: 0}

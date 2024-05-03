@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using StellarMass.InputManagement.MapInstances;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace StellarMass.InputManagement.Editor
 {
@@ -54,6 +56,11 @@ namespace StellarMass.InputManagement.Editor
             {
                 Debug.Log($"File could not be written: {e.Message}");
             }
+        }
+        
+        public static IEnumerable<string> GetCleanedMapNames(InputActionAsset asset)
+        {
+            return asset.actionMaps.Select(map => map.name.AllWhitespaceTrimmed().CapitalizeFirst());
         }
 
         public static string GetTemplateFilePath()

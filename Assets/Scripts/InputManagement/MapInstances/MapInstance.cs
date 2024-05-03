@@ -12,9 +12,6 @@ namespace StellarMass.InputManagement.MapInstances
 
         public bool ActionMapEnabled => ActionMap.enabled;
 
-        [SerializeField] private EventSystemActions eventSystemActions;
-        public EventSystemActions EventSystemActions => eventSystemActions;
-
         public void Enable()
         {
             ActionMap.Enable();
