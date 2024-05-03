@@ -10,15 +10,12 @@ namespace StellarMass.Utilities.Editor
 
         public static string GetSystemPath(Type type)
         {
-            string[] guids = AssetDatabase.FindAssets($"t:Script {type.Name}");
+            string[] guids = AssetDatabase.FindAssets($"t:Script");
             foreach (string guid in guids)
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-                string dotCsExtensionRemoved = assetPath.Remove(assetPath.Length - 3);
-                
-                // AssetDatabase.FindAssets exact match operators seem to be broken,
-                // so we check for an exact match here instead of in the FindAssets call above.
-                if (dotCsExtensionRemoved.EndsWith(type.Name))
+                MonoScript scriptAsset = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
+                if (scriptAsset != null && type.IsAssignableFrom(scriptAsset.GetClass()))
                 {
                     return Application.dataPath + assetPath.Replace("Assets", string.Empty);
                 }
