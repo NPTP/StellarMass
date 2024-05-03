@@ -17,7 +17,6 @@ using UnityEditor;
 //// NP TODO: Full event system swapping support
 //// NP TODO: Fill out null entries in ControlTypeTranslator with correct types
 //// NP TODO: Define icons & text (with localized strings) for each binding. Serialized dictionary in scriptable
-//// NP TODO: Send events for control scheme change
 namespace StellarMass.InputManagement
 {
     public static class InputManager
@@ -30,7 +29,7 @@ namespace StellarMass.InputManagement
 
         public static event Action<char> OnKeyboardTextInput;
 
-        public static event Action OnLastUsedDeviceChanged;
+        public static event Action<ControlScheme> OnControlSchemeChanged;
 
         // MARKER.MapInstanceProperties.Start
         public static Gameplay Gameplay { get; private set; }
@@ -138,7 +137,8 @@ namespace StellarMass.InputManagement
             }
 
             lastUsedDevice = inputDevice;
-            OnLastUsedDeviceChanged?.Invoke();
+            // NP TODO: Keep or remove?
+            // OnControlSchemeChanged?.Invoke();
         }
         
         /// <summary>
@@ -146,9 +146,13 @@ namespace StellarMass.InputManagement
         /// </summary>
         private static void HandleInputUserChange(InputUser user, InputUserChange change, InputDevice device)
         {
-            if (change is InputUserChange.ControlSchemeChanged)
+            if (change is InputUserChange.ControlSchemeChanged && user.controlScheme != null)
             {
-                OnLastUsedDeviceChanged?.Invoke();
+                ControlScheme? enumValue = ControlSchemeNameToEnum(user.controlScheme.Value.name);
+                if (enumValue != null)
+                {
+                    OnControlSchemeChanged?.Invoke(enumValue.Value);
+                }
             }
         }
 
@@ -168,9 +172,25 @@ namespace StellarMass.InputManagement
             }
 
             lastUsedDevice = device;
-            OnLastUsedDeviceChanged?.Invoke();
+            
+            // NP TODO: Keep or remove?
+            // OnControlSchemeChanged?.Invoke();
         }
         #endregion
+
+        private static ControlScheme? ControlSchemeNameToEnum(string controlSchemeName)
+        {
+            ControlScheme? controlScheme = null;
+
+            return controlSchemeName switch
+            {
+                // MARKER.ControlSchemeSwitch.Start
+                "MouseKeyboard" => ControlScheme.MouseKeyboard,
+                "Gamepad" => ControlScheme.Gamepad,
+                // MARKER.ControlSchemeSwitch.End
+                _ => null
+            };
+        }
 
         #region Auto-generated Context Enablers
         // MARKER.DefaultContextEnabler.Start

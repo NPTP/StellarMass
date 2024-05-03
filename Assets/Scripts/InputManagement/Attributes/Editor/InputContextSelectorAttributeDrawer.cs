@@ -9,7 +9,7 @@ namespace StellarMass.InputManagement.Attributes.Editor
     {
         protected override string[] GetNames()
         {
-            OfflineInputData offlineInputData = AssetGetter.GetAsset<OfflineInputData>();
+            OfflineInputData offlineInputData = EditorAssetGetter.Get<OfflineInputData>();
             string[] names = new string[offlineInputData.InputContexts.Length];
             for (int i = 0; i < offlineInputData.InputContexts.Length; i++)
             {

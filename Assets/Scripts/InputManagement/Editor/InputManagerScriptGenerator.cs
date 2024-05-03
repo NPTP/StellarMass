@@ -17,16 +17,16 @@ namespace StellarMass.InputManagement.Editor
             WaitingForMarkerEnd
         }
         
-        private static char S => Path.DirectorySeparatorChar;
-        private static string FolderFilePath => Application.dataPath + $@"{S}Scripts{S}InputManagement{S}";
-        private static string InputManagerFilePath => $"{FolderFilePath}{nameof(InputManager)}.cs";
+        private static string InputManagerFilePath => EditorScriptGetter.GetSystemPath(typeof(InputManager));
+        private static string ControlSchemeFilePath => EditorScriptGetter.GetSystemPath<ControlScheme>();
 
         [MenuItem(EditorToolNames.GENERATOR_FEATURE)]
         public static void GenerateMapInstances()
         {
-            InputActionAsset asset = AssetGetter.GetAsset<InputActionAsset>();
+            InputActionAsset asset = EditorAssetGetter.Get<InputActionAsset>();
             GenerateMapInstanceClasses(asset);
             ModifyExistingFile(asset, InputManagerFilePath, InputManagerContentBuilder.AddContentForInputManager);
+            ModifyExistingFile(asset, ControlSchemeFilePath, ControlSchemeContentBuilder.AddContentForControlScheme);
             
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }

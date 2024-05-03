@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using StellarMass.Data;
 using StellarMass.Utilities.Editor;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace StellarMass.InputManagement.Editor
@@ -26,13 +27,19 @@ namespace StellarMass.InputManagement.Editor
                     foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
                         lines.Add($"                {mapName},");
                     break;
+                case "ControlSchemeSwitch":
+                    foreach (InputControlScheme controlScheme in asset.controlSchemes)
+                    {
+                        Debug.Log($"control scheme: {controlScheme.name}");
+                        lines.Add($"                \"{controlScheme.name}\" => ControlSchemeEnum.{controlScheme.name},");
+                    }
+                    break;
                 case "DefaultContextEnabler":
-                    inputData = AssetGetter.GetAsset<OfflineInputData>();
+                    inputData = EditorAssetGetter.Get<OfflineInputData>();
                     lines.Add($"        private static void EnableDefaultContext() => Enable{inputData.DefaultContext}Context();");
                     break;
                 case "ContextEnablers":
-                    inputData = AssetGetter.GetAsset<OfflineInputData>();
-
+                    inputData = EditorAssetGetter.Get<OfflineInputData>();
                     for (int i = 0; i < inputData.InputContexts.Length; i++)
                     {
                         InputContext context = inputData.InputContexts[i];

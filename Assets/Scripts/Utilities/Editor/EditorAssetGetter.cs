@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace StellarMass.Utilities.Editor
 {
-    public static class AssetGetter
+    public static class EditorAssetGetter
     {
-        public static T GetAsset<T>() where T : Object
+        public static T Get<T>() where T : Object
         {
             string[] guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
             if (guids.Length == 0) return null;
