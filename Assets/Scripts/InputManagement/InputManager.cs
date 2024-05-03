@@ -180,8 +180,6 @@ namespace StellarMass.InputManagement
 
         private static ControlScheme? ControlSchemeNameToEnum(string controlSchemeName)
         {
-            ControlScheme? controlScheme = null;
-
             return controlSchemeName switch
             {
                 // MARKER.ControlSchemeSwitch.Start

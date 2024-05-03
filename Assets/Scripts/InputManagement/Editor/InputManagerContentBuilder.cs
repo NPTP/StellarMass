@@ -30,8 +30,7 @@ namespace StellarMass.InputManagement.Editor
                 case "ControlSchemeSwitch":
                     foreach (InputControlScheme controlScheme in asset.controlSchemes)
                     {
-                        Debug.Log($"control scheme: {controlScheme.name}");
-                        lines.Add($"                \"{controlScheme.name}\" => ControlSchemeEnum.{controlScheme.name},");
+                        lines.Add($"                \"{controlScheme.name}\" => {nameof(ControlScheme)}.{controlScheme.name},");
                     }
                     break;
                 case "DefaultContextEnabler":
