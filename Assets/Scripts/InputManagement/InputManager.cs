@@ -16,6 +16,8 @@ using UnityEditor;
 
 //// NP TODO: Full event system swapping support
 //// NP TODO: Fill out null entries in ControlTypeTranslator with correct types
+//// NP TODO: Define icons & text (with localized strings) for each binding. Serialized dictionary in scriptable
+//// NP TODO: Send events for control scheme change
 namespace StellarMass.InputManagement
 {
     public static class InputManager
