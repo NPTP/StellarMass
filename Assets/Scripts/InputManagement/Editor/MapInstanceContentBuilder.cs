@@ -11,11 +11,14 @@ namespace StellarMass.InputManagement.Editor
         {
             string mapName = map.name.AllWhitespaceTrimmed().CapitalizeFirst();
             string interfaceName = $"I{mapName}Actions";
-            string inputActionsGeneratedName = nameof(InputActions);
-            
+            string inputActionsGeneratedName = GeneratorHelper.IInputActionsClassName;
+
             switch (markerName)
             {
                 case "Ignore":
+                    break;
+                case "UsingDirective":
+                    lines.Add($"using {GeneratorHelper.IInputActionsNamespace};");
                     break;
                 case "ClassSignature":
                     classSignature();

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using StellarMass.InputManagement.MapInstances;
+using StellarMass.InputManagement.Data;
+using StellarMass.Utilities.Editor;
 using StellarMass.Utilities.Extensions;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,10 +19,35 @@ namespace StellarMass.InputManagement.Editor
         private const string START = "Start";
         private const string END = "End";
         
+        public static InputActionAsset InputActionAsset => EditorAssetGetter.Get<OfflineInputData>().InputActionAsset;
         private static char S => Path.DirectorySeparatorChar;
-        private static string MapTemplatePath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}{nameof(MapInstanceTemplate)}.cs";
+        private static string MapTemplatePath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}MapInstanceTemplate.txt";
         private static string GeneratedMapsPath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}Generated{S}";
+        public static string IInputActionsNamespace => GetInputActionImporterStringFieldValue("m_WrapperCodeNamespace");
+        public static string IInputActionsClassName => GetInputActionImporterStringFieldValue("m_WrapperClassName");
 
+        private static string GetInputActionImporterStringFieldValue(string fieldName)
+        {
+            const string assemblyName = "Unity.InputSystem";
+            const string namespaceName = "UnityEngine.InputSystem.Editor";
+            const string typeName = "InputActionImporter";
+            
+            Assembly assembly = Assembly.Load(assemblyName);
+            Type myClassType = assembly.GetType($"{namespaceName}.{typeName}");
+            if (myClassType != null)
+            {
+                AssetImporter importerInstance = AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(InputActionAsset));
+                FieldInfo fieldInfo = myClassType.GetField(fieldName, BindingFlags.Instance | BindingFlags.NonPublic);
+                if (fieldInfo != null)
+                {
+                    return (string)fieldInfo.GetValue(importerInstance);
+                }
+            }
+            
+            Debug.LogError($"Couldn't find field {fieldName}");
+            return string.Empty;
+        }
+        
         public static void ClearGeneratedFolder()
         {
             string fullSystemPath = Application.dataPath + GeneratedMapsPath;

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using StellarMass.InputManagement.UnityGenerated;
 
 namespace StellarMass.InputManagement.MapInstances
 {

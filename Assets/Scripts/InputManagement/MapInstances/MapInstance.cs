@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace StellarMass.InputManagement.MapInstances
@@ -7,15 +6,11 @@ namespace StellarMass.InputManagement.MapInstances
     [Serializable]
     public abstract class MapInstance
     {
-        public event Action<MapInstance> OnMapEnabled;
         protected InputActionMap ActionMap { private get; set; }
-
-        public bool ActionMapEnabled => ActionMap.enabled;
 
         public void Enable()
         {
             ActionMap.Enable();
-            OnMapEnabled?.Invoke(this);
             RemoveCallbacks();
             AddCallbacks();
         }

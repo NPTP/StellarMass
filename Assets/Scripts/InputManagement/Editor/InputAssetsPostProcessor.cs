@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using StellarMass.Data;
+using StellarMass.InputManagement.Data;
+using StellarMass.Utilities.Editor;
 using UnityEditor;
 
 namespace StellarMass.InputManagement.Editor
@@ -9,8 +10,9 @@ namespace StellarMass.InputManagement.Editor
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets,
             string[] movedAssets, string[] movedFromAssetPaths)
         {
-            if (importedAssets.Any(importedAsset => importedAsset.EndsWith(".inputactions") ||
-                                                    importedAsset.EndsWith($"{nameof(OfflineInputData)}.asset")))
+            OfflineInputData offlineInputData = EditorAssetGetter.Get<OfflineInputData>();
+            if (importedAssets.Any(importedAsset => importedAsset.EndsWith($"{offlineInputData.InputActionAsset.name}.inputactions") ||
+                                                    importedAsset.EndsWith($"{offlineInputData.name}.asset")))
             {
                 InputManagerScriptGenerator.GenerateMapInstances();
             }

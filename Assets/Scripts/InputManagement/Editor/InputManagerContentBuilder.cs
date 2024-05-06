@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using StellarMass.Data;
+using StellarMass.InputManagement.Data;
 using StellarMass.Utilities.Editor;
-using UnityEngine;
+using UnityEditor;
 using UnityEngine.InputSystem;
 
 namespace StellarMass.InputManagement.Editor
@@ -15,9 +15,22 @@ namespace StellarMass.InputManagement.Editor
 
             switch (markerName)
             {
+                case "RuntimeInputDataPath":
+                    string path = AssetDatabase.GetAssetPath(EditorAssetGetter.Get<OfflineInputData>().RuntimeInputData);
+                    lines.Add($"        private const string RUNTIME_INPUT_DATA_PATH = \"{path}\";");
+                    break;
+                case "UsingDirective":
+                    lines.Add($"using {GeneratorHelper.IInputActionsNamespace};");
+                    break;
                 case "MapInstanceProperties":
                     foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
                         lines.Add($"        public static {mapName} {mapName}" + " { get; private set; }");
+                    break;
+                case "InputActionCollectionDeclaration":
+                    lines.Add($"        private static {GeneratorHelper.IInputActionsClassName} inputActions;");
+                    break;
+                case "InputActionCollectionInstantiation":
+                    lines.Add($"            inputActions = new {GeneratorHelper.IInputActionsClassName}();");
                     break;
                 case "InstantiateMapInstances":
                     foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
@@ -29,9 +42,7 @@ namespace StellarMass.InputManagement.Editor
                     break;
                 case "ControlSchemeSwitch":
                     foreach (InputControlScheme controlScheme in asset.controlSchemes)
-                    {
                         lines.Add($"                \"{controlScheme.name}\" => {nameof(ControlScheme)}.{controlScheme.name},");
-                    }
                     break;
                 case "DefaultContextEnabler":
                     inputData = EditorAssetGetter.Get<OfflineInputData>();
@@ -49,6 +60,19 @@ namespace StellarMass.InputManagement.Editor
                             bool enable = context.ActiveMaps.Any(activeMapName => mapName == activeMapName);
                             lines.Add($"            {mapName}.{(enable ? "Enable" : "Disable")}();");
                         }
+                        lines.Add(string.Empty);
+                        lines.Add("            SetUIEventSystemActions(");
+                        string actions = "                ";
+                        InputActionReference[] inputActionReferences = context.EventSystemActions.AllInputActionReferences;
+                        for (int j = 0; j < inputActionReferences.Length; j++)
+                        {
+                            if (j > 0 && j % 4 == 0) actions += "\n                ";
+                            InputActionReference inputActionReference = inputActionReferences[i];
+                            actions += $"{(inputActionReference == null ? "null" : inputActionReference.action.actionMap.name + "." + inputActionReference.action.name)}";
+                            if (j < inputActionReferences.Length - 1) actions += ", ";
+                        }
+                        lines.Add(actions);
+                        lines.Add("            );");
                         lines.Add("        }");
                         if (i < inputData.InputContexts.Length - 1)
                         {

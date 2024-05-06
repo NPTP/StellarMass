@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+// MARKER.UsingDirective.Start
+// MARKER.UsingDirective.End
 
 namespace StellarMass.InputManagement.MapInstances
 {
@@ -8,7 +10,6 @@ namespace StellarMass.InputManagement.MapInstances
     /// <summary>
     /// This script is used by the map instance code generator as a template to generate new C# input classes
     /// and their respective .cs files. Do not modify it unless you know what you're doing!
-    /// (Also, don't instantiate it in your code - it will throw an exception if you try.)
     /// </summary>
     // MARKER.Ignore.End
     // MARKER.ClassSignature.Start

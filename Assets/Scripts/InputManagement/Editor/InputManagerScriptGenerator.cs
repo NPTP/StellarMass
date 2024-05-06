@@ -16,14 +16,14 @@ namespace StellarMass.InputManagement.Editor
             Normal = 0,
             WaitingForMarkerEnd
         }
-        
+
         private static string InputManagerFilePath => EditorScriptGetter.GetSystemPath(typeof(InputManager));
         private static string ControlSchemeFilePath => EditorScriptGetter.GetSystemPath<ControlScheme>();
 
         [MenuItem(EditorToolNames.GENERATOR_FEATURE)]
         public static void GenerateMapInstances()
         {
-            InputActionAsset asset = EditorAssetGetter.Get<InputActionAsset>();
+            InputActionAsset asset = GeneratorHelper.InputActionAsset;
             GenerateMapInstanceClasses(asset);
             ModifyExistingFile(asset, InputManagerFilePath, InputManagerContentBuilder.AddContentForInputManager);
             ModifyExistingFile(asset, ControlSchemeFilePath, ControlSchemeContentBuilder.AddContentForControlScheme);
@@ -75,6 +75,7 @@ namespace StellarMass.InputManagement.Editor
             catch (Exception e)
             {
                 Debug.Log($"The file could not be read: {e.Message}");
+                return;
             }
 
             GeneratorHelper.WriteLinesToFile(newLines, GeneratorHelper.GetPathForGeneratedMap(map.name));
@@ -115,6 +116,7 @@ namespace StellarMass.InputManagement.Editor
             catch (Exception e)
             {
                 Debug.Log($"The file could not be read: {e.Message}");
+                return;
             }
 
             GeneratorHelper.WriteLinesToFile(newLines, filePath);

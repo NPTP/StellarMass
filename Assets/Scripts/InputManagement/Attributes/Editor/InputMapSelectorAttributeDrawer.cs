@@ -1,4 +1,5 @@
-﻿using StellarMass.Utilities.Editor;
+﻿using StellarMass.InputManagement.Data;
+using StellarMass.Utilities.Editor;
 using UnityEditor;
 using UnityEngine.InputSystem;
 
@@ -9,7 +10,7 @@ namespace StellarMass.InputManagement.Attributes.Editor
     {
         protected override string[] GetNames()
         {
-            InputActionAsset asset = EditorAssetGetter.Get<InputActionAsset>();
+            InputActionAsset asset = EditorAssetGetter.Get<OfflineInputData>().InputActionAsset;
             InputActionMap[] maps = asset.actionMaps.ToArray();
             string[] names = new string[maps.Length];
             for (int i = 0; i < maps.Length; i++)

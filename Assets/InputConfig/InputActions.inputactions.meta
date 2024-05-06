@@ -11,4 +11,4 @@ ScriptedImporter:
   generateWrapperCode: 1
   wrapperCodePath: Assets/Scripts/InputManagement/UnityGenerated/InputActions.cs
   wrapperClassName: InputActions
-  wrapperCodeNamespace: StellarMass.InputManagement
+  wrapperCodeNamespace: StellarMass.InputManagement.UnityGenerated

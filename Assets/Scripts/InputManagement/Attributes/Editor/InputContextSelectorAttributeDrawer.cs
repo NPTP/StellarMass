@@ -1,4 +1,4 @@
-﻿using StellarMass.Data;
+﻿using StellarMass.InputManagement.Data;
 using StellarMass.Utilities.Editor;
 using UnityEditor;
 

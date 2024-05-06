@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f226b8c5334c7ec4e93fcab0ace58739, type: 3}
   m_Name: OfflineInputData
   m_EditorClassIdentifier: 
+  runtimeInputData: {fileID: 11400000, guid: 22bf4881dbbe40b4fb5e1460267b4c30, type: 2}
+  inputActionAsset: {fileID: -944628639613478452, guid: e518c8033fd49f84b9577aae87f8f544, type: 3}
   defaultContext: Gameplay
   inputContexts:
   - name: Gameplay

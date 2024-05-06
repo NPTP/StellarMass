@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace StellarMass.InputManagement
+namespace StellarMass.InputManagement.UnityGenerated
 {
     public partial class @InputActions: IInputActionCollection2, IDisposable
     {

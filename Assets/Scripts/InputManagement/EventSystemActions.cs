@@ -1,12 +1,27 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 namespace StellarMass.InputManagement
 {
     [Serializable]
     public class EventSystemActions
     {
+        public InputActionReference[] AllInputActionReferences => new[]
+        {
+            point,
+            middleClick,
+            rightClick,
+            scrollWheel,
+            move,
+            submit,
+            cancel,
+            trackedDevicePosition,
+            trackedDeviceOrientation,
+            leftClick
+        };
+        
         [SerializeField] private InputActionReference point;
         [SerializeField] private InputActionReference middleClick;
         [SerializeField] private InputActionReference rightClick;
