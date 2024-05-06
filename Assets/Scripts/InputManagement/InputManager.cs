@@ -1,4 +1,8 @@
+// MARKER.UsingDirective.Start
+using StellarMass.InputManagement.UnityGenerated;
+// MARKER.UsingDirective.End
 using System;
+using System.Linq;
 using StellarMass.InputManagement.Data;
 using StellarMass.InputManagement.Maps;
 using UnityEngine;
@@ -7,16 +11,13 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
 using Object = UnityEngine.Object;
-// MARKER.UsingDirective.Start
-using StellarMass.InputManagement.UnityGenerated;
-// MARKER.UsingDirective.End
+using UnityEngine.InputSystem.LowLevel;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
-//// - Find currently used device and send event when it changes. Don't require pressing mapped buttons to do so.
 //// - Runtime data loaded by addressable.
 //// - Define icons & text (with localized strings) for each binding. Uses a serialized dictionary. In runtime data.
 //// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
@@ -33,6 +34,7 @@ namespace StellarMass.InputManagement
         public static event Action OnAnyButtonPressed;
         public static event Action<char> OnKeyboardTextInput;
         public static event Action<ControlScheme> OnControlSchemeChanged;
+        public static event Action<InputDevice> OnLastUsedDeviceChanged;
 
         // MARKER.MapActionsProperties.Start
         public static GameplayActions Gameplay { get; private set; }
@@ -117,15 +119,20 @@ namespace StellarMass.InputManagement
 
         private static void AddSubscriptions()
         {
+            InputSystem.onEvent += HandleEvent;
+            InputSystem.onDeviceChange += HandleDeviceChange;
             InputUser.onChange += HandleInputUserChange;
             anyButtonPressListener = InputSystem.onAnyButtonPress.Call(HandleAnyButtonPressed);
         }
         
         private static void RemoveSubscriptions()
         {
-            RemoveAllMapActionCallbacks();
+            InputSystem.onEvent -= HandleEvent;
+            InputSystem.onDeviceChange -= HandleDeviceChange;
             InputUser.onChange -= HandleInputUserChange;
             anyButtonPressListener.Dispose();
+            
+            RemoveAllMapActionCallbacks();
             DisableKeyboardTextInput();
             inputActions.Disable();
         }
@@ -191,6 +198,35 @@ namespace StellarMass.InputManagement
         
         private static void HandleAnyButtonPressed(InputControl inputControl) => OnAnyButtonPressed?.Invoke();
         private static void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);
+        
+        private static void HandleDeviceChange(InputDevice device, InputDeviceChange inputDeviceChange)
+        {
+            if (lastUsedDevice == device)
+            {
+                return;
+            }
+
+            lastUsedDevice = device;
+            OnLastUsedDeviceChanged?.Invoke(device);
+        }
+
+        private static void HandleEvent(InputEventPtr eventPtr, InputDevice device)
+        {
+            if (lastUsedDevice == device)
+            {
+                return;
+            }
+
+            // Prevents triggering events for some devices which spit out noise, such as PS4/PS5 gamepads with gyroscopes
+            if (device.noisy && eventPtr.type == StateEvent.Type &&
+                !eventPtr.EnumerateChangedControls(device: device, magnitudeThreshold: 0.0001f).Any())
+            {
+                return;
+            }
+
+            lastUsedDevice = device;
+            OnLastUsedDeviceChanged?.Invoke(device);
+        }
         
         /// This will only be called if PlayerInput exists.
         private static void HandleInputUserChange(InputUser user, InputUserChange change, InputDevice device)
