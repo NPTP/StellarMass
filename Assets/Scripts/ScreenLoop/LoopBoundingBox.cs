@@ -1,4 +1,3 @@
-using System;
 using StellarMass.Utilities.Attributes;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;

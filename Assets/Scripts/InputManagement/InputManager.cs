@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
+using Object = UnityEngine.Object;
 // MARKER.UsingDirective.Start
 using StellarMass.InputManagement.UnityGenerated;
 // MARKER.UsingDirective.End
@@ -16,12 +17,11 @@ using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
-//// - Context selector field.
 //// - A way to use input action assets in the project and have them run through here so they use the correct asset
 //// - Find currently used device and send event when it changes. Don't require pressing mapped buttons to do so.
 //// - Runtime data loaded by addressable.
 //// - Define icons & text (with localized strings) for each binding. Uses a serialized dictionary. In runtime data.
-//// - Full event system swapping support, with runtime data checkbox option
+//// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
 //// - Fill out null entries in ControlTypeTranslator with correct types
 namespace StellarMass.InputManagement
 {
@@ -49,6 +49,13 @@ namespace StellarMass.InputManagement
         private static List<MapInstance> mapInstances;
         private static IDisposable anyButtonPressListener;
         private static InputDevice lastUsedDevice;
+
+        private static InputContext previousContext;
+        public static InputContext CurrentContext { get; private set; }
+        
+        // MARKER.DefaultContextProperty.Start
+        private static InputContext DefaultContext => InputContext.Gameplay;
+        // MARKER.DefaultContextProperty.End
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void BeforeSceneLoad()
@@ -92,11 +99,15 @@ namespace StellarMass.InputManagement
             GameObject inputMgmtGameObject = new GameObject("InputManagement");
             PlayerInput playerInput = inputMgmtGameObject.AddComponent<PlayerInput>();
             uiInputModule = inputMgmtGameObject.AddComponent<InputSystemUIInputModule>();
+
+            Object.DontDestroyOnLoad(inputMgmtGameObject);
+            
             playerInput.actions = inputActions.asset;
             playerInput.uiInputModule = uiInputModule;
             playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
-            
-            EnableDefaultContext();
+
+            previousContext = DefaultContext;
+            EnableContext(DefaultContext);
             AddSubscriptions();
         }
 
@@ -127,6 +138,29 @@ namespace StellarMass.InputManagement
         public static void DisableKeyboardTextInput() => Keyboard.current.onTextInput -= HandleTextInput;
         private static void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);
 
+        public static void AddListenerFromReference(InputActionReference reference, Action<InputAction.CallbackContext> handler)
+        {
+            InputAction inputAction = GetLocalAssetActionFromReference(reference); 
+            inputAction.started += handler;
+            inputAction.performed += handler;
+            inputAction.canceled += handler;
+        }
+        
+        public static void RemoveListenerFromReference(InputActionReference reference, Action<InputAction.CallbackContext> handler)
+        {
+            InputAction inputAction = GetLocalAssetActionFromReference(reference); 
+            inputAction.started -= handler;
+            inputAction.performed -= handler;
+            inputAction.canceled -= handler;
+        }
+        
+        private static InputAction GetLocalAssetActionFromReference(InputActionReference reference)
+        {
+            string map = reference.action.actionMap.name;
+            string action = reference.action.name;
+            return inputActions.asset.FindActionMap(map).FindAction(action);
+        }
+
         /// <summary>
         /// This will only be called if PlayerInput is being used.
         /// </summary>
@@ -155,37 +189,39 @@ namespace StellarMass.InputManagement
             };
         }
 
-        #region Auto-generated Context Enablers
-
-        // MARKER.DefaultContextEnabler.Start
-        private static void EnableDefaultContext() => EnableGameplayContext();
-        // MARKER.DefaultContextEnabler.End
-
-        // MARKER.ContextEnablers.Start
-        public static void EnableGameplayContext()
+        public static void EnableContext(InputContext context)
         {
-            Gameplay.Enable();
-            PauseMenu.Disable();
+            previousContext = CurrentContext;
+            CurrentContext = context;
 
-            SetUIEventSystemActions(
-                null, null, null, null, 
-                null, null, null, null, 
-                null, null
-            );
+            switch (context)
+            {
+                // MARKER.EnableContextSwitchMembers.Start
+                case InputContext.Gameplay:
+                    Gameplay.Enable();
+                    PauseMenu.Disable();
+                    SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
+                    break;
+                case InputContext.PauseMenu:
+                    Gameplay.Disable();
+                    PauseMenu.Enable();
+                    SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
+                    break;
+                case InputContext.AllInputDisabled:
+                    Gameplay.Disable();
+                    PauseMenu.Disable();
+                    SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
+                    break;
+                // MARKER.EnableContextSwitchMembers.End
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(context), context, null);
+            }
         }
 
-        public static void EnablePauseMenuContext()
+        public static void EnablePreviousContext()
         {
-            Gameplay.Disable();
-            PauseMenu.Enable();
-
-            SetUIEventSystemActions(
-                null, null, null, null, 
-                null, null, null, null, 
-                null, null
-            );
+            EnableContext(previousContext);
         }
-        // MARKER.ContextEnablers.End
 
         private static void SetUIEventSystemActions(
             InputActionReference point,
@@ -210,7 +246,5 @@ namespace StellarMass.InputManagement
             uiInputModule.trackedDevicePosition = trackedDevicePosition;
             uiInputModule.trackedDeviceOrientation = trackedDeviceOrientation;
         }
-
-        #endregion
     }
 }

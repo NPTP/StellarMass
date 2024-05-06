@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 namespace StellarMass.InputManagement.Editor
 {
-    public static class InputManagerScriptGenerator
+    public static class InputScriptGenerator
     {
         private enum ReadState
         {
@@ -19,14 +19,16 @@ namespace StellarMass.InputManagement.Editor
 
         private static string InputManagerFilePath => EditorScriptGetter.GetSystemPath(typeof(InputManager));
         private static string ControlSchemeFilePath => EditorScriptGetter.GetSystemPath<ControlScheme>();
+        private static string InputContextFilePath => EditorScriptGetter.GetSystemPath<InputContext>();
 
         [MenuItem(EditorToolNames.GENERATOR_FEATURE)]
         public static void GenerateMapInstances()
         {
             InputActionAsset asset = GeneratorHelper.InputActionAsset;
             GenerateMapInstanceClasses(asset);
-            ModifyExistingFile(asset, InputManagerFilePath, InputManagerContentBuilder.AddContentForInputManager);
             ModifyExistingFile(asset, ControlSchemeFilePath, ControlSchemeContentBuilder.AddContentForControlScheme);
+            ModifyExistingFile(asset, InputContextFilePath, InputContextContentBuilder.AddContentForInputContext);
+            ModifyExistingFile(asset, InputManagerFilePath, InputManagerContentBuilder.AddContentForInputManager);
             
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }

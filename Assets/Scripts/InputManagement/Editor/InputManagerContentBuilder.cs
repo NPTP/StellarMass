@@ -28,6 +28,10 @@ namespace StellarMass.InputManagement.Editor
                     break;
                 case "InputActionCollectionDeclaration":
                     lines.Add($"        private static {GeneratorHelper.IInputActionsClassName} inputActions;");
+                    break;                
+                case "DefaultContextProperty":
+                    inputData = EditorAssetGetter.Get<OfflineInputData>();
+                    lines.Add($"        private static {nameof(InputContext)} DefaultContext => {nameof(InputContext)}.{inputData.DefaultContext};");
                     break;
                 case "InputActionCollectionInstantiation":
                     lines.Add($"            inputActions = new {GeneratorHelper.IInputActionsClassName}();");
@@ -44,40 +48,27 @@ namespace StellarMass.InputManagement.Editor
                     foreach (InputControlScheme controlScheme in asset.controlSchemes)
                         lines.Add($"                \"{controlScheme.name}\" => {nameof(ControlScheme)}.{controlScheme.name},");
                     break;
-                case "DefaultContextEnabler":
+                case "EnableContextSwitchMembers":
                     inputData = EditorAssetGetter.Get<OfflineInputData>();
-                    lines.Add($"        private static void EnableDefaultContext() => Enable{inputData.DefaultContext}Context();");
-                    break;
-                case "ContextEnablers":
-                    inputData = EditorAssetGetter.Get<OfflineInputData>();
-                    for (int i = 0; i < inputData.InputContexts.Length; i++)
+                    foreach (InputContextInfo contextInfo in inputData.InputContextInfos)
                     {
-                        InputContext context = inputData.InputContexts[i];
-                        lines.Add($"        public static void Enable{context.Name}Context()");
-                        lines.Add("        {");
+                        lines.Add($"                case {nameof(InputContext)}.{contextInfo.Name}:");
                         foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
                         {
-                            bool enable = context.ActiveMaps.Any(activeMapName => mapName == activeMapName);
-                            lines.Add($"            {mapName}.{(enable ? "Enable" : "Disable")}();");
+                            bool enable = contextInfo.ActiveMaps.Any(activeMapName => mapName == activeMapName);
+                            lines.Add($"                    {mapName}.{(enable ? "Enable" : "Disable")}();");
                         }
-                        lines.Add(string.Empty);
-                        lines.Add("            SetUIEventSystemActions(");
-                        string actions = "                ";
-                        InputActionReference[] inputActionReferences = context.EventSystemActions.AllInputActionReferences;
+                        string actions = "                    SetUIEventSystemActions(";
+                        InputActionReference[] inputActionReferences = contextInfo.EventSystemActions.AllInputActionReferences;
                         for (int j = 0; j < inputActionReferences.Length; j++)
                         {
-                            if (j > 0 && j % 4 == 0) actions += "\n                ";
-                            InputActionReference inputActionReference = inputActionReferences[i];
+                            InputActionReference inputActionReference = inputActionReferences[j];
                             actions += $"{(inputActionReference == null ? "null" : inputActionReference.action.actionMap.name + "." + inputActionReference.action.name)}";
                             if (j < inputActionReferences.Length - 1) actions += ", ";
                         }
+                        actions += ");";
                         lines.Add(actions);
-                        lines.Add("            );");
-                        lines.Add("        }");
-                        if (i < inputData.InputContexts.Length - 1)
-                        {
-                            lines.Add(string.Empty);
-                        }
+                        lines.Add($"                    break;");
                     }
                     break;
             }

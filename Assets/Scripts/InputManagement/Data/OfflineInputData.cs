@@ -1,6 +1,5 @@
 using System.Linq;
 using StellarMass.Data;
-using StellarMass.InputManagement.Attributes;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,20 +19,19 @@ namespace StellarMass.InputManagement.Data
         [SerializeField] private InputActionAsset inputActionAsset;
         public InputActionAsset InputActionAsset => inputActionAsset;
 
-        [InputContextSelector]
-        [SerializeField] private string defaultContext;
-        public string DefaultContext => defaultContext;
+        [SerializeField] private InputContext defaultContext;
+        public InputContext DefaultContext => defaultContext;
         
-        [SerializeField] private InputContext[] inputContexts;
-        public InputContext[] InputContexts => inputContexts;
+        [SerializeField] private InputContextInfo[] inputContextInfos;
+        public InputContextInfo[] InputContextInfos => inputContextInfos;
 
         private void OnValidate()
         {
-            foreach (InputContext inputContext in inputContexts)
+            foreach (InputContextInfo contextInfo in inputContextInfos)
             {
-                inputContext.EDITOR_SetName(inputContext.Name.AllWhitespaceTrimmed().CapitalizeFirst());
+                contextInfo.EDITOR_SetName(contextInfo.Name.AllWhitespaceTrimmed().CapitalizeFirst());
                 
-                InputActionReference[] inputActionReferences = inputContext.EventSystemActions.AllInputActionReferences;
+                InputActionReference[] inputActionReferences = contextInfo.EventSystemActions.AllInputActionReferences;
                 foreach (InputActionReference inputActionReference in inputActionReferences)
                 {
                     if (inputActionReference == null)
@@ -41,7 +39,7 @@ namespace StellarMass.InputManagement.Data
                         continue;
                     }
                     
-                    foreach (string mapName in inputContext.ActiveMaps)
+                    foreach (string mapName in contextInfo.ActiveMaps)
                     {
                         InputActionMap map = inputActionAsset.FindActionMap(mapName);
                         if (map.actions.Contains(inputActionReference.action))
@@ -50,7 +48,7 @@ namespace StellarMass.InputManagement.Data
                         }
                         
                         // NP TODO: Actually prevent the field from being set
-                        Debug.LogError($"Action {inputActionReference.action.name} is not a part of the maps in the context {inputContext.Name}! This will not work!");
+                        Debug.LogError($"Action {inputActionReference.action.name} is not a part of the maps in the context {contextInfo.Name}! This will not work!");
                         return;
                     }
                 }

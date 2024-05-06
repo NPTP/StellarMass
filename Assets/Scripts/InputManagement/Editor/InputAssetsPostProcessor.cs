@@ -14,7 +14,7 @@ namespace StellarMass.InputManagement.Editor
             if (importedAssets.Any(importedAsset => importedAsset.EndsWith($"{offlineInputData.InputActionAsset.name}.inputactions") ||
                                                     importedAsset.EndsWith($"{offlineInputData.name}.asset")))
             {
-                InputManagerScriptGenerator.GenerateMapInstances();
+                InputScriptGenerator.GenerateMapInstances();
             }
         }
     }
