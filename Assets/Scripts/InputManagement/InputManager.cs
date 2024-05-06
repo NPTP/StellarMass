@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using StellarMass.InputManagement.Data;
 using StellarMass.InputManagement.Maps;
+using StellarMass.Utilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -18,7 +19,6 @@ using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
-//// - Runtime data loaded by addressable.
 //// - Define icons & text (with localized strings) for each binding. Uses a serialized dictionary. In runtime data.
 //// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
 namespace StellarMass.InputManagement
@@ -26,9 +26,9 @@ namespace StellarMass.InputManagement
     public static class InputManager
     {
         #region Fields & Properties
-        // MARKER.RuntimeInputDataPath.Start
-        private const string RUNTIME_INPUT_DATA_PATH = "Assets/ScriptableObjects/RuntimeData/RuntimeInputData.asset";
-        // MARKER.RuntimeInputDataPath.End
+        // MARKER.RuntimeInputDataAddress.Start
+        private const string RUNTIME_INPUT_DATA_ADDRESS = "RuntimeInputData";
+        // MARKER.RuntimeInputDataAddress.End
 
         // These events are the only ones that can fire independently of specific action maps being enabled or disabled.
         public static event Action OnAnyButtonPressed;
@@ -75,9 +75,8 @@ namespace StellarMass.InputManagement
             Application.quitting -= Terminate;
             Application.quitting += Terminate;
 #endif
-            // NP TODO: Load Runtime data w/addressables
-            // runtimeInputData = Addressables.Load...etc RUNTIME_INPUT_DATA_PATH;
-
+            runtimeInputData = AddressablesUtility.LoadAssetSynchronous<RuntimeInputData>(RUNTIME_INPUT_DATA_ADDRESS);
+            
             // MARKER.InputActionCollectionInstantiation.Start
             inputActions = new InputActions();
             // MARKER.InputActionCollectionInstantiation.End

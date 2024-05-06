@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using StellarMass.InputManagement.Data;
 using StellarMass.Utilities.Editor;
-using UnityEditor;
 using UnityEngine.InputSystem;
 
 namespace StellarMass.InputManagement.Editor
@@ -11,14 +10,13 @@ namespace StellarMass.InputManagement.Editor
     {
         public static void AddContentForInputManager(InputActionAsset asset, string markerName, List<string> lines)
         {
-            OfflineInputData inputData = null;
+            OfflineInputData inputData;
             string inputActionsField = "inputActions";
 
             switch (markerName)
             {
-                case "RuntimeInputDataPath":
-                    string path = AssetDatabase.GetAssetPath(EditorAssetGetter.Get<OfflineInputData>().RuntimeInputData);
-                    lines.Add($"        private const string RUNTIME_INPUT_DATA_PATH = \"{path}\";");
+                case "RuntimeInputDataAddress":
+                    lines.Add($"        private const string RUNTIME_INPUT_DATA_ADDRESS = \"{OfflineInputData.RUNTIME_INPUT_DATA_ADDRESS}\";");
                     break;
                 case "UsingDirective":
                     lines.Add($"using {GeneratorHelper.IInputActionsNamespace};");

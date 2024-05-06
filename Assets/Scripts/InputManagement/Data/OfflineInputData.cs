@@ -1,6 +1,9 @@
 using System.Linq;
 using StellarMass.Data;
 using StellarMass.Utilities.Extensions;
+using UnityEditor;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,8 +16,9 @@ namespace StellarMass.InputManagement.Data
     public class OfflineInputData : DataScriptable
     {
 #if UNITY_EDITOR
+        public const string RUNTIME_INPUT_DATA_ADDRESS = nameof(RuntimeInputData);
+        
         [SerializeField] private RuntimeInputData runtimeInputData;
-        public RuntimeInputData RuntimeInputData => runtimeInputData;
 
         [SerializeField] private InputActionAsset inputActionAsset;
         public InputActionAsset InputActionAsset => inputActionAsset;
@@ -27,6 +31,8 @@ namespace StellarMass.InputManagement.Data
 
         private void OnValidate()
         {
+            SetRuntimeInputDataAddress();
+
             foreach (InputContextInfo contextInfo in inputContextInfos)
             {
                 contextInfo.EDITOR_SetName(contextInfo.Name.AllWhitespaceTrimmed().CapitalizeFirst());
@@ -53,6 +59,22 @@ namespace StellarMass.InputManagement.Data
                     }
                 }
             }
+        }
+
+        private void SetRuntimeInputDataAddress()
+        {
+            string path = AssetDatabase.GetAssetPath(runtimeInputData);
+            string guid = AssetDatabase.AssetPathToGUID(path);
+
+            AddressableAssetEntry runtimeInputAssetEntry = AddressableAssetSettingsDefaultObject.Settings.FindAssetEntry(guid);
+            if (runtimeInputAssetEntry == null)
+            {
+                runtimeInputAssetEntry = AddressableAssetSettingsDefaultObject.Settings.CreateOrMoveEntry(
+                    guid, AddressableAssetSettingsDefaultObject.Settings.DefaultGroup);
+                EditorUtility.SetDirty(AddressableAssetSettingsDefaultObject.Settings);
+            }
+
+            runtimeInputAssetEntry.address = RUNTIME_INPUT_DATA_ADDRESS;
         }
 #endif
     }

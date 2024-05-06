@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8d0b36b617ef1f4a8e97d74baa2b36b, type: 3}
-  m_Name: RuntimeInputData
+  m_Script: {fileID: 11500000, guid: b1487f5d688e4f94f828f879d599dbdc, type: 3}
+  m_Name: Built In Data_PlayerDataGroupSchema
   m_EditorClassIdentifier: 
-  useContextEventSystemActions: 0
-  bindingDisplaySetups: []
+  m_Group: {fileID: 11400000, guid: cf109f6c3e69a554da6cb6c2e221ccb6, type: 2}
+  m_IncludeResourcesFolders: 1
+  m_IncludeBuildSettingsScenes: 1
