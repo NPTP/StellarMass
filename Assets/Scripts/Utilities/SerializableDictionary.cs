@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Utilities
@@ -45,6 +44,11 @@ namespace Utilities
                     break;
                 }
             }
+        }
+
+        public void EDITOR_Clear()
+        {
+            keyValuePairs.Clear();
         }
 
         public void EDITOR_Add(TKey key, TValue value)
