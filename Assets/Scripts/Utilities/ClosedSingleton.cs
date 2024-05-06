@@ -56,7 +56,7 @@ namespace Utilities
         
             if (instance == null)
             {
-                instance = new GameObject(nameof(T)).AddComponent<T>();
+                instance = new GameObject(typeof(T).Name).AddComponent<T>();
             }
         }
     }
