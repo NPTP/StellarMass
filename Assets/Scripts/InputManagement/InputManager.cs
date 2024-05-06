@@ -65,8 +65,8 @@ namespace StellarMass.InputManagement
             Application.quitting -= Terminate;
             Application.quitting += Terminate;
 #endif
-            // NP TODO: load at path
-            // runtimeInputData = RUNTIME_INPUT_DATA_PATH;
+            // NP TODO: Load Runtime data w/addressables
+            // runtimeInputData = Addressables.Load...etc RUNTIME_INPUT_DATA_PATH;
 
             // MARKER.InputActionCollectionInstantiation.Start
             inputActions = new InputActions();
@@ -84,10 +84,6 @@ namespace StellarMass.InputManagement
                 PauseMenu,
                 // MARKER.CollectionInitializer.End
             };
-
-            // NP TODO: Load Runtime data w/addressables
-            AddSubscriptions();
-            EnableDefaultContext();
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -99,6 +95,9 @@ namespace StellarMass.InputManagement
             playerInput.actions = inputActions.asset;
             playerInput.uiInputModule = uiInputModule;
             playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
+            
+            EnableDefaultContext();
+            AddSubscriptions();
         }
 
         private static void AddSubscriptions()
