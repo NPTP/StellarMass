@@ -31,6 +31,7 @@ namespace StellarMass.InputManagement
         private const string RUNTIME_INPUT_DATA_PATH = "Assets/ScriptableObjects/RuntimeData/RuntimeInputData.asset";
         // MARKER.RuntimeInputDataPath.End
 
+        // These events are the only ones that can fire independently of specific action maps being enabled or disabled.
         public static event Action OnAnyButtonPressed;
         public static event Action<char> OnKeyboardTextInput;
         public static event Action<ControlScheme> OnControlSchemeChanged;
@@ -133,10 +134,10 @@ namespace StellarMass.InputManagement
             RemoveSubscriptions();
         }
 
-        private static void HandleAnyButtonPressed(InputControl inputControl) => OnAnyButtonPressed?.Invoke();
-        public static void EnableKeyboardTextInput() => Keyboard.current.onTextInput += HandleTextInput;
-        public static void DisableKeyboardTextInput() => Keyboard.current.onTextInput -= HandleTextInput;
-        private static void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);
+        private static void HandleAnyButtonPressed(InputControl inputControl)
+        {
+            OnAnyButtonPressed?.Invoke();
+        }
 
         public static void AddListenerFromReference(InputActionReference reference, Action<InputAction.CallbackContext> handler)
         {
@@ -188,6 +189,10 @@ namespace StellarMass.InputManagement
                 _ => null
             };
         }
+        
+        public static void EnableKeyboardTextInput() => Keyboard.current.onTextInput += HandleTextInput;
+        public static void DisableKeyboardTextInput() => Keyboard.current.onTextInput -= HandleTextInput;
+        private static void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);
 
         public static void EnableContext(InputContext context)
         {

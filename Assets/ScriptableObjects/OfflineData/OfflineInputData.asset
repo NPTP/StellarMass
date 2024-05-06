@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   runtimeInputData: {fileID: 11400000, guid: 22bf4881dbbe40b4fb5e1460267b4c30, type: 2}
   inputActionAsset: {fileID: -944628639613478452, guid: e518c8033fd49f84b9577aae87f8f544, type: 3}
-  defaultContext: Gameplay
-  inputContexts:
+  defaultContext: 0
+  inputContextInfos:
   - name: Gameplay
     activeMaps:
     - Gameplay
@@ -33,6 +33,19 @@ MonoBehaviour:
   - name: PauseMenu
     activeMaps:
     - PauseMenu
+    eventSystemActions:
+      point: {fileID: 0}
+      middleClick: {fileID: 0}
+      rightClick: {fileID: 0}
+      scrollWheel: {fileID: 0}
+      move: {fileID: 0}
+      submit: {fileID: 0}
+      cancel: {fileID: 0}
+      trackedDevicePosition: {fileID: 0}
+      trackedDeviceOrientation: {fileID: 0}
+      leftClick: {fileID: 0}
+  - name: AllInputDisabled
+    activeMaps: []
     eventSystemActions:
       point: {fileID: 0}
       middleClick: {fileID: 0}
