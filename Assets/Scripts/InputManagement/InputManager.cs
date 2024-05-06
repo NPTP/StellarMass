@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using StellarMass.InputManagement.Data;
 using StellarMass.InputManagement.Maps;
 using UnityEngine;
@@ -17,7 +16,6 @@ using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
-//// - A way to use input action assets in the project and have them run through here so they use the correct asset
 //// - Find currently used device and send event when it changes. Don't require pressing mapped buttons to do so.
 //// - Runtime data loaded by addressable.
 //// - Define icons & text (with localized strings) for each binding. Uses a serialized dictionary. In runtime data.
@@ -173,21 +171,10 @@ namespace StellarMass.InputManagement
                     throw new ArgumentOutOfRangeException(nameof(context), context, null);
             }
         }
-
-        public static void AddListenerFromReference(InputActionReference reference, Action<InputAction.CallbackContext> handler)
+                
+        public static InputAction GetLocalAssetActionFromReference(ActionReferenceWrapper referenceWrapper)
         {
-            InputAction inputAction = GetLocalAssetActionFromReference(reference); 
-            inputAction.started += handler;
-            inputAction.performed += handler;
-            inputAction.canceled += handler;
-        }
-        
-        public static void RemoveListenerFromReference(InputActionReference reference, Action<InputAction.CallbackContext> handler)
-        {
-            InputAction inputAction = GetLocalAssetActionFromReference(reference); 
-            inputAction.started -= handler;
-            inputAction.performed -= handler;
-            inputAction.canceled -= handler;
+            return inputActions.asset.FindActionMap(referenceWrapper.MapName).FindAction(referenceWrapper.ActionName);
         }
 
         #endregion
@@ -202,7 +189,7 @@ namespace StellarMass.InputManagement
             {
                 return;
             }
-            
+
             ControlScheme? enumValue = ControlSchemeNameToEnum(user.controlScheme.Value.name);
             if (enumValue == null)
             {
@@ -211,14 +198,7 @@ namespace StellarMass.InputManagement
             
             OnControlSchemeChanged?.Invoke(enumValue.Value);
         }
-        
-        private static InputAction GetLocalAssetActionFromReference(InputActionReference reference)
-        {
-            string map = reference.action.actionMap.name;
-            string action = reference.action.name;
-            return inputActions.asset.FindActionMap(map).FindAction(action);
-        }
-        
+
         private static ControlScheme? ControlSchemeNameToEnum(string controlSchemeName)
         {
             return controlSchemeName switch
