@@ -82,9 +82,9 @@ namespace StellarMass.Ship
             }
         }
 
-        private void OnShoot(InputActionPhase actionState)
+        private void OnShoot(InputAction.CallbackContext context)
         {
-            if (actionState is not InputActionPhase.Started)
+            if (!context.started)
             {
                 return;
             }
@@ -96,9 +96,9 @@ namespace StellarMass.Ship
             }
         }
         
-        private void OnTurn(InputActionPhase actionState, float dir)
+        private void OnTurn(InputAction.CallbackContext context)
         {
-            switch (actionState)
+            switch (context.phase)
             {
                 case InputActionPhase.Started:
                     turning = true;
@@ -111,6 +111,7 @@ namespace StellarMass.Ship
             
             IEnumerator turnRoutine()
             {
+                float dir = context.ReadValue<float>();
                 while (turning)
                 {
                     if (dir < 0) Turn(left: true);
@@ -120,9 +121,9 @@ namespace StellarMass.Ship
             }
         }
 
-        private void OnHyperspace(InputActionPhase actionState)
+        private void OnHyperspace(InputAction.CallbackContext context)
         {
-            if (actionState is not InputActionPhase.Started)
+            if (!context.started)
             {
                 return;
             }
@@ -145,9 +146,9 @@ namespace StellarMass.Ship
         }
 
         
-        private void OnThrust(InputActionPhase actionState)
+        private void OnThrust(InputAction.CallbackContext context)
         {
-            switch (actionState)
+            switch (context.phase)
             {
                 case InputActionPhase.Started:
                     thrusting = true; 

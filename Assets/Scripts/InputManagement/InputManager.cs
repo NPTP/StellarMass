@@ -17,12 +17,12 @@ using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
+//// - Prevent outside classes from enabling/disabling specific maps via MapInstance. Only InputManager should be able to do that.
 //// - A way to use input action assets in the project and have them run through here so they use the correct asset
 //// - Find currently used device and send event when it changes. Don't require pressing mapped buttons to do so.
 //// - Runtime data loaded by addressable.
 //// - Define icons & text (with localized strings) for each binding. Uses a serialized dictionary. In runtime data.
 //// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
-//// - Fill out null entries in ControlTypeTranslator with correct types
 namespace StellarMass.InputManagement
 {
     public static class InputManager

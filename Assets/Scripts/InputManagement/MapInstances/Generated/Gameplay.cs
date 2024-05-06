@@ -13,11 +13,11 @@ namespace StellarMass.InputManagement.MapInstances
     {
         private InputActions.GameplayActions GameplayActions { get; }
 
-        public event Action<InputActionPhase> @OnThrust;
-        public event Action<InputActionPhase> @OnShoot;
-        public event Action<InputActionPhase> @OnHyperspace;
-        public event Action<InputActionPhase, float> @OnTurn;
-        public event Action<InputActionPhase> @OnPause;
+        public event Action<InputAction.CallbackContext> @OnThrust;
+        public event Action<InputAction.CallbackContext> @OnShoot;
+        public event Action<InputAction.CallbackContext> @OnHyperspace;
+        public event Action<InputAction.CallbackContext> @OnTurn;
+        public event Action<InputAction.CallbackContext> @OnPause;
 
         public Gameplay(InputActions.GameplayActions actions)
         {
@@ -29,10 +29,10 @@ namespace StellarMass.InputManagement.MapInstances
         protected sealed override void AddCallbacks() => GameplayActions.AddCallbacks(this);
         protected sealed override void RemoveCallbacks() => GameplayActions.RemoveCallbacks(this);
 
-        void InputActions.IGameplayActions.OnThrust(InputAction.CallbackContext context) => OnThrust?.Invoke(context.phase);
-        void InputActions.IGameplayActions.OnShoot(InputAction.CallbackContext context) => OnShoot?.Invoke(context.phase);
-        void InputActions.IGameplayActions.OnHyperspace(InputAction.CallbackContext context) => OnHyperspace?.Invoke(context.phase);
-        void InputActions.IGameplayActions.OnTurn(InputAction.CallbackContext context) => OnTurn?.Invoke(context.phase, context.ReadValue<float>());
-        void InputActions.IGameplayActions.OnPause(InputAction.CallbackContext context) => OnPause?.Invoke(context.phase);
+        void InputActions.IGameplayActions.OnThrust(InputAction.CallbackContext context) => OnThrust?.Invoke(context);
+        void InputActions.IGameplayActions.OnShoot(InputAction.CallbackContext context) => OnShoot?.Invoke(context);
+        void InputActions.IGameplayActions.OnHyperspace(InputAction.CallbackContext context) => OnHyperspace?.Invoke(context);
+        void InputActions.IGameplayActions.OnTurn(InputAction.CallbackContext context) => OnTurn?.Invoke(context);
+        void InputActions.IGameplayActions.OnPause(InputAction.CallbackContext context) => OnPause?.Invoke(context);
     }
 }

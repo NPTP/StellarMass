@@ -65,13 +65,7 @@ namespace StellarMass.InputManagement.Editor
                 foreach (InputAction inputAction in map.actions)
                 {
                     string nameString = inputAction.name.AllWhitespaceTrimmed().CapitalizeFirst();
-                    List<string> arguments = new() { nameof(InputActionPhase) };
-                    if (inputAction.expectedControlType != "Button")
-                    {
-                        arguments.Add(ControlTypeTranslator.Translate(inputAction.expectedControlType));
-                    }
-                    string argumentsString = GetArgumentsString(arguments);
-                    lines.Add($"        public event Action<{argumentsString}> @On{nameString};");
+                    lines.Add($"        public event Action<InputAction.CallbackContext> @On{nameString};");
                 }
             }
 
@@ -101,31 +95,9 @@ namespace StellarMass.InputManagement.Editor
                 foreach (InputAction inputAction in map.actions)
                 {
                     string nameString = inputAction.name.AllWhitespaceTrimmed().CapitalizeFirst();
-                    List<string> arguments = new() { "context.phase" };
-                    if (inputAction.expectedControlType != "Button")
-                    {
-                        arguments.Add($"context.ReadValue<{ControlTypeTranslator.Translate(inputAction.expectedControlType)}>()");
-                    }
-                    string argumentsString = GetArgumentsString(arguments);
-                    lines.Add($"        void {inputActionsGeneratedName}.{interfaceName}.On{nameString}(InputAction.CallbackContext context) => On{nameString}?.Invoke({argumentsString});");
+                    lines.Add($"        void {inputActionsGeneratedName}.{interfaceName}.On{nameString}(InputAction.CallbackContext context) => On{nameString}?.Invoke(context);");
                 }
             }
-        }
-
-        private static string GetArgumentsString(List<string> arguments)
-        {
-            StringBuilder argumentsString = new();
-            for (int i = 0; i < arguments.Count; i++)
-            {
-                string s = arguments[i];
-                argumentsString.Append(s);
-                if (i < arguments.Count - 1)
-                {
-                    argumentsString.Append(", ");
-                }
-            }
-
-            return argumentsString.ToString();
         }
     }
 }

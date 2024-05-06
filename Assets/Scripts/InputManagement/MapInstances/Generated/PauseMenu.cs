@@ -13,9 +13,9 @@ namespace StellarMass.InputManagement.MapInstances
     {
         private InputActions.PauseMenuActions PauseMenuActions { get; }
 
-        public event Action<InputActionPhase, Vector2> @OnNavigate;
-        public event Action<InputActionPhase> @OnSubmit;
-        public event Action<InputActionPhase> @OnUnpause;
+        public event Action<InputAction.CallbackContext> @OnNavigate;
+        public event Action<InputAction.CallbackContext> @OnSubmit;
+        public event Action<InputAction.CallbackContext> @OnUnpause;
 
         public PauseMenu(InputActions.PauseMenuActions actions)
         {
@@ -27,8 +27,8 @@ namespace StellarMass.InputManagement.MapInstances
         protected sealed override void AddCallbacks() => PauseMenuActions.AddCallbacks(this);
         protected sealed override void RemoveCallbacks() => PauseMenuActions.RemoveCallbacks(this);
 
-        void InputActions.IPauseMenuActions.OnNavigate(InputAction.CallbackContext context) => OnNavigate?.Invoke(context.phase, context.ReadValue<Vector2>());
-        void InputActions.IPauseMenuActions.OnSubmit(InputAction.CallbackContext context) => OnSubmit?.Invoke(context.phase);
-        void InputActions.IPauseMenuActions.OnUnpause(InputAction.CallbackContext context) => OnUnpause?.Invoke(context.phase);
+        void InputActions.IPauseMenuActions.OnNavigate(InputAction.CallbackContext context) => OnNavigate?.Invoke(context);
+        void InputActions.IPauseMenuActions.OnSubmit(InputAction.CallbackContext context) => OnSubmit?.Invoke(context);
+        void InputActions.IPauseMenuActions.OnUnpause(InputAction.CallbackContext context) => OnUnpause?.Invoke(context);
     }
 }

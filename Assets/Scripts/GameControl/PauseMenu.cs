@@ -27,40 +27,41 @@ namespace StellarMass.GameControl
             InputManager.PauseMenu.OnUnpause -= HandleUnpause;
         }
 
-        private void HandlePause(InputActionPhase actionState)
+        private void HandlePause(InputAction.CallbackContext callbackContext)
         {
-            if (actionState is not InputActionPhase.Started) return;
+            if (!callbackContext.started)
+            {
+                return;
+            }
             
             if (GameController.GameState != GameState.Gameplay && GameController.GameState != GameState.Cutscene)
             {
                 return;
             }
 
-            InputManager.PauseMenu.Enable();
+            InputManager.EnableContext(InputContext.PauseMenu);
             GameController.GameState = GameState.PauseMenu;
             menuParent.SetActive(true);
             
             // NP TODO: create existing pause menu functionality
         }
 
-        private void HandleNavigate(InputActionPhase actionState, Vector2 direction)
+        private void HandleNavigate(InputAction.CallbackContext callbackContext)
         {
         }
 
-        private void HandleSubmit(InputActionPhase actionState)
+        private void HandleSubmit(InputAction.CallbackContext callbackContext)
         {
         }
 
-        private void HandleUnpause(InputActionPhase actionState)
+        private void HandleUnpause(InputAction.CallbackContext callbackContext)
         {
-            if (actionState is not InputActionPhase.Started) return;
-            
-            if (GameController.GameState != GameState.PauseMenu)
+            if (!callbackContext.started || GameController.GameState != GameState.PauseMenu)
             {
                 return;
             }
-
-            InputManager.Gameplay.Enable();
+            
+            InputManager.EnableContext(InputContext.Gameplay);
             GameController.ReturnToPreviousGameState();
             menuParent.SetActive(false);
         }
