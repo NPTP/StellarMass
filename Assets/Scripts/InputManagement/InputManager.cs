@@ -58,6 +58,8 @@ namespace StellarMass.InputManagement
         private static InputContext DefaultContext => InputContext.Gameplay;
         // MARKER.DefaultContextProperty.End
 
+        #region Setup
+        
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void BeforeSceneLoad()
         {
@@ -133,67 +135,16 @@ namespace StellarMass.InputManagement
         {
             RemoveSubscriptions();
         }
-
-        private static void HandleAnyButtonPressed(InputControl inputControl)
-        {
-            OnAnyButtonPressed?.Invoke();
-        }
-
-        public static void AddListenerFromReference(InputActionReference reference, Action<InputAction.CallbackContext> handler)
-        {
-            InputAction inputAction = GetLocalAssetActionFromReference(reference); 
-            inputAction.started += handler;
-            inputAction.performed += handler;
-            inputAction.canceled += handler;
-        }
         
-        public static void RemoveListenerFromReference(InputActionReference reference, Action<InputAction.CallbackContext> handler)
-        {
-            InputAction inputAction = GetLocalAssetActionFromReference(reference); 
-            inputAction.started -= handler;
-            inputAction.performed -= handler;
-            inputAction.canceled -= handler;
-        }
-        
-        private static InputAction GetLocalAssetActionFromReference(InputActionReference reference)
-        {
-            string map = reference.action.actionMap.name;
-            string action = reference.action.name;
-            return inputActions.asset.FindActionMap(map).FindAction(action);
-        }
+        #endregion
 
-        /// <summary>
-        /// This will only be called if PlayerInput is being used.
-        /// </summary>
-        private static void HandleInputUserChange(InputUser user, InputUserChange change, InputDevice device)
-        {
-            if (change is InputUserChange.ControlSchemeChanged && user.controlScheme != null)
-            {
-                ControlScheme? enumValue = ControlSchemeNameToEnum(user.controlScheme.Value.name);
-                if (enumValue != null)
-                {
-                    OnControlSchemeChanged?.Invoke(enumValue.Value);
-                    Debug.Log($"Just changed to: {enumValue.Value}");
-                }
-            }
-        }
-
-        private static ControlScheme? ControlSchemeNameToEnum(string controlSchemeName)
-        {
-            return controlSchemeName switch
-            {
-                // MARKER.ControlSchemeSwitch.Start
-                "MouseKeyboard" => ControlScheme.MouseKeyboard,
-                "Gamepad" => ControlScheme.Gamepad,
-                // MARKER.ControlSchemeSwitch.End
-                _ => null
-            };
-        }
+        #region Public Interface
         
         public static void EnableKeyboardTextInput() => Keyboard.current.onTextInput += HandleTextInput;
         public static void DisableKeyboardTextInput() => Keyboard.current.onTextInput -= HandleTextInput;
-        private static void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);
 
+        public static void EnablePreviousContext() => EnableContext(previousContext);
+        
         public static void EnableContext(InputContext context)
         {
             previousContext = CurrentContext;
@@ -223,9 +174,60 @@ namespace StellarMass.InputManagement
             }
         }
 
-        public static void EnablePreviousContext()
+        public static void AddListenerFromReference(InputActionReference reference, Action<InputAction.CallbackContext> handler)
         {
-            EnableContext(previousContext);
+            InputAction inputAction = GetLocalAssetActionFromReference(reference); 
+            inputAction.started += handler;
+            inputAction.performed += handler;
+            inputAction.canceled += handler;
+        }
+        
+        public static void RemoveListenerFromReference(InputActionReference reference, Action<InputAction.CallbackContext> handler)
+        {
+            InputAction inputAction = GetLocalAssetActionFromReference(reference); 
+            inputAction.started -= handler;
+            inputAction.performed -= handler;
+            inputAction.canceled -= handler;
+        }
+
+        #endregion
+        
+        private static void HandleAnyButtonPressed(InputControl inputControl) => OnAnyButtonPressed?.Invoke();
+        private static void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);
+
+        /// <summary>
+        /// This will only be called if PlayerInput is being used.
+        /// </summary>
+        private static void HandleInputUserChange(InputUser user, InputUserChange change, InputDevice device)
+        {
+            if (change is InputUserChange.ControlSchemeChanged && user.controlScheme != null)
+            {
+                ControlScheme? enumValue = ControlSchemeNameToEnum(user.controlScheme.Value.name);
+                if (enumValue != null)
+                {
+                    OnControlSchemeChanged?.Invoke(enumValue.Value);
+                    Debug.Log($"Just changed to: {enumValue.Value}");
+                }
+            }
+        }
+        
+        private static InputAction GetLocalAssetActionFromReference(InputActionReference reference)
+        {
+            string map = reference.action.actionMap.name;
+            string action = reference.action.name;
+            return inputActions.asset.FindActionMap(map).FindAction(action);
+        }
+        
+        private static ControlScheme? ControlSchemeNameToEnum(string controlSchemeName)
+        {
+            return controlSchemeName switch
+            {
+                // MARKER.ControlSchemeSwitch.Start
+                "MouseKeyboard" => ControlScheme.MouseKeyboard,
+                "Gamepad" => ControlScheme.Gamepad,
+                // MARKER.ControlSchemeSwitch.End
+                _ => null
+            };
         }
 
         private static void SetUIEventSystemActions(
