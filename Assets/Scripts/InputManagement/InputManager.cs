@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using StellarMass.InputManagement.Data;
 using StellarMass.InputManagement.MapInstances;
-using StellarMass.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Users;
 using UnityEngine.InputSystem.Utilities;
-using Object = UnityEngine.Object;
 // MARKER.UsingDirective.Start
 using StellarMass.InputManagement.UnityGenerated;
 // MARKER.UsingDirective.End
@@ -20,6 +18,7 @@ using UnityEditor;
 //// NP TODO: In order of priority:
 //// - Context selector field.
 //// - A way to use input action assets in the project and have them run through here so they use the correct asset
+//// - Find currently used device and send event when it changes. Don't require pressing mapped buttons to do so.
 //// - Runtime data loaded by addressable.
 //// - Define icons & text (with localized strings) for each binding. Uses a serialized dictionary. In runtime data.
 //// - Full event system swapping support, with runtime data checkbox option
@@ -46,11 +45,10 @@ namespace StellarMass.InputManagement
         // MARKER.InputActionCollectionDeclaration.End
 
         private static RuntimeInputData runtimeInputData;
+        private static InputSystemUIInputModule uiInputModule;
         private static List<MapInstance> mapInstances;
         private static IDisposable anyButtonPressListener;
         private static InputDevice lastUsedDevice;
-        
-        private static InputSystemUIInputModule UIInputModule => UIController.UIInputModule;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void BeforeSceneLoad()
@@ -87,6 +85,7 @@ namespace StellarMass.InputManagement
                 // MARKER.CollectionInitializer.End
             };
 
+            // NP TODO: Load Runtime data w/addressables
             AddSubscriptions();
             EnableDefaultContext();
         }
@@ -94,15 +93,11 @@ namespace StellarMass.InputManagement
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void AfterSceneLoad()
         {
-            PlayerInput playerInput = Object.FindObjectOfType<PlayerInput>();
-            if (playerInput == null)
-            {
-                GameObject go = new GameObject(nameof(PlayerInput));
-                playerInput = go.AddComponent<PlayerInput>();
-            }
-            
+            GameObject inputMgmtGameObject = new GameObject("InputManagement");
+            PlayerInput playerInput = inputMgmtGameObject.AddComponent<PlayerInput>();
+            uiInputModule = inputMgmtGameObject.AddComponent<InputSystemUIInputModule>();
             playerInput.actions = inputActions.asset;
-            playerInput.uiInputModule = UIInputModule;
+            playerInput.uiInputModule = uiInputModule;
             playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
         }
 
@@ -144,6 +139,7 @@ namespace StellarMass.InputManagement
                 if (enumValue != null)
                 {
                     OnControlSchemeChanged?.Invoke(enumValue.Value);
+                    Debug.Log($"Just changed to: {enumValue.Value}");
                 }
             }
         }
@@ -204,16 +200,16 @@ namespace StellarMass.InputManagement
             InputActionReference trackedDevicePosition,
             InputActionReference trackedDeviceOrientation)
         {
-            UIInputModule.point = point;
-            UIInputModule.leftClick = leftClick;
-            UIInputModule.middleClick = middleClick;
-            UIInputModule.rightClick = rightClick;
-            UIInputModule.scrollWheel = scrollWheel;
-            UIInputModule.move = move;
-            UIInputModule.submit = submit;
-            UIInputModule.cancel = cancel;
-            UIInputModule.trackedDevicePosition = trackedDevicePosition;
-            UIInputModule.trackedDeviceOrientation = trackedDeviceOrientation;
+            uiInputModule.point = point;
+            uiInputModule.leftClick = leftClick;
+            uiInputModule.middleClick = middleClick;
+            uiInputModule.rightClick = rightClick;
+            uiInputModule.scrollWheel = scrollWheel;
+            uiInputModule.move = move;
+            uiInputModule.submit = submit;
+            uiInputModule.cancel = cancel;
+            uiInputModule.trackedDevicePosition = trackedDevicePosition;
+            uiInputModule.trackedDeviceOrientation = trackedDeviceOrientation;
         }
 
         #endregion
