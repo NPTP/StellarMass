@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using StellarMass.InputManagement.Data;
-using StellarMass.InputManagement.MapInstances;
+using StellarMass.InputManagement.Maps;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -17,7 +17,6 @@ using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
-//// - Prevent outside classes from enabling/disabling specific maps via MapInstance. Only InputManager should be able to do that.
 //// - A way to use input action assets in the project and have them run through here so they use the correct asset
 //// - Find currently used device and send event when it changes. Don't require pressing mapped buttons to do so.
 //// - Runtime data loaded by addressable.
@@ -37,18 +36,16 @@ namespace StellarMass.InputManagement
         public static event Action<char> OnKeyboardTextInput;
         public static event Action<ControlScheme> OnControlSchemeChanged;
 
-        // MARKER.MapInstanceProperties.Start
-        public static Gameplay Gameplay { get; private set; }
-        public static PauseMenu PauseMenu { get; private set; }
-        // MARKER.MapInstanceProperties.End
-
+        // MARKER.MapActionsProperties.Start
+        public static GameplayActions Gameplay { get; private set; }
+        public static PauseMenuActions PauseMenu { get; private set; }
+        // MARKER.MapActionsProperties.End
+        
         // MARKER.InputActionCollectionDeclaration.Start
         private static InputActions inputActions;
         // MARKER.InputActionCollectionDeclaration.End
-
         private static RuntimeInputData runtimeInputData;
         private static InputSystemUIInputModule uiInputModule;
-        private static List<MapInstance> mapInstances;
         private static IDisposable anyButtonPressListener;
         private static InputDevice lastUsedDevice;
 
@@ -85,17 +82,9 @@ namespace StellarMass.InputManagement
             // MARKER.InputActionCollectionInstantiation.End
 
             // MARKER.InstantiateMapInstances.Start
-            Gameplay = new Gameplay(inputActions.Gameplay);
-            PauseMenu = new PauseMenu(inputActions.PauseMenu);
+            Gameplay = new GameplayActions();
+            PauseMenu = new PauseMenuActions();
             // MARKER.InstantiateMapInstances.End
-
-            mapInstances = new List<MapInstance>
-            {
-                // MARKER.CollectionInitializer.Start
-                Gameplay,
-                PauseMenu,
-                // MARKER.CollectionInitializer.End
-            };
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -121,10 +110,17 @@ namespace StellarMass.InputManagement
             InputUser.onChange += HandleInputUserChange;
             anyButtonPressListener = InputSystem.onAnyButtonPress.Call(HandleAnyButtonPressed);
         }
+        
+        private static void Terminate()
+        {
+            RemoveSubscriptions();
+        }
 
         private static void RemoveSubscriptions()
         {
-            mapInstances.ForEach(m => m.Terminate());
+            // NP TODO: Cover this
+            // MARKER.MapActionsRemoveCallbacks.Start
+            // MARKER.MapActionsRemoveCallbacks.End
 
             InputUser.onChange += HandleInputUserChange;
             anyButtonPressListener.Dispose();
@@ -133,10 +129,6 @@ namespace StellarMass.InputManagement
             inputActions.Disable();
         }
 
-        private static void Terminate()
-        {
-            RemoveSubscriptions();
-        }
         
         #endregion
 
@@ -156,18 +148,24 @@ namespace StellarMass.InputManagement
             {
                 // MARKER.EnableContextSwitchMembers.Start
                 case InputContext.Gameplay:
-                    Gameplay.Enable();
-                    PauseMenu.Disable();
+                    inputActions.Gameplay.Enable();
+                    inputActions.Gameplay.AddCallbacks(Gameplay);
+                    inputActions.PauseMenu.Disable();
+                    inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
                     SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
                     break;
                 case InputContext.PauseMenu:
-                    Gameplay.Disable();
-                    PauseMenu.Enable();
+                    inputActions.Gameplay.Disable();
+                    inputActions.Gameplay.RemoveCallbacks(Gameplay);
+                    inputActions.PauseMenu.Enable();
+                    inputActions.PauseMenu.AddCallbacks(PauseMenu);
                     SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
                     break;
                 case InputContext.AllInputDisabled:
-                    Gameplay.Disable();
-                    PauseMenu.Disable();
+                    inputActions.Gameplay.Disable();
+                    inputActions.Gameplay.RemoveCallbacks(Gameplay);
+                    inputActions.PauseMenu.Disable();
+                    inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
                     SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
                     break;
                 // MARKER.EnableContextSwitchMembers.End

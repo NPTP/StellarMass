@@ -12,6 +12,7 @@ namespace StellarMass.InputManagement.Editor
         public static void AddContentForInputManager(InputActionAsset asset, string markerName, List<string> lines)
         {
             OfflineInputData inputData = null;
+            string inputActionsField = "inputActions";
 
             switch (markerName)
             {
@@ -22,27 +23,23 @@ namespace StellarMass.InputManagement.Editor
                 case "UsingDirective":
                     lines.Add($"using {GeneratorHelper.IInputActionsNamespace};");
                     break;
-                case "MapInstanceProperties":
+                case "MapActionsProperties":
                     foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
-                        lines.Add($"        public static {mapName} {mapName}" + " { get; private set; }");
+                        lines.Add($"        public static {mapName}Actions {mapName}" + " { get; private set; }");
                     break;
                 case "InputActionCollectionDeclaration":
-                    lines.Add($"        private static {GeneratorHelper.IInputActionsClassName} inputActions;");
+                    lines.Add($"        private static {GeneratorHelper.IInputActionsClassName} {inputActionsField};");
                     break;                
                 case "DefaultContextProperty":
                     inputData = EditorAssetGetter.Get<OfflineInputData>();
                     lines.Add($"        private static {nameof(InputContext)} DefaultContext => {nameof(InputContext)}.{inputData.DefaultContext};");
                     break;
                 case "InputActionCollectionInstantiation":
-                    lines.Add($"            inputActions = new {GeneratorHelper.IInputActionsClassName}();");
+                    lines.Add($"            {inputActionsField} = new {GeneratorHelper.IInputActionsClassName}();");
                     break;
                 case "InstantiateMapInstances":
                     foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
-                        lines.Add($"            {mapName} = new {mapName}(inputActions.{mapName});");
-                    break;
-                case "CollectionInitializer":
-                    foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
-                        lines.Add($"                {mapName},");
+                        lines.Add($"            {mapName} = new {mapName}Actions();");
                     break;
                 case "ControlSchemeSwitch":
                     foreach (InputControlScheme controlScheme in asset.controlSchemes)
@@ -56,7 +53,8 @@ namespace StellarMass.InputManagement.Editor
                         foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
                         {
                             bool enable = contextInfo.ActiveMaps.Any(activeMapName => mapName == activeMapName);
-                            lines.Add($"                    {mapName}.{(enable ? "Enable" : "Disable")}();");
+                            lines.Add($"                    {inputActionsField}.{mapName}.{(enable ? "Enable" : "Disable")}();");
+                            lines.Add($"                    {inputActionsField}.{mapName}.{(enable ? "Add" : "Remove")}Callbacks({mapName});");
                         }
                         string actions = "                    SetUIEventSystemActions(";
                         InputActionReference[] inputActionReferences = contextInfo.EventSystemActions.AllInputActionReferences;

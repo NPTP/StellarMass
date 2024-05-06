@@ -21,7 +21,7 @@ namespace StellarMass.InputManagement.Editor
         
         public static InputActionAsset InputActionAsset => EditorAssetGetter.Get<OfflineInputData>().InputActionAsset;
         private static char S => Path.DirectorySeparatorChar;
-        private static string MapTemplatePath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}MapInstanceTemplate.txt";
+        private static string MapActionsTemplatePath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}MapActionsTemplate.txt";
         private static string GeneratedMapsPath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}Generated{S}";
         public static string IInputActionsNamespace => GetInputActionImporterStringFieldValue("m_WrapperCodeNamespace");
         public static string IInputActionsClassName => GetInputActionImporterStringFieldValue("m_WrapperClassName");
@@ -93,7 +93,7 @@ namespace StellarMass.InputManagement.Editor
 
         public static string GetTemplateFilePath()
         {
-            return Application.dataPath + MapTemplatePath;
+            return Application.dataPath + MapActionsTemplatePath;
         }
         
         public static string GetPathForGeneratedMap(string mapName)

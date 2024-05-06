@@ -58,7 +58,7 @@ namespace StellarMass.InputManagement.Editor
                         case ReadState.Normal:
                             if (GeneratorHelper.IsMarkerStart(line, out string markerName))
                             {
-                                MapInstanceContentBuilder.AddContentForMapInstance(markerName, map, newLines);
+                                MapActionsContentBuilder.AddContentForMapInstance(markerName, map, newLines);
                                 readState = ReadState.WaitingForMarkerEnd;
                             }
                             else
