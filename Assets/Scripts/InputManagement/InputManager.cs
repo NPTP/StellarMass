@@ -27,6 +27,7 @@ namespace StellarMass.InputManagement
 {
     public static class InputManager
     {
+        #region Fields & Properties
         // MARKER.RuntimeInputDataPath.Start
         private const string RUNTIME_INPUT_DATA_PATH = "Assets/ScriptableObjects/RuntimeData/RuntimeInputData.asset";
         // MARKER.RuntimeInputDataPath.End
@@ -57,6 +58,7 @@ namespace StellarMass.InputManagement
         // MARKER.DefaultContextProperty.Start
         private static InputContext DefaultContext => InputContext.Gameplay;
         // MARKER.DefaultContextProperty.End
+        #endregion
 
         #region Setup
         
@@ -194,21 +196,22 @@ namespace StellarMass.InputManagement
         
         private static void HandleAnyButtonPressed(InputControl inputControl) => OnAnyButtonPressed?.Invoke();
         private static void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);
-
-        /// <summary>
-        /// This will only be called if PlayerInput is being used.
-        /// </summary>
+        
+        /// This will only be called if PlayerInput exists.
         private static void HandleInputUserChange(InputUser user, InputUserChange change, InputDevice device)
         {
-            if (change is InputUserChange.ControlSchemeChanged && user.controlScheme != null)
+            if (change is not InputUserChange.ControlSchemeChanged || user.controlScheme == null)
             {
-                ControlScheme? enumValue = ControlSchemeNameToEnum(user.controlScheme.Value.name);
-                if (enumValue != null)
-                {
-                    OnControlSchemeChanged?.Invoke(enumValue.Value);
-                    Debug.Log($"Just changed to: {enumValue.Value}");
-                }
+                return;
             }
+            
+            ControlScheme? enumValue = ControlSchemeNameToEnum(user.controlScheme.Value.name);
+            if (enumValue == null)
+            {
+                return;
+            }
+            
+            OnControlSchemeChanged?.Invoke(enumValue.Value);
         }
         
         private static InputAction GetLocalAssetActionFromReference(InputActionReference reference)
