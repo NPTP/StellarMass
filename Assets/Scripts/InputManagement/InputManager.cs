@@ -44,13 +44,14 @@ namespace StellarMass.InputManagement
         // MARKER.InputActionCollectionDeclaration.Start
         private static InputActions inputActions;
         // MARKER.InputActionCollectionDeclaration.End
+        
         private static RuntimeInputData runtimeInputData;
         private static InputSystemUIInputModule uiInputModule;
         private static IDisposable anyButtonPressListener;
-        private static InputDevice lastUsedDevice;
 
         private static InputContext previousContext;
         public static InputContext CurrentContext { get; private set; }
+        public static InputDevice LastUsedDevice { get; private set; }
         
         // MARKER.DefaultContextProperty.Start
         private static InputContext DefaultContext => InputContext.Gameplay;
@@ -201,18 +202,18 @@ namespace StellarMass.InputManagement
         
         private static void HandleDeviceChange(InputDevice device, InputDeviceChange inputDeviceChange)
         {
-            if (lastUsedDevice == device)
+            if (LastUsedDevice == device)
             {
                 return;
             }
 
-            lastUsedDevice = device;
+            LastUsedDevice = device;
             OnLastUsedDeviceChanged?.Invoke(device);
         }
 
         private static void HandleEvent(InputEventPtr eventPtr, InputDevice device)
         {
-            if (lastUsedDevice == device)
+            if (LastUsedDevice == device)
             {
                 return;
             }
@@ -224,7 +225,7 @@ namespace StellarMass.InputManagement
                 return;
             }
 
-            lastUsedDevice = device;
+            LastUsedDevice = device;
             OnLastUsedDeviceChanged?.Invoke(device);
         }
         
