@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using StellarMass.InputManagement.Maps;
 using StellarMass.Utilities.Extensions;
 using UnityEngine.InputSystem;
 

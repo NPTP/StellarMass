@@ -11,6 +11,9 @@ namespace StellarMass.InputManagement.Data
     [CreateAssetMenu]
     public class RuntimeInputData : DataScriptable
     {
+        [SerializeField] private bool useContextEventSystemActions;
+        public bool UseContextEventSystemActions => useContextEventSystemActions;
+        
         [SerializeField] private BindingDisplaySetup[] bindingDisplaySetups = Array.Empty<BindingDisplaySetup>();
         public Dictionary<string, BindingDisplaySetup> BindingDisplaySetups
         {

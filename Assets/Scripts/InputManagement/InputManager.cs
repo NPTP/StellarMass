@@ -88,11 +88,18 @@ namespace StellarMass.InputManagement
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void AfterSceneLoad()
         {
-            GameObject inputMgmtGameObject = new GameObject("InputManagement");
-            PlayerInput playerInput = inputMgmtGameObject.AddComponent<PlayerInput>();
-            uiInputModule = inputMgmtGameObject.AddComponent<InputSystemUIInputModule>();
+            PlayerInput playerInput = Object.FindObjectOfType<PlayerInput>();
+            uiInputModule = Object.FindObjectOfType<InputSystemUIInputModule>();
 
-            Object.DontDestroyOnLoad(inputMgmtGameObject);
+            if (playerInput == null || uiInputModule == null)
+            {
+                GameObject inputMgmtGameObject = new GameObject("InputManagement");
+                if (playerInput == null)
+                    playerInput = inputMgmtGameObject.AddComponent<PlayerInput>();
+                if (uiInputModule == null)
+                    uiInputModule = inputMgmtGameObject.AddComponent<InputSystemUIInputModule>();
+                Object.DontDestroyOnLoad(inputMgmtGameObject);
+            }
             
             playerInput.actions = inputActions.asset;
             playerInput.uiInputModule = uiInputModule;
@@ -102,6 +109,11 @@ namespace StellarMass.InputManagement
             EnableContext(DefaultContext);
             AddSubscriptions();
         }
+        
+        private static void Terminate()
+        {
+            RemoveSubscriptions();
+        }
 
         private static void AddSubscriptions()
         {
@@ -109,24 +121,22 @@ namespace StellarMass.InputManagement
             anyButtonPressListener = InputSystem.onAnyButtonPress.Call(HandleAnyButtonPressed);
         }
         
-        private static void Terminate()
-        {
-            RemoveSubscriptions();
-        }
-
         private static void RemoveSubscriptions()
         {
-            // NP TODO: Cover this
-            // MARKER.MapActionsRemoveCallbacks.Start
-            // MARKER.MapActionsRemoveCallbacks.End
-
-            InputUser.onChange += HandleInputUserChange;
+            RemoveAllMapActionCallbacks();
+            InputUser.onChange -= HandleInputUserChange;
             anyButtonPressListener.Dispose();
             DisableKeyboardTextInput();
-
             inputActions.Disable();
         }
 
+        private static void RemoveAllMapActionCallbacks()
+        {
+            // MARKER.MapActionsRemoveCallbacks.Start
+            inputActions.Gameplay.RemoveCallbacks(Gameplay);
+            inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
+            // MARKER.MapActionsRemoveCallbacks.End
+        }
         
         #endregion
 
@@ -223,6 +233,11 @@ namespace StellarMass.InputManagement
             InputActionReference trackedDevicePosition,
             InputActionReference trackedDeviceOrientation)
         {
+            if (runtimeInputData != null && runtimeInputData.UseContextEventSystemActions)
+            {
+                return;
+            }
+            
             uiInputModule.point = point;
             uiInputModule.leftClick = leftClick;
             uiInputModule.middleClick = middleClick;

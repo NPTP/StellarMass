@@ -41,6 +41,10 @@ namespace StellarMass.InputManagement.Editor
                     foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
                         lines.Add($"            {mapName} = new {mapName}Actions();");
                     break;
+                case "MapActionsRemoveCallbacks":
+                    foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
+                        lines.Add($"            {inputActionsField}.{mapName}.RemoveCallbacks({mapName});");
+                    break;
                 case "ControlSchemeSwitch":
                     foreach (InputControlScheme controlScheme in asset.controlSchemes)
                         lines.Add($"                \"{controlScheme.name}\" => {nameof(ControlScheme)}.{controlScheme.name},");
