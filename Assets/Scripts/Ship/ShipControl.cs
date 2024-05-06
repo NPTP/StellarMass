@@ -108,7 +108,7 @@ namespace StellarMass.Ship
                     turning = false;
                     break;
             }
-            
+
             IEnumerator turnRoutine()
             {
                 float dir = context.ReadValue<float>();
@@ -127,7 +127,7 @@ namespace StellarMass.Ship
             {
                 return;
             }
-            
+
             shipRb.isKinematic = true;
 
             Bounds boxBounds = LoopBoundingBox.Bounds;

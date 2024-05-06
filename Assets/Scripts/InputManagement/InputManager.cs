@@ -6,6 +6,7 @@ using System.Linq;
 using StellarMass.InputManagement.Data;
 using StellarMass.InputManagement.Maps;
 using StellarMass.Utilities;
+using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -19,7 +20,6 @@ using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
-//// - Define icons & text (with localized strings) for each binding. Uses a serialized dictionary. In runtime data.
 //// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
 namespace StellarMass.InputManagement
 {
@@ -193,8 +193,39 @@ namespace StellarMass.InputManagement
         {
             return inputActions.asset.FindActionMap(referenceWrapper.MapName).FindAction(referenceWrapper.ActionName);
         }
+        
+        public static bool TryGetBindingPathInfo(InputControl inputControl, out BindingPathInfo bindingPathInfo)
+        {
+            bindingPathInfo = default;
+
+            ParseInputControlPath(inputControl, out string deviceName, out string controlPath);
+
+            if (!runtimeInputData.BindingDataReferences.TryGetValue(deviceName, out BindingDataAssetReference bindingDataAssetReference))
+            {
+                return false;
+            }
+
+            BindingData bindingData = bindingDataAssetReference.LoadAssetSynchronous();
+            if (bindingData == null)
+            {
+                return false;
+            }
+
+            if (!bindingData.BindingDisplayInfo.TryGetValue(controlPath, out bindingPathInfo))
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         #endregion
+
+        private static void ParseInputControlPath(InputControl inputControl, out string deviceName, out string controlPath)
+        {
+            deviceName = inputControl.device.name;
+            controlPath = inputControl.path[(2 + deviceName.Length)..];
+        }
         
         private static void HandleAnyButtonPressed(InputControl inputControl) => OnAnyButtonPressed?.Invoke();
         private static void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);

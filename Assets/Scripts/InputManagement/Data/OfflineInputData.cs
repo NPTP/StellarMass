@@ -1,11 +1,14 @@
 using System.Linq;
 using StellarMass.Data;
 using StellarMass.Utilities.Extensions;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
-using UnityEngine;
-using UnityEngine.InputSystem;
+#endif
 
 namespace StellarMass.InputManagement.Data
 {

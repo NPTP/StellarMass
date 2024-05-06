@@ -1,7 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using StellarMass.Data;
 using UnityEngine;
+using Utilities;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace StellarMass.InputManagement.Data
 {
@@ -13,26 +18,30 @@ namespace StellarMass.InputManagement.Data
     {
         [SerializeField] private bool useContextEventSystemActions;
         public bool UseContextEventSystemActions => useContextEventSystemActions;
-        
-        [SerializeField] private BindingDisplaySetup[] bindingDisplaySetups = Array.Empty<BindingDisplaySetup>();
-        public Dictionary<string, BindingDisplaySetup> BindingDisplaySetups
+
+        [SerializeField] private SerializableDictionary<string, BindingDataAssetReference> bindingDataReferences;
+        public SerializableDictionary<string, BindingDataAssetReference> BindingDataReferences => bindingDataReferences;
+
+        private void OnValidate()
         {
-            get
+#if UNITY_EDITOR
+            List<BindingDataAssetReference> values = bindingDataReferences.Values.ToList();
+
+            bool dirty = false;
+            
+            foreach (BindingDataAssetReference value in values)
             {
-                Dictionary<string, BindingDisplaySetup> dict = new();
-
-                foreach (BindingDisplaySetup bindingDisplaySetup in bindingDisplaySetups)
+                if (value == null)
                 {
-                    if (string.IsNullOrEmpty(bindingDisplaySetup.Binding))
-                    {
-                        continue;
-                    }
-
-                    dict.TryAdd(bindingDisplaySetup.Binding, bindingDisplaySetup);
+                    continue;
                 }
 
-                return dict;
+                bindingDataReferences.EDITOR_SetKey(value, value.editorAsset.name);
+                dirty = true;
             }
+
+            if (dirty) EditorUtility.SetDirty(this);
+#endif
         }
     }
 }

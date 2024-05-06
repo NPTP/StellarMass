@@ -22,6 +22,21 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bebca2a4e91eac3419ec24f44e4b5d78
+    m_Address: Assets/ScriptableObjects/RuntimeData/BindingData/Keyboard.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 18603268686afd3408f067bf4048bac7
+    m_Address: Assets/ScriptableObjects/RuntimeData/BindingData/XInputControllerWindows.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 05a3d06048e5cc749b643882ed532ab7
+    m_Address: Assets/ScriptableObjects/RuntimeData/BindingData/Mouse.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 85c3b8e98bc101545b9a5c6b6164ab9e, type: 2}
   m_SchemaSet:

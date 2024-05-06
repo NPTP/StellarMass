@@ -10,7 +10,7 @@ namespace StellarMass.InputManagement.Editor
         private static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets,
             string[] movedAssets, string[] movedFromAssetPaths)
         {
-            OfflineInputData offlineInputData = EditorAssetGetter.Get<OfflineInputData>();
+            OfflineInputData offlineInputData = EditorAssetGetter.GetFirst<OfflineInputData>();
             if (importedAssets.Any(importedAsset => importedAsset.EndsWith($"{offlineInputData.InputActionAsset.name}.inputactions") ||
                                                     importedAsset.EndsWith($"{offlineInputData.name}.asset")))
             {

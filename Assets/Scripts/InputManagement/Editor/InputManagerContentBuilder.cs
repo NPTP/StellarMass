@@ -29,7 +29,7 @@ namespace StellarMass.InputManagement.Editor
                     lines.Add($"        private static {GeneratorHelper.IInputActionsClassName} {inputActionsField};");
                     break;                
                 case "DefaultContextProperty":
-                    inputData = EditorAssetGetter.Get<OfflineInputData>();
+                    inputData = EditorAssetGetter.GetFirst<OfflineInputData>();
                     lines.Add($"        private static {nameof(InputContext)} DefaultContext => {nameof(InputContext)}.{inputData.DefaultContext};");
                     break;
                 case "InputActionCollectionInstantiation":
@@ -48,7 +48,7 @@ namespace StellarMass.InputManagement.Editor
                         lines.Add($"                \"{controlScheme.name}\" => {nameof(ControlScheme)}.{controlScheme.name},");
                     break;
                 case "EnableContextSwitchMembers":
-                    inputData = EditorAssetGetter.Get<OfflineInputData>();
+                    inputData = EditorAssetGetter.GetFirst<OfflineInputData>();
                     foreach (InputContextInfo contextInfo in inputData.InputContextInfos)
                     {
                         lines.Add($"                case {nameof(InputContext)}.{contextInfo.Name}:");
@@ -58,16 +58,21 @@ namespace StellarMass.InputManagement.Editor
                             lines.Add($"                    {inputActionsField}.{mapName}.{(enable ? "Enable" : "Disable")}();");
                             lines.Add($"                    {inputActionsField}.{mapName}.{(enable ? "Add" : "Remove")}Callbacks({mapName});");
                         }
-                        string actions = "                    SetUIEventSystemActions(";
-                        InputActionReference[] inputActionReferences = contextInfo.EventSystemActions.AllInputActionReferences;
-                        for (int j = 0; j < inputActionReferences.Length; j++)
+
+                        if (contextInfo.UseEventSystemActions)
                         {
-                            InputActionReference inputActionReference = inputActionReferences[j];
-                            actions += $"{(inputActionReference == null ? "null" : inputActionReference.action.actionMap.name + "." + inputActionReference.action.name)}";
-                            if (j < inputActionReferences.Length - 1) actions += ", ";
+                            string actions = "                    SetUIEventSystemActions(";
+                            InputActionReference[] inputActionReferences = contextInfo.EventSystemActions.AllInputActionReferences;
+                            for (int j = 0; j < inputActionReferences.Length; j++)
+                            {
+                                InputActionReference inputActionReference = inputActionReferences[j];
+                                actions += $"{(inputActionReference == null ? "null" : inputActionReference.action.actionMap.name + "." + inputActionReference.action.name)}";
+                                if (j < inputActionReferences.Length - 1) actions += ", ";
+                            }
+                            actions += ");";
+                            lines.Add(actions);
                         }
-                        actions += ");";
-                        lines.Add(actions);
+
                         lines.Add($"                    break;");
                     }
                     break;

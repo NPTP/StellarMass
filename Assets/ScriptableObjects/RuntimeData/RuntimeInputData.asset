@@ -13,4 +13,23 @@ MonoBehaviour:
   m_Name: RuntimeInputData
   m_EditorClassIdentifier: 
   useContextEventSystemActions: 0
-  bindingDisplaySetups: []
+  bindingDataReferences:
+    keyValuePairs:
+    - key: Mouse
+      value:
+        m_AssetGUID: 05a3d06048e5cc749b643882ed532ab7
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - key: Keyboard
+      value:
+        m_AssetGUID: bebca2a4e91eac3419ec24f44e4b5d78
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+    - key: XInputControllerWindows
+      value:
+        m_AssetGUID: 18603268686afd3408f067bf4048bac7
+        m_SubObjectName: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0

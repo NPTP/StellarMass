@@ -19,7 +19,7 @@ namespace StellarMass.InputManagement.Editor
         private const string START = "Start";
         private const string END = "End";
         
-        public static InputActionAsset InputActionAsset => EditorAssetGetter.Get<OfflineInputData>().InputActionAsset;
+        public static InputActionAsset InputActionAsset => EditorAssetGetter.GetFirst<OfflineInputData>().InputActionAsset;
         private static char S => Path.DirectorySeparatorChar;
         private static string MapActionsTemplatePath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}MapActionsTemplate.txt";
         private static string GeneratedMapsPath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}Generated{S}";

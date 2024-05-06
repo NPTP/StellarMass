@@ -12,7 +12,7 @@ namespace StellarMass.InputManagement.Editor
             switch (markerName)
             {
                 case "Members":
-                    OfflineInputData offlineInputData = EditorAssetGetter.Get<OfflineInputData>();
+                    OfflineInputData offlineInputData = EditorAssetGetter.GetFirst<OfflineInputData>();
                     foreach (InputContextInfo contextInfo in offlineInputData.InputContextInfos)
                         lines.Add($"        {contextInfo.Name},");
                     break;

@@ -7,11 +7,8 @@ namespace StellarMass.InputManagement.Data
     /// Tells us which strings and icons to display for a binding.
     /// </summary>
     [Serializable]
-    public class BindingDisplaySetup
+    public class BindingPathInfo
     {
-        [SerializeField] private string binding; 
-        public string Binding => binding;
-        
         // NP TODO: Use LocalizedString here instead once package is in
         [SerializeField] private string displayName; 
         public string DisplayName => displayName;

@@ -1,20 +1,58 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Utilities
 {
     /// <summary>
-    /// Based on one of Unity's serializable dictionaries for a customizable/maintainable version
+    /// Serializable version of a Key Value Pair struct.
+    /// </summary>
+    [Serializable]
+    public struct KeyValueCombo<TKey, TValue>
+    {
+        [SerializeField] private TKey key;
+        public TKey Key => key;
+        
+        [SerializeField] private TValue value;
+        public TValue Value => value;
+        
+        public KeyValueCombo(TKey key, TValue value)
+        {
+            this.key = key;
+            this.value = value;
+        }
+    }
+    
+    /// <summary>
+    /// Based on one of Unity's serializable dictionaries for a customizable/maintainable version.
     /// </summary>
     [Serializable]
     public sealed class SerializableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
-        [SerializeField]
-        private List<TKey> keys;
-        [SerializeField]
-        private List<TValue> values;
+        [SerializeField] private List<KeyValueCombo<TKey, TValue>> keyValuePairs = new();
+        
+#if UNITY_EDITOR
+        public void EDITOR_SetKey(TValue value, TKey newKey)
+        {
+            for (int i = 0; i < keyValuePairs.Count; i++)
+            {
+                KeyValueCombo<TKey, TValue> keyValueCombo = keyValuePairs[i];
+                if (keyValueCombo.Value.Equals(value))
+                {
+                    keyValuePairs[i] = new KeyValueCombo<TKey, TValue>(newKey, value);
+                    break;
+                }
+            }
+        }
+
+        public void EDITOR_Add(TKey key, TValue value)
+        {
+            keyValuePairs.Add(new KeyValueCombo<TKey, TValue>(key, value));
+        }
+#endif
+
         private Dictionary<TKey, TValue> internalDictionary = new();
 
         public ICollection<TKey> Keys => internalDictionary.Keys;
@@ -31,8 +69,8 @@ namespace Utilities
         {
             get
             {
-                keys = new List<TKey>(internalDictionary.Keys);
-                values = new List<TValue>(internalDictionary.Values);
+                List<TKey> keys = new List<TKey>(internalDictionary.Keys);
+                List<TValue> values = new List<TValue>(internalDictionary.Values);
                 int index = values.FindIndex(x => x.Equals(value));
                 if (index < 0)
                 {
@@ -43,28 +81,24 @@ namespace Utilities
         }
 
         public void Add(TKey key, TValue value) => internalDictionary.Add(key, value);
+        public bool TryAdd(TKey key, TValue value) => internalDictionary.TryAdd(key, value);
         public bool ContainsKey(TKey key) => internalDictionary.ContainsKey(key);
         public bool Remove(TKey key) => internalDictionary.Remove(key);
         public bool TryGetValue(TKey key, out TValue value) => internalDictionary.TryGetValue(key, out value);
         public void Clear() => internalDictionary.Clear();
         public IEnumerator GetEnumerator() => internalDictionary.GetEnumerator();
 
-        public void OnBeforeSerialize()
-        {
-            keys = new List<TKey>(internalDictionary.Keys);
-            values = new List<TValue>(internalDictionary.Values);
-        }
+        public void OnBeforeSerialize() { }
 
         public void OnAfterDeserialize()
         {
-            Debug.Assert(keys.Count == values.Count);
             Clear();
-            for (int i = 0; i < keys.Count; ++i)
+            foreach (KeyValueCombo<TKey, TValue> keyValuePair in keyValuePairs)
             {
-                Add(keys[i], values[i]);
+                TryAdd(keyValuePair.Key, keyValuePair.Value);
             }
         }
-        
+
         #region Explicit IDictionary Implementations
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => (internalDictionary as ICollection<KeyValuePair<TKey, TValue>>).IsReadOnly;
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item) => (internalDictionary as ICollection<KeyValuePair<TKey, TValue>>).Add(item);

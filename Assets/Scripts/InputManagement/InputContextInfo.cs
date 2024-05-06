@@ -14,6 +14,9 @@ namespace StellarMass.InputManagement
         [SerializeField] private string[] activeMaps;
         public string[] ActiveMaps => activeMaps;
 
+        [SerializeField] private bool useEventSystemActions;
+        public bool UseEventSystemActions => useEventSystemActions;
+
         [SerializeField] private EventSystemActions eventSystemActions;
         public EventSystemActions EventSystemActions => eventSystemActions;
         
