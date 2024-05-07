@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 // MARKER.UsingDirective.Start
 // MARKER.UsingDirective.End
 
-namespace StellarMass.InputManagement.Maps
+namespace StellarMass.InputManagement
 {
     // MARKER.Ignore.Start
     /// <summary>

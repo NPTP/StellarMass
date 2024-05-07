@@ -2,7 +2,7 @@
 using StellarMass.Utilities.Extensions;
 using UnityEngine.InputSystem;
 
-namespace StellarMass.InputManagement.Editor
+namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
 {
     public static class MapActionsContentBuilder
     {
@@ -19,7 +19,9 @@ namespace StellarMass.InputManagement.Editor
                 case "Ignore":
                     break;
                 case "UsingDirective":
-                    lines.Add($"using {GeneratorHelper.IInputActionsNamespace};");
+                    string inputActionsNamespace = GeneratorHelper.IInputActionsNamespace;
+                    if (!string.IsNullOrEmpty(inputActionsNamespace))
+                        lines.Add($"using {inputActionsNamespace};");
                     break;
                 case "ClassSignature":
                     lines.Add("    ///<summary>");

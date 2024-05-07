@@ -46,7 +46,7 @@ namespace StellarMass.InputManagement.Data.Editor
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
                 
-                if (GUILayout.Button($"Delete <{keyProperty.stringValue}>"))
+                if (GUILayout.Button($"Delete \"{keyProperty.stringValue}\""))
                 {
                     targetBindingData.BindingDisplayInfo.EDITOR_Remove(i);
                     EditorUtility.SetDirty(targetBindingData);

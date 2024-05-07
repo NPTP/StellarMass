@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using StellarMass.Utilities.Extensions;
 using UnityEngine.InputSystem;
 
-namespace StellarMass.InputManagement.Editor
+namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
 {
     public static class ControlSchemeContentBuilder
     {
@@ -11,7 +12,7 @@ namespace StellarMass.InputManagement.Editor
             {
                 case "Members":
                     foreach (InputControlScheme inputControlScheme in asset.controlSchemes)
-                        lines.Add($"        {inputControlScheme.name},");
+                        lines.Add($"        {inputControlScheme.name.AlphaNumericCharactersOnly()},");
                     break;
             }
         }

@@ -3,7 +3,7 @@ using StellarMass.InputManagement.Data;
 using StellarMass.Utilities.Editor;
 using UnityEngine.InputSystem;
 
-namespace StellarMass.InputManagement.Editor
+namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
 {
     public static class InputContextContentBuilder
     {

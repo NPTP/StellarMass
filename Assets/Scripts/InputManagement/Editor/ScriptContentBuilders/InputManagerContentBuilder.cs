@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using StellarMass.InputManagement.Data;
 using StellarMass.Utilities.Editor;
+using StellarMass.Utilities.Extensions;
 using UnityEngine.InputSystem;
 
-namespace StellarMass.InputManagement.Editor
+namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
 {
     public static class InputManagerContentBuilder
     {
@@ -19,7 +20,9 @@ namespace StellarMass.InputManagement.Editor
                     lines.Add($"        private const string RUNTIME_INPUT_DATA_ADDRESS = \"{OfflineInputData.RUNTIME_INPUT_DATA_ADDRESS}\";");
                     break;
                 case "UsingDirective":
-                    lines.Add($"using {GeneratorHelper.IInputActionsNamespace};");
+                    string inputActionsNamespace = GeneratorHelper.IInputActionsNamespace;
+                    if (!string.IsNullOrEmpty(inputActionsNamespace))
+                        lines.Add($"using {inputActionsNamespace};");
                     break;
                 case "MapActionsProperties":
                     foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
@@ -45,7 +48,7 @@ namespace StellarMass.InputManagement.Editor
                     break;
                 case "ControlSchemeSwitch":
                     foreach (InputControlScheme controlScheme in asset.controlSchemes)
-                        lines.Add($"                \"{controlScheme.name}\" => {nameof(ControlScheme)}.{controlScheme.name},");
+                        lines.Add($"                \"{controlScheme.name}\" => {nameof(ControlScheme)}.{controlScheme.name.AlphaNumericCharactersOnly()},");
                     break;
                 case "EnableContextSwitchMembers":
                     inputData = EditorAssetGetter.GetFirst<OfflineInputData>();

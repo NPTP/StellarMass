@@ -1,9 +1,9 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace StellarMass.InputManagement.Attributes.Editor
+namespace StellarMass.InputManagement.Attributes.Editor.PropertyDrawers
 {
-    [CustomPropertyDrawer(typeof(ActionReferenceWrapper))]
+    [CustomPropertyDrawer(typeof(InputActionReferenceWrapped))]
     public class ActionReferenceWrapperDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)

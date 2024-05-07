@@ -21,8 +21,7 @@ namespace StellarMass.InputManagement.Editor
         
         public static InputActionAsset InputActionAsset => EditorAssetGetter.GetFirst<OfflineInputData>().InputActionAsset;
         private static char S => Path.DirectorySeparatorChar;
-        private static string MapActionsTemplatePath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}MapActionsTemplate.txt";
-        private static string GeneratedMapsPath => $@"{S}Scripts{S}InputManagement{S}MapInstances{S}Generated{S}";
+        private static string GeneratedMapActionsPath => $@"{S}Scripts{S}InputManagement{S}MapActionsGenerated{S}";
         public static string IInputActionsNamespace => GetInputActionImporterStringFieldValue("m_WrapperCodeNamespace");
         public static string IInputActionsClassName => GetInputActionImporterStringFieldValue("m_WrapperClassName");
 
@@ -50,7 +49,7 @@ namespace StellarMass.InputManagement.Editor
         
         public static void ClearGeneratedFolder()
         {
-            string fullSystemPath = Application.dataPath + GeneratedMapsPath;
+            string fullSystemPath = Application.dataPath + GeneratedMapActionsPath;
             if (!Directory.Exists(fullSystemPath))
             {
                 Directory.CreateDirectory(fullSystemPath);
@@ -91,14 +90,15 @@ namespace StellarMass.InputManagement.Editor
             return asset.actionMaps.Select(map => map.name.AllWhitespaceTrimmed().CapitalizeFirst());
         }
 
-        public static string GetTemplateFilePath()
+        public static string GetMapActionsTemplateFilePath()
         {
-            return Application.dataPath + MapActionsTemplatePath;
+            OfflineInputData offlineInputData = EditorAssetGetter.GetFirst<OfflineInputData>();
+            return Application.dataPath + AssetDatabase.GetAssetPath(offlineInputData.MapActionsTemplateFile).Replace("Assets", string.Empty);
         }
         
         public static string GetPathForGeneratedMap(string mapName)
         {
-            return Application.dataPath + GeneratedMapsPath + mapName.AllWhitespaceTrimmed() + ".cs";
+            return Application.dataPath + GeneratedMapActionsPath + mapName.AllWhitespaceTrimmed().CapitalizeFirst() + ".cs";
         }
         
         public static bool IsMarkerStart(string line, out string markerName)

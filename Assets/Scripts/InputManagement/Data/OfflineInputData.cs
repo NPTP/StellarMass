@@ -15,13 +15,15 @@ namespace StellarMass.InputManagement.Data
     /// <summary>
     /// Input Data used only in constructing classes from inside the editor. Not meant to be accessed at runtime.
     /// </summary>
-    [CreateAssetMenu]
     public class OfflineInputData : DataScriptable
     {
 #if UNITY_EDITOR
         public const string RUNTIME_INPUT_DATA_ADDRESS = nameof(RuntimeInputData);
         
         [SerializeField] private RuntimeInputData runtimeInputData;
+
+        [SerializeField] private TextAsset mapActionsTemplateFile;
+        public TextAsset MapActionsTemplateFile => mapActionsTemplateFile;
 
         [SerializeField] private InputActionAsset inputActionAsset;
         public InputActionAsset InputActionAsset => inputActionAsset;
@@ -31,7 +33,7 @@ namespace StellarMass.InputManagement.Data
         
         [SerializeField] private InputContextInfo[] inputContextInfos;
         public InputContextInfo[] InputContextInfos => inputContextInfos;
-
+        
         private void OnValidate()
         {
             SetRuntimeInputDataAddress();

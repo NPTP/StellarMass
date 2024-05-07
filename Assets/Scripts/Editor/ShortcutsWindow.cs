@@ -29,11 +29,12 @@ namespace StellarMass.Editor
 		private readonly FolderShortcut[] folderShortcuts = new[]
 		{
 			new FolderShortcut("Scripts", "Assets/Scripts"),
-			new FolderShortcut("Resources", "Assets/Resources"),
-			new FolderShortcut("Game Phases", "Assets/ScriptableObjects/GamePhases"),
-			new FolderShortcut("Prefabs", "Assets/Prefabs"),
-			new FolderShortcut("Sounds", "Assets/ScriptableObjects/Audio"),
 			new FolderShortcut("Input Management", "Assets/Scripts/InputManagement"),
+			new FolderShortcut("Prefabs", "Assets/Prefabs"),
+			new FolderShortcut("Resources", "Assets/Resources"),
+			new FolderShortcut("Data", "Assets/Data"),
+			new FolderShortcut("Audio", "Assets/Data/Audio"),
+			new FolderShortcut("Game Phases", "Assets/Data/GamePhases"),
 		};
 
 		private bool RefreshRequired => globalPostProcessing == null || loopBoundingBox == null || dataScriptables.IsEmpty();

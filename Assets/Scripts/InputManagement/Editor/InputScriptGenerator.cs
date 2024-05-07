@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using StellarMass.Editor;
+using StellarMass.InputManagement.Editor.ScriptContentBuilders;
 using StellarMass.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
@@ -11,6 +11,8 @@ namespace StellarMass.InputManagement.Editor
 {
     public static class InputScriptGenerator
     {
+        private const string GENERATOR_FEATURE_MENU_NAME = "Tools/Regenerate C# Input Map Classes";
+
         private enum ReadState
         {
             Normal = 0,
@@ -21,7 +23,7 @@ namespace StellarMass.InputManagement.Editor
         private static string ControlSchemeFilePath => EditorScriptGetter.GetSystemPath<ControlScheme>();
         private static string InputContextFilePath => EditorScriptGetter.GetSystemPath<InputContext>();
 
-        [MenuItem(EditorToolNames.GENERATOR_FEATURE)]
+        [MenuItem(GENERATOR_FEATURE_MENU_NAME)]
         public static void GenerateMapInstances()
         {
             InputActionAsset asset = GeneratorHelper.InputActionAsset;
@@ -49,7 +51,7 @@ namespace StellarMass.InputManagement.Editor
 
             try
             {
-                using StreamReader sr = new(GeneratorHelper.GetTemplateFilePath());
+                using StreamReader sr = new(GeneratorHelper.GetMapActionsTemplateFilePath());
                 ReadState readState = ReadState.Normal;
                 while (sr.ReadLine() is { } line)
                 {

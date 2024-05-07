@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace StellarMass.Utilities.Extensions
 {
@@ -18,6 +19,11 @@ namespace StellarMass.Utilities.Extensions
             string upper = s.ToUpper();
             if (s.Length == 1) return upper;
             return upper[0] + s[1..];
+        }
+        
+        public static string AlphaNumericCharactersOnly(this string s)
+        {
+            return Regex.Replace(s, "[^a-zA-Z0-9]", string.Empty);
         }
     }
 }

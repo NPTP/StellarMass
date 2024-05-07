@@ -4,7 +4,6 @@ using StellarMass.InputManagement.UnityGenerated;
 using System;
 using System.Linq;
 using StellarMass.InputManagement.Data;
-using StellarMass.InputManagement.Maps;
 using StellarMass.Utilities;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
@@ -20,10 +19,14 @@ using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
-//// - Documentation of usage and public interfaces (ActionReferenceWrapper included)
+//// - Documentation of usage and public interfaces (InputActionReferenceWrapped included)
 //// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
 namespace StellarMass.InputManagement
 {
+    /// <summary>
+    /// Main point of usage for all input in the game.
+    /// DO NOT CHANGE the "MARKER" lines - they assist with code auto-generation.
+    /// </summary>
     public static class InputManager
     {
         #region Fields & Properties
@@ -159,40 +162,13 @@ namespace StellarMass.InputManagement
         {
             previousContext = CurrentContext;
             CurrentContext = context;
-
-            switch (context)
-            {
-                // MARKER.EnableContextSwitchMembers.Start
-                case InputContext.Gameplay:
-                    inputActions.Gameplay.Enable();
-                    inputActions.Gameplay.AddCallbacks(Gameplay);
-                    inputActions.PauseMenu.Disable();
-                    inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
-                    SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
-                    break;
-                case InputContext.PauseMenu:
-                    inputActions.Gameplay.Disable();
-                    inputActions.Gameplay.RemoveCallbacks(Gameplay);
-                    inputActions.PauseMenu.Enable();
-                    inputActions.PauseMenu.AddCallbacks(PauseMenu);
-                    SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
-                    break;
-                case InputContext.AllInputDisabled:
-                    inputActions.Gameplay.Disable();
-                    inputActions.Gameplay.RemoveCallbacks(Gameplay);
-                    inputActions.PauseMenu.Disable();
-                    inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
-                    SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
-                    break;
-                // MARKER.EnableContextSwitchMembers.End
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(context), context, null);
-            }
+            EnableMapsForContext(context);
         }
-                
-        public static InputAction GetLocalAssetActionFromReference(ActionReferenceWrapper referenceWrapper)
+
+        public static InputAction GetLocalAssetActionFromReference(InputActionReferenceWrapped referenceWrapped)
         {
-            return inputActions.asset.FindActionMap(referenceWrapper.MapName).FindAction(referenceWrapper.ActionName);
+            InputActionMap map = inputActions.asset.FindActionMap(referenceWrapped.MapName);
+            return map == null ? null : map.FindAction(referenceWrapped.ActionName);
         }
         
         public static bool TryGetBindingPathInfo(InputControl inputControl, out BindingPathInfo bindingPathInfo)
@@ -226,6 +202,35 @@ namespace StellarMass.InputManagement
         }
 
         #endregion
+        
+        private static void EnableMapsForContext(InputContext context)
+        {
+            switch (context)
+            {
+                // MARKER.EnableContextSwitchMembers.Start
+                case InputContext.Gameplay:
+                    inputActions.Gameplay.Enable();
+                    inputActions.Gameplay.AddCallbacks(Gameplay);
+                    inputActions.PauseMenu.Disable();
+                    inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
+                    break;
+                case InputContext.PauseMenu:
+                    inputActions.Gameplay.Disable();
+                    inputActions.Gameplay.RemoveCallbacks(Gameplay);
+                    inputActions.PauseMenu.Enable();
+                    inputActions.PauseMenu.AddCallbacks(PauseMenu);
+                    break;
+                case InputContext.AllInputDisabled:
+                    inputActions.Gameplay.Disable();
+                    inputActions.Gameplay.RemoveCallbacks(Gameplay);
+                    inputActions.PauseMenu.Disable();
+                    inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
+                    break;
+                // MARKER.EnableContextSwitchMembers.End
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(context), context, null);
+            }
+        }
 
         private static void ParseInputControlPath(InputControl inputControl, out string deviceName, out string controlPath)
         {

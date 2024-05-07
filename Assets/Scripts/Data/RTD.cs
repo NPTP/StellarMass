@@ -6,6 +6,7 @@ namespace StellarMass.Data
     /// <summary>
     /// RTD = "Run Time Data". Abbreviated for more concise code in the project.
     /// </summary>
+    // NP TODO: This system kinda sucks. Replace it with addressables loading in runtime data.
     public class RTD : ClosedSingleton<RTD>
     {
         private const string PREFAB_RESOURCES_PATH = "RunTimeData";
