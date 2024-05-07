@@ -11,6 +11,11 @@ namespace StellarMass.InputManagement.Editor
             string[] movedAssets, string[] movedFromAssetPaths)
         {
             OfflineInputData offlineInputData = EditorAssetGetter.GetFirst<OfflineInputData>();
+            if (offlineInputData.InputActionAsset == null)
+            {
+                return;
+            }
+            
             if (importedAssets.Any(importedAsset => importedAsset.EndsWith($"{offlineInputData.InputActionAsset.name}.inputactions") ||
                                                     importedAsset.EndsWith($"{offlineInputData.name}.asset")))
             {
