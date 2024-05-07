@@ -30,32 +30,7 @@ namespace Utilities
     [Serializable]
     public sealed class SerializableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
-        [SerializeField] private List<KeyValueCombo<TKey, TValue>> keyValuePairs = new();
-        
-#if UNITY_EDITOR
-        public void EDITOR_SetKey(TValue value, TKey newKey)
-        {
-            for (int i = 0; i < keyValuePairs.Count; i++)
-            {
-                KeyValueCombo<TKey, TValue> keyValueCombo = keyValuePairs[i];
-                if (keyValueCombo.Value.Equals(value))
-                {
-                    keyValuePairs[i] = new KeyValueCombo<TKey, TValue>(newKey, value);
-                    break;
-                }
-            }
-        }
-
-        public void EDITOR_Clear()
-        {
-            keyValuePairs.Clear();
-        }
-
-        public void EDITOR_Add(TKey key, TValue value)
-        {
-            keyValuePairs.Add(new KeyValueCombo<TKey, TValue>(key, value));
-        }
-#endif
+        [SerializeField] private List<KeyValueCombo<TKey, TValue>> keyValueCombos = new();
 
         private Dictionary<TKey, TValue> internalDictionary = new();
 
@@ -97,11 +72,65 @@ namespace Utilities
         public void OnAfterDeserialize()
         {
             Clear();
-            foreach (KeyValueCombo<TKey, TValue> keyValuePair in keyValuePairs)
+            foreach (KeyValueCombo<TKey, TValue> keyValuePair in keyValueCombos)
             {
                 TryAdd(keyValuePair.Key, keyValuePair.Value);
             }
         }
+        
+#if UNITY_EDITOR
+        public void EDITOR_SetKey(TValue value, TKey newKey)
+        {
+            for (int i = 0; i < keyValueCombos.Count; i++)
+            {
+                KeyValueCombo<TKey, TValue> keyValueCombo = keyValueCombos[i];
+                if (keyValueCombo.Value.Equals(value))
+                {
+                    keyValueCombos[i] = new KeyValueCombo<TKey, TValue>(newKey, value);
+                    break;
+                }
+            }
+        }
+
+        public void EDITOR_Clear()
+        {
+            keyValueCombos.Clear();
+        }
+
+        public void EDITOR_Add(TKey key, TValue value)
+        {
+            keyValueCombos.Add(new KeyValueCombo<TKey, TValue>(key, value));
+        }
+
+        public void EDITOR_Remove(TKey key)
+        {
+            int remove = -1;
+            for (int i = 0; i < keyValueCombos.Count; i++)
+            {
+                KeyValueCombo<TKey, TValue> combo = keyValueCombos[i];
+                if (combo.Key.Equals(key))
+                {
+                    remove = i;
+                    break;
+                }
+            }
+
+            if (remove != -1)
+            {
+                keyValueCombos.RemoveAt(remove);
+            }
+        }
+
+        public void EDITOR_Remove(int index)
+        {
+            keyValueCombos.RemoveAt(Mathf.Clamp(index, 0, keyValueCombos.Count - 1));
+        }
+
+        public List<KeyValueCombo<TKey, TValue>> EDITOR_GetKeyValueCombos()
+        {
+            return keyValueCombos;
+        }
+#endif
 
         #region Explicit IDictionary Implementations
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => (internalDictionary as ICollection<KeyValuePair<TKey, TValue>>).IsReadOnly;

@@ -13,136 +13,169 @@ MonoBehaviour:
   m_Name: XInputControllerWindows
   m_EditorClassIdentifier: 
   bindingDisplayInfo:
-    keyValuePairs:
-    - key: dpad
-      value:
-        displayName: 
-        icon: {fileID: 0}
+    keyValueCombos:
     - key: start
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: select
       value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: leftStickPress
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: rightStickPress
-      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: leftShoulder
       value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: rightShoulder
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: buttonSouth
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: buttonEast
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: buttonWest
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: buttonNorth
-      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: leftTrigger
       value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: rightShoulder
+      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: rightTrigger
       value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: buttonSouth
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: buttonEast
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: buttonWest
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: buttonNorth
+      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: leftStick
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
-    - key: rightStick
+    - key: leftStickPress
       value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: dpad/x
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: dpad/y
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: dpad/up
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: dpad/down
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: dpad/left
-      value:
-        displayName: 
-        icon: {fileID: 3286163911610860551, guid: a24f52ba12ec00844b54b632a087f53b, type: 3}
-    - key: dpad/right
-      value:
-        displayName: 
-        icon: {fileID: 0}
-    - key: leftStick/up
-      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: leftStick/x
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: leftStick/y
       value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: leftStick/up
+      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: leftStick/down
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: leftStick/left
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: leftStick/right
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
-    - key: rightStick/up
+    - key: rightStick
       value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: rightStickPress
+      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: rightStick/x
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: rightStick/y
       value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: rightStick/up
+      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: rightStick/down
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: rightStick/left
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: rightStick/right
       value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: dpad
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: dpad/x
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: dpad/y
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: dpad/up
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: dpad/down
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: dpad/left
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: dpad/right
+      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}

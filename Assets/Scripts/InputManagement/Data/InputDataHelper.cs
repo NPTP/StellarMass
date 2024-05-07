@@ -9,8 +9,12 @@ namespace StellarMass.InputManagement.Data
             "middleButton",
             "forwardButton",
             "backButton",
+            "scroll",
             "scroll/up",
-            "scroll/down"
+            "scroll/down",
+            "position",
+            "position/x",
+            "position/y"
         };
         
         public static string[] KeyboardControls => new []
@@ -128,39 +132,39 @@ namespace StellarMass.InputManagement.Data
 
         public static string[] GamepadControls => new[]
         {
-            "dpad",
             "start",
             "select",
-            "leftStickPress",
-            "rightStickPress",
             "leftShoulder",
+            "leftTrigger",
             "rightShoulder",
+            "rightTrigger",
             "buttonSouth",
             "buttonEast",
             "buttonWest",
             "buttonNorth",
-            "leftTrigger",
-            "rightTrigger",
             "leftStick",
+            "leftStickPress",
+            "leftStick/x",
+            "leftStick/y",
+            "leftStick/up",
+            "leftStick/down",
+            "leftStick/left",
+            "leftStick/right",
             "rightStick",
+            "rightStickPress",
+            "rightStick/x",
+            "rightStick/y",
+            "rightStick/up",
+            "rightStick/down",
+            "rightStick/left",
+            "rightStick/right",
+            "dpad",
             "dpad/x",
             "dpad/y",
             "dpad/up",
             "dpad/down",
             "dpad/left",
-            "dpad/right",
-            "leftStick/up",
-            "leftStick/x",
-            "leftStick/y",
-            "leftStick/down",
-            "leftStick/left",
-            "leftStick/right",
-            "rightStick/up",
-            "rightStick/x",
-            "rightStick/y",
-            "rightStick/down",
-            "rightStick/left",
-            "rightStick/right"
+            "dpad/right"
         };
     }
 }

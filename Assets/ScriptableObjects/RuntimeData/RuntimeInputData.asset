@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   useContextEventSystemActions: 0
   bindingDataReferences:
-    keyValuePairs:
+    keyValueCombos:
     - key: Mouse
       value:
         m_AssetGUID: 05a3d06048e5cc749b643882ed532ab7

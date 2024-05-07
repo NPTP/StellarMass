@@ -13,32 +13,59 @@ MonoBehaviour:
   m_Name: Mouse
   m_EditorClassIdentifier: 
   bindingDisplayInfo:
-    keyValuePairs:
+    keyValueCombos:
     - key: leftButton
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: rightButton
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: middleButton
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: forwardButton
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: backButton
       value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: scroll
+      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: scroll/up
       value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}
     - key: scroll/down
       value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: position
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: position/x
+      value:
+        overrideDisplayName: 0
+        displayName: 
+        icon: {fileID: 0}
+    - key: position/y
+      value:
+        overrideDisplayName: 0
         displayName: 
         icon: {fileID: 0}

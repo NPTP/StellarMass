@@ -21,6 +21,7 @@ using UnityEditor;
 
 //// NP TODO: In order of priority:
 //// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
+//// - Documentation of usage and public interfaces (ActionReferenceWrapper included)
 namespace StellarMass.InputManagement
 {
     public static class InputManager
@@ -214,6 +215,11 @@ namespace StellarMass.InputManagement
             if (!bindingData.BindingDisplayInfo.TryGetValue(controlPath, out bindingPathInfo))
             {
                 return false;
+            }
+
+            if (!bindingPathInfo.OverrideDisplayName)
+            {
+                bindingPathInfo.DisplayName = inputControl.displayName;
             }
 
             return true;

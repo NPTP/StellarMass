@@ -9,10 +9,17 @@ namespace StellarMass.InputManagement.Data
     [Serializable]
     public class BindingPathInfo
     {
-        // NP TODO: Use LocalizedString here instead once package is in
-        [SerializeField] private string displayName; 
-        public string DisplayName => displayName;
-        
+        [SerializeField] private bool overrideDisplayName;
+        public bool OverrideDisplayName => overrideDisplayName;
+
+        // NP TODO: Use a localized string here instead!
+        [SerializeField] private string displayName;
+        public string DisplayName
+        {
+            get => displayName;
+            set => displayName = value;
+        }
+
         [SerializeField] private Sprite icon;
         public Sprite Icon => icon;
     }
