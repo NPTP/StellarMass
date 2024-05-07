@@ -20,8 +20,8 @@ using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
-//// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
 //// - Documentation of usage and public interfaces (ActionReferenceWrapper included)
+//// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
 namespace StellarMass.InputManagement
 {
     public static class InputManager
