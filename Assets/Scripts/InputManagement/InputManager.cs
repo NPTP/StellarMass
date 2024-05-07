@@ -19,6 +19,7 @@ using UnityEditor;
 #endif
 
 //// NP TODO: In order of priority:
+//// - Support for directly referencing the input asset on disk instead of having to swap to the newly created one?
 //// - Documentation of usage and public interfaces (InputActionReferenceWrapped included)
 //// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
 namespace StellarMass.InputManagement
