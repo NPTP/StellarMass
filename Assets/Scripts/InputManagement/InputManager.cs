@@ -166,10 +166,10 @@ namespace StellarMass.InputManagement
             EnableMapsForContext(context);
         }
 
-        public static InputAction GetLocalAssetActionFromReference(InputActionReferenceWrapped referenceWrapped)
+        public static InputAction GetLocalAssetActionFromReference(InputActionReferenceWrapper referenceWrapper)
         {
-            InputActionMap map = inputActions.asset.FindActionMap(referenceWrapped.MapName);
-            return map == null ? null : map.FindAction(referenceWrapped.ActionName);
+            InputActionMap map = inputActions.asset.FindActionMap(referenceWrapper.MapName);
+            return map == null ? null : map.FindAction(referenceWrapper.ActionName);
         }
         
         public static bool TryGetBindingPathInfo(InputControl inputControl, out BindingPathInfo bindingPathInfo)
