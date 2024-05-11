@@ -23,7 +23,7 @@ namespace StellarMass.InputManagement
     /// Main point of usage for all input in the game.
     /// DO NOT CHANGE the "MARKER" lines - they assist with code auto-generation.
     /// </summary>
-    public static class InputManager
+    public static class Input
     {
         #region Fields & Properties
         // MARKER.RuntimeInputAddress.Start
@@ -79,7 +79,7 @@ namespace StellarMass.InputManagement
             InputActionAsset asset = runtimeInputData.InputActionAsset;
             if (asset == null)
             {
-                throw new MissingFieldException("InputManager runtimeInputData is missing an input action asset!");
+                throw new MissingFieldException($"Input manager's {nameof(runtimeInputData)} is missing an input action asset!");
             }
 
             // MARKER.MapAndActionsInstantiation.Start

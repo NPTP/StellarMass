@@ -19,7 +19,7 @@ namespace StellarMass.InputManagement.Editor
             WaitingForMarkerEnd
         }
 
-        private static string InputManagerFilePath => EditorScriptGetter.GetSystemPath(typeof(InputManager));
+        private static string InputManagerFilePath => EditorScriptGetter.GetSystemPath(typeof(Input));
         private static string ControlSchemeFilePath => EditorScriptGetter.GetSystemPath<ControlScheme>();
         private static string InputContextFilePath => EditorScriptGetter.GetSystemPath<InputContext>();
         private static InputActionAsset InputActionAsset => EditorAssetGetter.GetFirst<RuntimeInputData>().InputActionAsset;

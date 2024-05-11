@@ -8,6 +8,7 @@ using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.U2D;
+using Input = StellarMass.InputManagement.Input;
 using Random = UnityEngine.Random;
 
 namespace StellarMass.Ship
@@ -54,18 +55,18 @@ namespace StellarMass.Ship
 
         private void AddInputListeners()
         {
-            InputManager.Gameplay.OnThrust += OnThrust;
-            InputManager.Gameplay.OnShoot += OnShoot;
-            InputManager.Gameplay.OnTurn += OnTurn;
-            InputManager.Gameplay.OnHyperspace += OnHyperspace;
+            Input.Gameplay.OnThrust += OnThrust;
+            Input.Gameplay.OnShoot += OnShoot;
+            Input.Gameplay.OnTurn += OnTurn;
+            Input.Gameplay.OnHyperspace += OnHyperspace;
         }
 
         private void RemoveInputListeners()
         {
-            InputManager.Gameplay.OnThrust -= OnThrust;
-            InputManager.Gameplay.OnShoot -= OnShoot;
-            InputManager.Gameplay.OnTurn -= OnTurn;
-            InputManager.Gameplay.OnHyperspace -= OnHyperspace;
+            Input.Gameplay.OnThrust -= OnThrust;
+            Input.Gameplay.OnShoot -= OnShoot;
+            Input.Gameplay.OnTurn -= OnTurn;
+            Input.Gameplay.OnHyperspace -= OnHyperspace;
         }
 
         private void FixedUpdate()

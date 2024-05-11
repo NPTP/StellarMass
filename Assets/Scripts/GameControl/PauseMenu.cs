@@ -1,6 +1,7 @@
 using StellarMass.InputManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Input = StellarMass.InputManagement.Input;
 
 namespace StellarMass.GameControl
 {
@@ -13,18 +14,18 @@ namespace StellarMass.GameControl
         
         private void Start()
         {
-            InputManager.Gameplay.OnPause += HandlePause;
-            InputManager.PauseMenu.OnNavigate += HandleNavigate;
-            InputManager.PauseMenu.OnSubmit += HandleSubmit;
-            InputManager.PauseMenu.OnUnpause += HandleUnpause;
+            Input.Gameplay.OnPause += HandlePause;
+            Input.PauseMenu.OnNavigate += HandleNavigate;
+            Input.PauseMenu.OnSubmit += HandleSubmit;
+            Input.PauseMenu.OnUnpause += HandleUnpause;
         }
         
         private void OnDestroy()
         {
-            InputManager.Gameplay.OnPause -= HandlePause;
-            InputManager.PauseMenu.OnNavigate -= HandleNavigate;
-            InputManager.PauseMenu.OnSubmit -= HandleSubmit;
-            InputManager.PauseMenu.OnUnpause -= HandleUnpause;
+            Input.Gameplay.OnPause -= HandlePause;
+            Input.PauseMenu.OnNavigate -= HandleNavigate;
+            Input.PauseMenu.OnSubmit -= HandleSubmit;
+            Input.PauseMenu.OnUnpause -= HandleUnpause;
         }
 
         private void HandlePause(InputAction.CallbackContext callbackContext)
@@ -39,7 +40,7 @@ namespace StellarMass.GameControl
                 return;
             }
 
-            InputManager.EnableContext(InputContext.PauseMenu);
+            Input.EnableContext(InputContext.PauseMenu);
             GameController.GameState = GameState.PauseMenu;
             menuParent.SetActive(true);
             
@@ -61,7 +62,7 @@ namespace StellarMass.GameControl
                 return;
             }
             
-            InputManager.EnableContext(InputContext.Gameplay);
+            Input.EnableContext(InputContext.Gameplay);
             GameController.ReturnToPreviousGameState();
             menuParent.SetActive(false);
         }

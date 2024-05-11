@@ -11,8 +11,8 @@ namespace StellarMass.InputManagement
 
         public event Action<InputAction.CallbackContext> OnAction
         {
-            add => InputManager.ChangeSubscription(internalReference, value, subscribe: true);
-            remove => InputManager.ChangeSubscription(internalReference, value, subscribe: false);
+            add => Input.ChangeSubscription(internalReference, value, subscribe: true);
+            remove => Input.ChangeSubscription(internalReference, value, subscribe: false);
         }
 
 #if UNITY_EDITOR
