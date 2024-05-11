@@ -11,12 +11,12 @@ namespace StellarMass.InputManagement.Editor
             string[] movedAssets, string[] movedFromAssetPaths)
         {
             OfflineInputData offlineInputData = EditorAssetGetter.GetFirst<OfflineInputData>();
-            if (offlineInputData == null || offlineInputData.InputActionAsset == null)
+            if (offlineInputData == null || offlineInputData.RuntimeInputData == null || offlineInputData.RuntimeInputData.InputActionAsset == null)
             {
                 return;
             }
             
-            if (importedAssets.Any(importedAsset => importedAsset.EndsWith($"{offlineInputData.InputActionAsset.name}.inputactions") ||
+            if (importedAssets.Any(importedAsset => importedAsset.EndsWith($"{offlineInputData.RuntimeInputData.InputActionAsset.name}.inputactions") ||
                                                     importedAsset.EndsWith($"{offlineInputData.name}.asset")))
             {
                 InputScriptGenerator.GenerateMapInstances();

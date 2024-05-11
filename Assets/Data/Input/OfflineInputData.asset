@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: OfflineInputData
   m_EditorClassIdentifier: 
   runtimeInputData: {fileID: 11400000, guid: 22bf4881dbbe40b4fb5e1460267b4c30, type: 2}
-  mapActionsTemplateFile: {fileID: 4900000, guid: ed37ed9f10598b64797d6fff62bcc083, type: 3}
-  inputActionAsset: {fileID: -944628639613478452, guid: e518c8033fd49f84b9577aae87f8f544, type: 3}
+  mapActionsTemplateFile: {fileID: 11500000, guid: bf2b37578145ed443b1bf77ab51c4fc4, type: 3}
+  mapCacheTemplateFile: {fileID: 11500000, guid: b54837a574a47a04cbff802c5fc90613, type: 3}
   defaultContext: 0
   inputContextInfos:
   - name: Gameplay
     activeMaps:
     - Gameplay
-    useEventSystemActions: 0
+    enableKeyboardTextInput: 0
     eventSystemActions:
       point: {fileID: 0}
       middleClick: {fileID: 0}
@@ -35,7 +35,7 @@ MonoBehaviour:
   - name: PauseMenu
     activeMaps:
     - PauseMenu
-    useEventSystemActions: 0
+    enableKeyboardTextInput: 0
     eventSystemActions:
       point: {fileID: 0}
       middleClick: {fileID: 0}
@@ -49,7 +49,7 @@ MonoBehaviour:
       leftClick: {fileID: 0}
   - name: AllInputDisabled
     activeMaps: []
-    useEventSystemActions: 0
+    enableKeyboardTextInput: 0
     eventSystemActions:
       point: {fileID: 0}
       middleClick: {fileID: 0}

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using StellarMass.Editor;
+using StellarMass.InputManagement.Data;
 using StellarMass.InputManagement.Editor.ScriptContentBuilders;
 using StellarMass.Utilities.Editor;
 using UnityEditor;
@@ -11,8 +13,6 @@ namespace StellarMass.InputManagement.Editor
 {
     public static class InputScriptGenerator
     {
-        private const string GENERATOR_FEATURE_MENU_NAME = "Tools/Regenerate C# Input Map Classes";
-
         private enum ReadState
         {
             Normal = 0,
@@ -22,36 +22,56 @@ namespace StellarMass.InputManagement.Editor
         private static string InputManagerFilePath => EditorScriptGetter.GetSystemPath(typeof(InputManager));
         private static string ControlSchemeFilePath => EditorScriptGetter.GetSystemPath<ControlScheme>();
         private static string InputContextFilePath => EditorScriptGetter.GetSystemPath<InputContext>();
+        private static InputActionAsset InputActionAsset => EditorAssetGetter.GetFirst<RuntimeInputData>().InputActionAsset;
+        private static char S => Path.DirectorySeparatorChar;
+        private static string GeneratedFolderPath => $@"{S}Scripts{S}InputManagement{S}Generated{S}";
+        private static string GeneratedMapActionsPath => $@"{S}Scripts{S}InputManagement{S}Generated{S}MapActions{S}";
+        private static string GeneratedMapCachePath => $@"{S}Scripts{S}InputManagement{S}Generated{S}MapCaches{S}";
 
-        [MenuItem(GENERATOR_FEATURE_MENU_NAME)]
+        [MenuItem(EditorToolNames.GENERATOR_FEATURE)]
         public static void GenerateMapInstances()
         {
-            InputActionAsset asset = GeneratorHelper.InputActionAsset;
-            GenerateMapInstanceClasses(asset);
-            ModifyExistingFile(asset, ControlSchemeFilePath, ControlSchemeContentBuilder.AddContentForControlScheme);
-            ModifyExistingFile(asset, InputContextFilePath, InputContextContentBuilder.AddContentForInputContext);
-            ModifyExistingFile(asset, InputManagerFilePath, InputManagerContentBuilder.AddContentForInputManager);
+            InputActionAsset asset = InputActionAsset;
+            GeneratorHelper.ClearFolder(GeneratedFolderPath);
+            GenerateMapActionClasses(asset);
+            GenerateMapCacheClasses(asset);
+            ModifyExistingFile(asset, ControlSchemeFilePath, ControlSchemeContentBuilder.AddContent);
+            ModifyExistingFile(asset, InputContextFilePath, InputContextContentBuilder.AddContent);
+            ModifyExistingFile(asset, InputManagerFilePath, InputManagerContentBuilder.AddContent);
             
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
 
-        private static void GenerateMapInstanceClasses(InputActionAsset asset)
+        private static void GenerateMapActionClasses(InputActionAsset asset)
         {
-            GeneratorHelper.ClearGeneratedFolder();
-            
             foreach (InputActionMap map in asset.actionMaps)
             {
-                GenerateMapInstanceClass(map);
+                GenerateFile(map, 
+                    GeneratorHelper.GetMapActionsTemplateFilePath(), 
+                    MapActionsContentBuilder.AddContent,
+                    GeneratorHelper.GetPathForGeneratedClass(GeneratedMapActionsPath + map.name.AsType() + "Actions.cs"));
+            }
+        }
+        
+        private static void GenerateMapCacheClasses(InputActionAsset asset)
+        {
+            foreach (InputActionMap map in asset.actionMaps)
+            {
+                GenerateFile(map, 
+                    GeneratorHelper.GetMapCacheTemplateFilePath(), 
+                    MapCachesContentBuilder.AddContent,
+                    GeneratorHelper.GetPathForGeneratedClass(GeneratedMapCachePath + map.name.AsType() + "MapCache.cs"));
             }
         }
 
-        private static void GenerateMapInstanceClass(InputActionMap map)
+        private static void GenerateFile(InputActionMap map, string readPath,
+            Action<string, InputActionMap, List<string>> addContentAction, string writePath)
         {
             List<string> newLines = new();
 
             try
             {
-                using StreamReader sr = new(GeneratorHelper.GetMapActionsTemplateFilePath());
+                using StreamReader sr = new(readPath);
                 ReadState readState = ReadState.Normal;
                 while (sr.ReadLine() is { } line)
                 {
@@ -60,13 +80,14 @@ namespace StellarMass.InputManagement.Editor
                         case ReadState.Normal:
                             if (GeneratorHelper.IsMarkerStart(line, out string markerName))
                             {
-                                MapActionsContentBuilder.AddContentForMapInstance(markerName, map, newLines);
+                                addContentAction(markerName, map, newLines);
                                 readState = ReadState.WaitingForMarkerEnd;
                             }
                             else
                             {
                                 newLines.Add(line);
                             }
+
                             break;
                         case ReadState.WaitingForMarkerEnd:
                             if (GeneratorHelper.IsMarkerEnd(line)) readState = ReadState.Normal;
@@ -82,9 +103,9 @@ namespace StellarMass.InputManagement.Editor
                 return;
             }
 
-            GeneratorHelper.WriteLinesToFile(newLines, GeneratorHelper.GetPathForGeneratedMap(map.name));
+            GeneratorHelper.WriteLinesToFile(newLines, writePath);
         }
-        
+
         private static void ModifyExistingFile(InputActionAsset asset, string filePath, Action<InputActionAsset, string, List<string>> markerSectionAction)
         {
             List<string> newLines = new();

@@ -19,14 +19,15 @@ namespace StellarMass.InputManagement.Data
     {
 #if UNITY_EDITOR
         public const string RUNTIME_INPUT_DATA_ADDRESS = nameof(RuntimeInputData);
-        
+
         [SerializeField] private RuntimeInputData runtimeInputData;
+        public RuntimeInputData RuntimeInputData => runtimeInputData;
 
         [SerializeField] private TextAsset mapActionsTemplateFile;
         public TextAsset MapActionsTemplateFile => mapActionsTemplateFile;
-
-        [SerializeField] private InputActionAsset inputActionAsset;
-        public InputActionAsset InputActionAsset => inputActionAsset;
+        
+        [SerializeField] private TextAsset mapCacheTemplateFile;
+        public TextAsset MapCacheTemplateFile => mapCacheTemplateFile;
 
         [SerializeField] private InputContext defaultContext;
         public InputContext DefaultContext => defaultContext;
@@ -36,12 +37,32 @@ namespace StellarMass.InputManagement.Data
         
         private void OnValidate()
         {
-            SetRuntimeInputDataAddress();
+            SetAssetAddress(runtimeInputData, RUNTIME_INPUT_DATA_ADDRESS);
+            VerifyEventSystemActions();
+        }
 
+        private void SetAssetAddress(Object unityObject, string address)
+        {
+            string path = AssetDatabase.GetAssetPath(unityObject);
+            string guid = AssetDatabase.AssetPathToGUID(path);
+
+            AddressableAssetEntry assetEntry = AddressableAssetSettingsDefaultObject.Settings.FindAssetEntry(guid);
+            if (assetEntry == null)
+            {
+                assetEntry = AddressableAssetSettingsDefaultObject.Settings.CreateOrMoveEntry(
+                    guid, AddressableAssetSettingsDefaultObject.Settings.DefaultGroup);
+                EditorUtility.SetDirty(AddressableAssetSettingsDefaultObject.Settings);
+            }
+
+            assetEntry.address = address;
+        }
+        
+        private void VerifyEventSystemActions()
+        {
             foreach (InputContextInfo contextInfo in inputContextInfos)
             {
                 contextInfo.EDITOR_SetName(contextInfo.Name.AllWhitespaceTrimmed().CapitalizeFirst());
-                
+
                 InputActionReference[] inputActionReferences = contextInfo.EventSystemActions.AllInputActionReferences;
                 foreach (InputActionReference inputActionReference in inputActionReferences)
                 {
@@ -49,10 +70,10 @@ namespace StellarMass.InputManagement.Data
                     {
                         continue;
                     }
-                    
+
                     foreach (string mapName in contextInfo.ActiveMaps)
                     {
-                        InputActionMap map = inputActionAsset.FindActionMap(mapName);
+                        InputActionMap map = runtimeInputData.InputActionAsset.FindActionMap(mapName);
                         if (map.actions.Contains(inputActionReference.action))
                         {
                             continue;
@@ -64,22 +85,6 @@ namespace StellarMass.InputManagement.Data
                     }
                 }
             }
-        }
-
-        private void SetRuntimeInputDataAddress()
-        {
-            string path = AssetDatabase.GetAssetPath(runtimeInputData);
-            string guid = AssetDatabase.AssetPathToGUID(path);
-
-            AddressableAssetEntry runtimeInputAssetEntry = AddressableAssetSettingsDefaultObject.Settings.FindAssetEntry(guid);
-            if (runtimeInputAssetEntry == null)
-            {
-                runtimeInputAssetEntry = AddressableAssetSettingsDefaultObject.Settings.CreateOrMoveEntry(
-                    guid, AddressableAssetSettingsDefaultObject.Settings.DefaultGroup);
-                EditorUtility.SetDirty(AddressableAssetSettingsDefaultObject.Settings);
-            }
-
-            runtimeInputAssetEntry.address = RUNTIME_INPUT_DATA_ADDRESS;
         }
 #endif
     }

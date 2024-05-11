@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using StellarMass.Data;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Utilities;
 
 #if UNITY_EDITOR
@@ -16,6 +17,9 @@ namespace StellarMass.InputManagement.Data
     [CreateAssetMenu]
     public class RuntimeInputData : DataScriptable
     {
+        [SerializeField] private InputActionAsset inputActionAsset;
+        public InputActionAsset InputActionAsset => inputActionAsset;
+
         [SerializeField] private bool useContextEventSystemActions;
         public bool UseContextEventSystemActions => useContextEventSystemActions;
 

@@ -2,7 +2,7 @@
 using StellarMass.InputManagement.Attributes;
 using UnityEngine;
 
-namespace StellarMass.InputManagement
+namespace StellarMass.InputManagement.Data
 {
     [Serializable]
     public class InputContextInfo
@@ -14,8 +14,8 @@ namespace StellarMass.InputManagement
         [SerializeField] private string[] activeMaps;
         public string[] ActiveMaps => activeMaps;
 
-        [SerializeField] private bool useEventSystemActions;
-        public bool UseEventSystemActions => useEventSystemActions;
+        [SerializeField] private bool enableKeyboardTextInput;
+        public bool EnableKeyboardTextInput => enableKeyboardTextInput;
 
         [SerializeField] private EventSystemActions eventSystemActions;
         public EventSystemActions EventSystemActions => eventSystemActions;

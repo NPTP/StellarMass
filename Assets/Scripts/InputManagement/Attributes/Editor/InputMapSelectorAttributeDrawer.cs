@@ -10,7 +10,7 @@ namespace StellarMass.InputManagement.Attributes.Editor
     {
         protected override string[] GetNames()
         {
-            InputActionAsset asset = EditorAssetGetter.GetFirst<OfflineInputData>().InputActionAsset;
+            InputActionAsset asset = EditorAssetGetter.GetFirst<RuntimeInputData>().InputActionAsset;
             InputActionMap[] maps = asset.actionMaps.ToArray();
             string[] names = new string[maps.Length];
             for (int i = 0; i < maps.Length; i++)

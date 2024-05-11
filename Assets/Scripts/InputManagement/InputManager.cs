@@ -1,9 +1,8 @@
-// MARKER.UsingDirective.Start
-using StellarMass.InputManagement.UnityGenerated;
-// MARKER.UsingDirective.End
 using System;
 using System.Linq;
 using StellarMass.InputManagement.Data;
+using StellarMass.InputManagement.Generated.MapActions;
+using StellarMass.InputManagement.Generated.MapCaches;
 using StellarMass.Utilities;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
@@ -18,10 +17,6 @@ using UnityEngine.InputSystem.LowLevel;
 using UnityEditor;
 #endif
 
-//// NP TODO: In order of priority:
-//// - Support for directly referencing the input asset on disk instead of having to swap to the newly created one?
-//// - Documentation of usage and public interfaces (InputActionReferenceWrapped included)
-//// - Full event system swapping support, w/ runtime data checkbox option. May require using on-disk asset only, because UI input module only takes InputActionReference.
 namespace StellarMass.InputManagement
 {
     /// <summary>
@@ -31,13 +26,13 @@ namespace StellarMass.InputManagement
     public static class InputManager
     {
         #region Fields & Properties
-        // MARKER.RuntimeInputDataAddress.Start
+        // MARKER.RuntimeInputAddress.Start
         private const string RUNTIME_INPUT_DATA_ADDRESS = "RuntimeInputData";
-        // MARKER.RuntimeInputDataAddress.End
-
-        // These events are the only ones that can fire independently of specific action maps being enabled or disabled.
-        public static event Action OnAnyButtonPressed;
+        // MARKER.RuntimeInputAddress.End
         public static event Action<char> OnKeyboardTextInput;
+
+        // The following 3 events will fire regardless of maps or keyboard input being enabled/disabled.
+        public static event Action OnAnyButtonPressed;
         public static event Action<ControlScheme> OnControlSchemeChanged;
         public static event Action<InputDevice> OnLastUsedDeviceChanged;
 
@@ -46,16 +41,17 @@ namespace StellarMass.InputManagement
         public static PauseMenuActions PauseMenu { get; private set; }
         // MARKER.MapActionsProperties.End
         
-        // MARKER.InputActionCollectionDeclaration.Start
-        private static InputActions inputActions;
-        // MARKER.InputActionCollectionDeclaration.End
-        
+        // MARKER.MapCacheFields.Start
+        private static GameplayMapCache gameplayMap;
+        private static PauseMenuMapCache pauseMenuMap;
+        // MARKER.MapCacheFields.End
+
         private static RuntimeInputData runtimeInputData;
         private static InputSystemUIInputModule uiInputModule;
         private static IDisposable anyButtonPressListener;
 
-        private static InputContext previousContext;
         public static InputContext CurrentContext { get; private set; }
+        public static ControlScheme CurrentControlScheme { get; private set; }
         public static InputDevice LastUsedDevice { get; private set; }
         
         // MARKER.DefaultContextProperty.Start
@@ -64,7 +60,6 @@ namespace StellarMass.InputManagement
         #endregion
 
         #region Setup
-        
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void BeforeSceneLoad()
         {
@@ -81,15 +76,18 @@ namespace StellarMass.InputManagement
             Application.quitting += Terminate;
 #endif
             runtimeInputData = AddressablesUtility.LoadAssetSynchronous<RuntimeInputData>(RUNTIME_INPUT_DATA_ADDRESS);
-            
-            // MARKER.InputActionCollectionInstantiation.Start
-            inputActions = new InputActions();
-            // MARKER.InputActionCollectionInstantiation.End
+            InputActionAsset asset = runtimeInputData.InputActionAsset;
+            if (asset == null)
+            {
+                throw new MissingFieldException("InputManager runtimeInputData is missing an input action asset!");
+            }
 
-            // MARKER.InstantiateMapInstances.Start
+            // MARKER.MapAndActionsInstantiation.Start
             Gameplay = new GameplayActions();
+            gameplayMap = new GameplayMapCache(asset);
             PauseMenu = new PauseMenuActions();
-            // MARKER.InstantiateMapInstances.End
+            pauseMenuMap = new PauseMenuMapCache(asset);
+            // MARKER.MapAndActionsInstantiation.End
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -108,11 +106,10 @@ namespace StellarMass.InputManagement
                 Object.DontDestroyOnLoad(inputMgmtGameObject);
             }
             
-            playerInput.actions = inputActions.asset;
+            playerInput.actions = runtimeInputData.InputActionAsset;
             playerInput.uiInputModule = uiInputModule;
             playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
 
-            previousContext = DefaultContext;
             EnableContext(DefaultContext);
             AddSubscriptions();
         }
@@ -139,37 +136,24 @@ namespace StellarMass.InputManagement
             
             RemoveAllMapActionCallbacks();
             DisableKeyboardTextInput();
-            inputActions.Disable();
+            runtimeInputData.InputActionAsset.Disable();
         }
 
         private static void RemoveAllMapActionCallbacks()
         {
             // MARKER.MapActionsRemoveCallbacks.Start
-            inputActions.Gameplay.RemoveCallbacks(Gameplay);
-            inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
+            gameplayMap.RemoveCallbacks(Gameplay);
+            pauseMenuMap.RemoveCallbacks(PauseMenu);
             // MARKER.MapActionsRemoveCallbacks.End
         }
-        
         #endregion
 
         #region Public Interface
-        
-        public static void EnableKeyboardTextInput() => Keyboard.current.onTextInput += HandleTextInput;
-        public static void DisableKeyboardTextInput() => Keyboard.current.onTextInput -= HandleTextInput;
 
-        public static void EnablePreviousContext() => EnableContext(previousContext);
-        
         public static void EnableContext(InputContext context)
         {
-            previousContext = CurrentContext;
             CurrentContext = context;
             EnableMapsForContext(context);
-        }
-
-        public static InputAction GetLocalAssetActionFromReference(InputActionReferenceWrapper referenceWrapper)
-        {
-            InputActionMap map = inputActions.asset.FindActionMap(referenceWrapper.MapName);
-            return map == null ? null : map.FindAction(referenceWrapper.ActionName);
         }
         
         public static bool TryGetBindingPathInfo(InputControl inputControl, out BindingPathInfo bindingPathInfo)
@@ -202,35 +186,95 @@ namespace StellarMass.InputManagement
             return true;
         }
 
+        public static void ChangeSubscription(InputActionReference actionReference, Action<InputAction.CallbackContext> callback, bool subscribe)
+        {
+            if (actionReference == null)
+            {
+                Debug.LogError("Trying to subscribe to a nonexistent action reference.");
+                return;
+            }
+
+            if (callback == null)
+            {
+                Debug.LogError("Trying to subscribe with a nonexistent callback.");
+                return;
+            }
+            
+            FindActionEventAndSubscribe(actionReference, callback, subscribe);
+        }
         #endregion
-        
+
+        #region Private Runtime Functionality
         private static void EnableMapsForContext(InputContext context)
         {
             switch (context)
             {
                 // MARKER.EnableContextSwitchMembers.Start
                 case InputContext.Gameplay:
-                    inputActions.Gameplay.Enable();
-                    inputActions.Gameplay.AddCallbacks(Gameplay);
-                    inputActions.PauseMenu.Disable();
-                    inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
+                    DisableKeyboardTextInput();
+                    gameplayMap.Enable();
+                    gameplayMap.AddCallbacks(Gameplay);
+                    pauseMenuMap.Disable();
+                    pauseMenuMap.RemoveCallbacks(PauseMenu);
+                    SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
                     break;
                 case InputContext.PauseMenu:
-                    inputActions.Gameplay.Disable();
-                    inputActions.Gameplay.RemoveCallbacks(Gameplay);
-                    inputActions.PauseMenu.Enable();
-                    inputActions.PauseMenu.AddCallbacks(PauseMenu);
+                    DisableKeyboardTextInput();
+                    gameplayMap.Disable();
+                    gameplayMap.RemoveCallbacks(Gameplay);
+                    pauseMenuMap.Enable();
+                    pauseMenuMap.AddCallbacks(PauseMenu);
+                    SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
                     break;
                 case InputContext.AllInputDisabled:
-                    inputActions.Gameplay.Disable();
-                    inputActions.Gameplay.RemoveCallbacks(Gameplay);
-                    inputActions.PauseMenu.Disable();
-                    inputActions.PauseMenu.RemoveCallbacks(PauseMenu);
+                    DisableKeyboardTextInput();
+                    gameplayMap.Disable();
+                    gameplayMap.RemoveCallbacks(Gameplay);
+                    pauseMenuMap.Disable();
+                    pauseMenuMap.RemoveCallbacks(PauseMenu);
+                    SetUIEventSystemActions(null, null, null, null, null, null, null, null, null, null);
                     break;
                 // MARKER.EnableContextSwitchMembers.End
                 default:
                     throw new ArgumentOutOfRangeException(nameof(context), context, null);
             }
+        }
+        
+        private static void EnableKeyboardTextInput()
+        {
+            Keyboard.current.onTextInput -= HandleTextInput;
+            Keyboard.current.onTextInput += HandleTextInput;
+        }
+
+        private static void DisableKeyboardTextInput() => Keyboard.current.onTextInput -= HandleTextInput;
+
+        private static void SetUIEventSystemActions(
+            InputAction point,
+            InputAction leftClick,
+            InputAction middleClick,
+            InputAction rightClick,
+            InputAction scrollWheel,
+            InputAction move,
+            InputAction submit,
+            InputAction cancel,
+            InputAction trackedDevicePosition,
+            InputAction trackedDeviceOrientation)
+        {
+            if (runtimeInputData == null || !runtimeInputData.UseContextEventSystemActions)
+            {
+                return;
+            }
+            
+            uiInputModule.point = InputActionReference.Create(point);
+            uiInputModule.leftClick = InputActionReference.Create(leftClick);
+            uiInputModule.middleClick = InputActionReference.Create(middleClick);
+            uiInputModule.rightClick = InputActionReference.Create(rightClick);
+            uiInputModule.scrollWheel = InputActionReference.Create(scrollWheel);
+            uiInputModule.move = InputActionReference.Create(move);
+            uiInputModule.submit = InputActionReference.Create(submit);
+            uiInputModule.cancel = InputActionReference.Create(cancel);
+            uiInputModule.trackedDevicePosition = InputActionReference.Create(trackedDevicePosition);
+            uiInputModule.trackedDeviceOrientation = InputActionReference.Create(trackedDeviceOrientation);
         }
 
         private static void ParseInputControlPath(InputControl inputControl, out string deviceName, out string controlPath)
@@ -279,13 +323,14 @@ namespace StellarMass.InputManagement
                 return;
             }
 
-            ControlScheme? enumValue = ControlSchemeNameToEnum(user.controlScheme.Value.name);
-            if (enumValue == null)
+            ControlScheme? controlScheme = ControlSchemeNameToEnum(user.controlScheme.Value.name);
+            if (controlScheme == null)
             {
                 return;
             }
-            
-            OnControlSchemeChanged?.Invoke(enumValue.Value);
+
+            CurrentControlScheme = controlScheme.Value;
+            OnControlSchemeChanged?.Invoke(controlScheme.Value);
         }
 
         private static ControlScheme? ControlSchemeNameToEnum(string controlSchemeName)
@@ -300,33 +345,60 @@ namespace StellarMass.InputManagement
             };
         }
 
-        private static void SetUIEventSystemActions(
-            InputActionReference point,
-            InputActionReference leftClick,
-            InputActionReference middleClick,
-            InputActionReference rightClick,
-            InputActionReference scrollWheel,
-            InputActionReference move,
-            InputActionReference submit,
-            InputActionReference cancel,
-            InputActionReference trackedDevicePosition,
-            InputActionReference trackedDeviceOrientation)
+        private static void FindActionEventAndSubscribe(InputActionReference actionReference, Action<InputAction.CallbackContext> callback, bool subscribe)
         {
-            if (runtimeInputData != null && runtimeInputData.UseContextEventSystemActions)
+            InputAction action = actionReference.action;
+            InputActionMap map = action.actionMap;
+
+            // MARKER.ChangeSubscriptionIfStatements.Start
+            if (gameplayMap.ActionMap == map)
             {
-                return;
+                if (action == gameplayMap.Thrust)
+                {
+                    Gameplay.OnThrust -= callback;
+                    if (subscribe) Gameplay.OnThrust += callback;
+                }
+                else if (action == gameplayMap.Shoot)
+                {
+                    Gameplay.OnShoot -= callback;
+                    if (subscribe) Gameplay.OnShoot += callback;
+                }
+                else if (action == gameplayMap.Hyperspace)
+                {
+                    Gameplay.OnHyperspace -= callback;
+                    if (subscribe) Gameplay.OnHyperspace += callback;
+                }
+                else if (action == gameplayMap.Turn)
+                {
+                    Gameplay.OnTurn -= callback;
+                    if (subscribe) Gameplay.OnTurn += callback;
+                }
+                else if (action == gameplayMap.Pause)
+                {
+                    Gameplay.OnPause -= callback;
+                    if (subscribe) Gameplay.OnPause += callback;
+                }
             }
-            
-            uiInputModule.point = point;
-            uiInputModule.leftClick = leftClick;
-            uiInputModule.middleClick = middleClick;
-            uiInputModule.rightClick = rightClick;
-            uiInputModule.scrollWheel = scrollWheel;
-            uiInputModule.move = move;
-            uiInputModule.submit = submit;
-            uiInputModule.cancel = cancel;
-            uiInputModule.trackedDevicePosition = trackedDevicePosition;
-            uiInputModule.trackedDeviceOrientation = trackedDeviceOrientation;
+            else if (pauseMenuMap.ActionMap == map)
+            {
+                if (action == pauseMenuMap.Navigate)
+                {
+                    PauseMenu.OnNavigate -= callback;
+                    if (subscribe) PauseMenu.OnNavigate += callback;
+                }
+                else if (action == pauseMenuMap.Submit)
+                {
+                    PauseMenu.OnSubmit -= callback;
+                    if (subscribe) PauseMenu.OnSubmit += callback;
+                }
+                else if (action == pauseMenuMap.Unpause)
+                {
+                    PauseMenu.OnUnpause -= callback;
+                    if (subscribe) PauseMenu.OnUnpause += callback;
+                }
+            }
+            // MARKER.ChangeSubscriptionIfStatements.End
         }
+        #endregion
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace StellarMass.InputManagement
+namespace StellarMass.InputManagement.Data
 {
     [Serializable]
     public class EventSystemActions

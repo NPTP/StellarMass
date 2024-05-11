@@ -7,7 +7,7 @@ namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
 {
     public static class InputContextContentBuilder
     {
-        public static void AddContentForInputContext(InputActionAsset asset, string markerName, List<string> lines)
+        public static void AddContent(InputActionAsset asset, string markerName, List<string> lines)
         {
             switch (markerName)
             {
