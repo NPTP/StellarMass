@@ -11,5 +11,15 @@ namespace StellarMass.Utilities.Editor
             if (guids.Length == 0) return null;
             return AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guids[0]));
         }
+        
+        public static string GetSystemFilePath<T>(T asset) where T : Object
+        {
+            if (asset == null)
+            {
+                return string.Empty;
+            }
+            
+            return Application.dataPath + AssetDatabase.GetAssetPath(asset).Replace("Assets", string.Empty);
+        }
     }
 }

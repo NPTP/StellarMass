@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using StellarMass.Editor;
-using StellarMass.InputManagement.Data;
 using StellarMass.InputManagement.Editor.ScriptContentBuilders;
-using StellarMass.Utilities.Editor;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -19,25 +17,18 @@ namespace StellarMass.InputManagement.Editor
             WaitingForMarkerEnd
         }
 
-        private static string InputManagerFilePath => EditorScriptGetter.GetSystemPath(typeof(Input));
-        private static string ControlSchemeFilePath => EditorScriptGetter.GetSystemPath<ControlScheme>();
-        private static string InputContextFilePath => EditorScriptGetter.GetSystemPath<InputContext>();
-        private static InputActionAsset InputActionAsset => EditorAssetGetter.GetFirst<RuntimeInputData>().InputActionAsset;
-        private static char S => Path.DirectorySeparatorChar;
-        private static string GeneratedFolderPath => $@"{S}Scripts{S}InputManagement{S}Generated{S}";
-        private static string GeneratedMapActionsPath => $@"{S}Scripts{S}InputManagement{S}Generated{S}MapActions{S}";
-        private static string GeneratedMapCachePath => $@"{S}Scripts{S}InputManagement{S}Generated{S}MapCaches{S}";
+
 
         [MenuItem(EditorToolNames.GENERATOR_FEATURE)]
         public static void GenerateMapInstances()
         {
-            InputActionAsset asset = InputActionAsset;
-            GeneratorHelper.ClearFolder(GeneratedFolderPath);
+            InputActionAsset asset = Helper.InputActionAsset;
+            Helper.ClearFolder(Helper.GeneratedFolderSystemPath);
             GenerateMapActionClasses(asset);
             GenerateMapCacheClasses(asset);
-            ModifyExistingFile(asset, ControlSchemeFilePath, ControlSchemeContentBuilder.AddContent);
-            ModifyExistingFile(asset, InputContextFilePath, InputContextContentBuilder.AddContent);
-            ModifyExistingFile(asset, InputManagerFilePath, InputManagerContentBuilder.AddContent);
+            ModifyExistingFile(asset, Helper.ControlSchemeFileSystemPath, ControlSchemeContentBuilder.AddContent);
+            ModifyExistingFile(asset, Helper.InputContextFileSystemPath, InputContextContentBuilder.AddContent);
+            ModifyExistingFile(asset, Helper.InputManagerFileSystemPath, InputManagerContentBuilder.AddContent);
             
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
         }
@@ -47,9 +38,9 @@ namespace StellarMass.InputManagement.Editor
             foreach (InputActionMap map in asset.actionMaps)
             {
                 GenerateFile(map, 
-                    GeneratorHelper.GetMapActionsTemplateFilePath(), 
+                    Helper.MapActionsTemplateFileSystemPath,
                     MapActionsContentBuilder.AddContent,
-                    GeneratorHelper.GetPathForGeneratedClass(GeneratedMapActionsPath + map.name.AsType() + "Actions.cs"));
+                    Helper.GeneratedMapActionsSystemPath + map.name.AsType() + "Actions.cs");
             }
         }
         
@@ -58,9 +49,9 @@ namespace StellarMass.InputManagement.Editor
             foreach (InputActionMap map in asset.actionMaps)
             {
                 GenerateFile(map, 
-                    GeneratorHelper.GetMapCacheTemplateFilePath(), 
+                    Helper.MapCacheTemplateFileSystemPath, 
                     MapCachesContentBuilder.AddContent,
-                    GeneratorHelper.GetPathForGeneratedClass(GeneratedMapCachePath + map.name.AsType() + "MapCache.cs"));
+                    Helper.GeneratedMapCacheSystemPath + map.name.AsType() + "MapCache.cs");
             }
         }
 
@@ -78,7 +69,7 @@ namespace StellarMass.InputManagement.Editor
                     switch (readState)
                     {
                         case ReadState.Normal:
-                            if (GeneratorHelper.IsMarkerStart(line, out string markerName))
+                            if (Helper.IsMarkerStart(line, out string markerName))
                             {
                                 addContentAction(markerName, map, newLines);
                                 readState = ReadState.WaitingForMarkerEnd;
@@ -90,7 +81,7 @@ namespace StellarMass.InputManagement.Editor
 
                             break;
                         case ReadState.WaitingForMarkerEnd:
-                            if (GeneratorHelper.IsMarkerEnd(line)) readState = ReadState.Normal;
+                            if (Helper.IsMarkerEnd(line)) readState = ReadState.Normal;
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -103,7 +94,7 @@ namespace StellarMass.InputManagement.Editor
                 return;
             }
 
-            GeneratorHelper.WriteLinesToFile(newLines, writePath);
+            Helper.WriteLinesToFile(newLines, writePath);
         }
 
         private static void ModifyExistingFile(InputActionAsset asset, string filePath, Action<InputActionAsset, string, List<string>> markerSectionAction)
@@ -120,14 +111,14 @@ namespace StellarMass.InputManagement.Editor
                     {
                         case ReadState.Normal:
                             newLines.Add(line);
-                            if (GeneratorHelper.IsMarkerStart(line, out string markerName))
+                            if (Helper.IsMarkerStart(line, out string markerName))
                             {
                                 markerSectionAction?.Invoke(asset, markerName, newLines);
                                 readState = ReadState.WaitingForMarkerEnd;
                             }
                             break;
                         case ReadState.WaitingForMarkerEnd:
-                            if (GeneratorHelper.IsMarkerEnd(line))
+                            if (Helper.IsMarkerEnd(line))
                             {
                                 newLines.Add(line);
                                 readState = ReadState.Normal;
@@ -144,7 +135,7 @@ namespace StellarMass.InputManagement.Editor
                 return;
             }
 
-            GeneratorHelper.WriteLinesToFile(newLines, filePath);
+            Helper.WriteLinesToFile(newLines, filePath);
         }
     }
 }

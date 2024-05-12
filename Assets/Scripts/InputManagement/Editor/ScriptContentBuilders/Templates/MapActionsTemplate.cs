@@ -8,7 +8,9 @@ using UnityEngine.InputSystem;
 
 // MARKER.GeneratorNotice.Start
 // MARKER.GeneratorNotice.End
+// MARKER.Namespace.Start
 namespace StellarMass.InputManagement.Generated.MapActions
+// MARKER.Namespace.End
 {
     // MARKER.InterfaceName.Start
     public interface ITemplateActions
@@ -43,9 +45,9 @@ namespace StellarMass.InputManagement.Generated.MapActions
         }
         // MARKER.PublicEvents.End
 
-        // MARKER.InterfaceMethods.Start
+        // MARKER.InterfaceMethodImplementations.Start
         void ITemplateActions.OnTemplateAction1(InputAction.CallbackContext context) => _OnTemplateAction1?.Invoke(context);
         void ITemplateActions.OnTemplateAction2(InputAction.CallbackContext context) => _OnTemplateAction2?.Invoke(context);
-        // MARKER.InterfaceMethods.End
+        // MARKER.InterfaceMethodImplementations.End
     }
 }

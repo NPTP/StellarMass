@@ -12,7 +12,9 @@ using UnityEngine.InputSystem;
 
 // MARKER.GeneratorNotice.Start
 // MARKER.GeneratorNotice.End
+// MARKER.Namespace.Start
 namespace StellarMass.InputManagement.Generated.MapCaches
+// MARKER.Namespace.End
 {
     // MARKER.ClassSignature.Start
     public class MapCacheTemplate

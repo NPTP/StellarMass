@@ -18,11 +18,11 @@ namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
                     lines.Add($"        private const string RUNTIME_INPUT_DATA_ADDRESS = \"{OfflineInputData.RUNTIME_INPUT_DATA_ADDRESS}\";");
                     break;
                 case "MapActionsProperties":
-                    foreach (string mapName in GeneratorHelper.GetCleanedMapNames(asset))
-                        lines.Add($"        public static {mapName}Actions {mapName}" + " { get; private set; }");
+                    foreach (string mapName in Helper.GetMapNames(asset))
+                        lines.Add($"        public static {mapName.AsType()}Actions {mapName.AsType()}" + " { get; private set; }");
                     break;
                 case "MapCacheFields":
-                    foreach (string map in GeneratorHelper.GetMapNames(asset))
+                    foreach (string map in Helper.GetMapNames(asset))
                     {
                         lines.Add($"        private static {map.AsType()}MapCache {map.AsField()}Map;");
                     }
@@ -32,14 +32,14 @@ namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
                     lines.Add($"        private static {nameof(InputContext)} DefaultContext => {nameof(InputContext)}.{inputData.DefaultContext};");
                     break;
                 case "MapAndActionsInstantiation":
-                    foreach (string map in GeneratorHelper.GetMapNames(asset))
+                    foreach (string map in Helper.GetMapNames(asset))
                     {
                         lines.Add($"            {map.AsType()} = new {map.AsType()}Actions();");
                         lines.Add($"            {map.AsField()}Map = new {map.AsType()}MapCache(asset);");
                     }
                     break;
                 case "MapActionsRemoveCallbacks":
-                    foreach (string map in GeneratorHelper.GetMapNames(asset))
+                    foreach (string map in Helper.GetMapNames(asset))
                         lines.Add($"            {map.AsField()}Map.RemoveCallbacks({map.AsType()});");
                     break;
                 case "EnableContextSwitchMembers":
@@ -48,7 +48,7 @@ namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
                     {
                         lines.Add($"                case {nameof(InputContext)}.{contextInfo.Name}:");
                         lines.Add($"                    {(contextInfo.EnableKeyboardTextInput ? "Enable" : "Disable")}KeyboardTextInput();");
-                        foreach (string map in GeneratorHelper.GetMapNames(asset))
+                        foreach (string map in Helper.GetMapNames(asset))
                         {
                             bool enable = contextInfo.ActiveMaps.Any(activeMapName => map == activeMapName);
                             lines.Add($"                    {map.AsField()}Map.{(enable ? "Enable" : "Disable")}();");
@@ -77,7 +77,7 @@ namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
                     break;
                 case "ChangeSubscriptionIfStatements":
                     int i = 0;
-                    foreach (string map in GeneratorHelper.GetMapNames(asset))
+                    foreach (string map in Helper.GetMapNames(asset))
                     {
                         string ifElse = i == 0 ? "if" : "else if";
                         string mapField = $"{map.AsField()}Map";

@@ -6,32 +6,55 @@ using System.Text;
 using StellarMass.InputManagement.Data;
 using StellarMass.Utilities.Editor;
 using StellarMass.Utilities.Extensions;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace StellarMass.InputManagement.Editor
 {
-    public static class GeneratorHelper
+    public static class Helper
     {
         private const string MARKER = "// MARKER";
         private const string START = "Start";
         private const string END = "End";
         
+        // Assets
+        public static InputActionAsset InputActionAsset => EditorAssetGetter.GetFirst<RuntimeInputData>().InputActionAsset;
+        private static OfflineInputData OfflineInputData => EditorAssetGetter.GetFirst<OfflineInputData>();
+        public static string InputNamespace => GetNamespace(InputManagerFileSystemPath);
+        
+        // Existing script paths
+        public static string InputManagerFileSystemPath => EditorScriptGetter.GetSystemFilePath(typeof(Input));
+        public static string ControlSchemeFileSystemPath => EditorScriptGetter.GetSystemFilePath<ControlScheme>();
+        public static string InputContextFileSystemPath => EditorScriptGetter.GetSystemFilePath<InputContext>();
+        private static string InputManagerFolderSystemPath => EditorScriptGetter.GetSystemFolderPath(typeof(Input));
+        
+        // Template paths
+        public static string MapActionsTemplateFileSystemPath => EditorAssetGetter.GetSystemFilePath(OfflineInputData.MapActionsTemplateFile);
+        public static string MapCacheTemplateFileSystemPath => EditorAssetGetter.GetSystemFilePath(OfflineInputData.MapCacheTemplateFile);
+        
+        // Generated script paths
+        public const string GENERATED = "Generated";
+        public const string MAP_ACTIONS = "MapActions";
+        public const string MAP_CACHES = "MapCaches";
+        public static string GeneratedFolderSystemPath => InputManagerFolderSystemPath + GENERATED + Sep;
+        public static string GeneratedMapActionsSystemPath => GeneratedFolderSystemPath + MAP_ACTIONS + Sep;
+        public static string GeneratedMapCacheSystemPath => GeneratedFolderSystemPath + MAP_CACHES + Sep;
+        private static char Sep => Path.DirectorySeparatorChar;
+        
+        // String extensions for code generation
         public static string AsField(this string s) => s.AllWhitespaceTrimmed().LowercaseFirst();
         public static string AsType(this string s) => s.AllWhitespaceTrimmed().CapitalizeFirst();
         public static string AsEnumMember(this string s) => s.AlphaNumericCharactersOnly();
-
-        public static void ClearFolder(string folderPath)
+        
+        public static void ClearFolder(string folderSystemPath)
         {
-            string fullSystemPath = Application.dataPath + folderPath;
-            if (!Directory.Exists(fullSystemPath))
+            if (!Directory.Exists(folderSystemPath))
             {
-                Directory.CreateDirectory(fullSystemPath);
+                Directory.CreateDirectory(folderSystemPath);
             }
             else
             {
-                string[] filePaths = Directory.GetFiles(fullSystemPath);
+                string[] filePaths = Directory.GetFiles(folderSystemPath);
 
                 foreach (string filePath in filePaths)
                 {
@@ -69,46 +92,10 @@ namespace StellarMass.InputManagement.Editor
                 $"// ------------------------------------------------------------------------"
             };
         }
-        
-        public static IEnumerable<string> GetCleanedMapNames(InputActionAsset asset)
-        {
-            return asset.actionMaps.Select(map => map.name.AllWhitespaceTrimmed().CapitalizeFirst());
-        }
-        
+
         public static IEnumerable<string> GetMapNames(InputActionAsset asset)
         {
             return asset.actionMaps.Select(map => map.name);
-        }
-
-        public static string GetMapActionsTemplateFilePath()
-        {
-            OfflineInputData offlineInputData = EditorAssetGetter.GetFirst<OfflineInputData>();
-            return Application.dataPath + AssetDatabase.GetAssetPath(offlineInputData.MapActionsTemplateFile).Replace("Assets", string.Empty);
-        }
-        
-        public static string GetMapCacheTemplateFilePath()
-        {
-            OfflineInputData offlineInputData = EditorAssetGetter.GetFirst<OfflineInputData>();
-            return Application.dataPath + AssetDatabase.GetAssetPath(offlineInputData.MapCacheTemplateFile).Replace("Assets", string.Empty);
-        }
-        
-        public static string GetPathForGeneratedClass(string localPath)
-        {
-            return Application.dataPath + localPath;
-        }
-
-        public static void AddLines(List<string> addTo, string leadingWhitespace, params string[] linesToAdd)
-        {
-            for (int i = 0; i < linesToAdd.Length; i++)
-            {
-                string lineToAdd = leadingWhitespace + linesToAdd[i];
-                if (string.IsNullOrEmpty(lineToAdd))
-                {
-                    continue;
-                }
-                
-                addTo.Add(lineToAdd);
-            }
         }
         
         public static bool IsMarkerStart(string line, out string markerName)
@@ -150,6 +137,29 @@ namespace StellarMass.InputManagement.Editor
         {
             string trimmedLine = line.Trim();
             return trimmedLine.StartsWith(MARKER) && trimmedLine.EndsWith(END);
+        }
+        
+        private static string GetNamespace(string filePath)
+        {
+            const string namespaceString = "namespace";
+            
+            try
+            {
+                using StreamReader sr = new(filePath);
+                while (sr.ReadLine() is { } line)
+                {
+                    if (line.StartsWith(namespaceString))
+                    {
+                        return line.Replace(namespaceString, string.Empty).Trim();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"The file could not be read: {e.Message}");
+            }
+
+            return string.Empty;
         }
     }
 }

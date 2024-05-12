@@ -6,9 +6,18 @@ namespace StellarMass.Utilities.Editor
 {
     public static class EditorScriptGetter
     {
-        public static string GetSystemPath<T>() => GetSystemPath(typeof(T));
+        private enum PathType
+        {
+            File = 0,
+            Folder
+        }
 
-        public static string GetSystemPath(Type type)
+        public static string GetSystemFilePath<T>() => GetSystemFilePath(typeof(T));
+        public static string GetSystemFilePath(Type type) => GetSystemPath(type, PathType.File);
+        public static string GetSystemFolderPath<T>() => GetSystemFolderPath(typeof(T));
+        public static string GetSystemFolderPath(Type type) => GetSystemPath(type, PathType.Folder);
+
+        private static string GetSystemPath(Type type, PathType pathType)
         {
             bool isEnum = type.IsEnum;
             
@@ -26,7 +35,13 @@ namespace StellarMass.Utilities.Editor
                 if ((isEnum && scriptAsset.text.Contains($"enum {type.Name}")) ||
                     scriptAsset.GetClass() == type || type.IsAssignableFrom(scriptAsset.GetClass()))
                 {
-                    return Application.dataPath + assetPath.Replace("Assets", string.Empty);
+                    string path = Application.dataPath + assetPath.Replace("Assets", string.Empty);
+                    if (pathType is PathType.Folder)
+                    {
+                        // Asset paths in Unity always use forward slash, regardless of platform.
+                        path = path.Remove(path.LastIndexOf('/') + 1);
+                    }
+                    return path;
                 }
             }
 

@@ -18,7 +18,19 @@ namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
                 case "Ignore":
                     break;
                 case "GeneratorNotice":
-                    lines.AddRange(GeneratorHelper.GetGeneratorNoticeLines());
+                    lines.AddRange(Helper.GetGeneratorNoticeLines());
+                    break;
+                case "Namespace":
+                    lines.Add($"namespace {Helper.InputNamespace}.{Helper.GENERATED}.{Helper.MAP_ACTIONS}");
+                    break;
+                case "InterfaceName":
+                    lines.Add($"    public interface {interfaceName}");
+                    break;
+                case "InterfaceMembers":
+                    foreach (string action in getActionNamesAsTypes())
+                    {
+                        lines.Add($"        void On{action}(InputAction.CallbackContext context);");
+                    }
                     break;
                 case "ClassSignature":
                     lines.Add($"    public class {className} : {interfaceName}");
@@ -40,21 +52,12 @@ namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
                         i++;
                     }
                     break;
-                case "InterfaceMethods":
+                case "InterfaceMethodImplementations":
                     foreach (string action in getActionNamesAsTypes())
                     {
                         string methodName = $"On{action}";
                         string privateEventName = $"_On{action}";
                         lines.Add($"        void {interfaceName}.{methodName}(InputAction.CallbackContext context) => {privateEventName}?.Invoke(context);");
-                    }
-                    break;
-                case "InterfaceName":
-                    lines.Add($"    public interface {interfaceName}");
-                    break;
-                case "InterfaceMembers":
-                    foreach (string action in getActionNamesAsTypes())
-                    {
-                        lines.Add($"        void On{action}(InputAction.CallbackContext context);");
                     }
                     break;
             }

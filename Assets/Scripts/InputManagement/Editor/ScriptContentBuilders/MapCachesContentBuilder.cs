@@ -17,7 +17,10 @@ namespace StellarMass.InputManagement.Editor.ScriptContentBuilders
                 case "Ignore":
                     break;
                 case "GeneratorNotice":
-                    lines.AddRange(GeneratorHelper.GetGeneratorNoticeLines());
+                    lines.AddRange(Helper.GetGeneratorNoticeLines());
+                    break;
+                case "Namespace":
+                    lines.Add($"namespace {Helper.InputNamespace}.{Helper.GENERATED}.{Helper.MAP_CACHES}");
                     break;
                 case "ClassSignature":
                     lines.Add($"    public class {className}");
