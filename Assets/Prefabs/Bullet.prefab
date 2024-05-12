@@ -133,9 +133,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c98b395792ee54eafc711e591929a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loopableCollider: {fileID: 6807753794218287208}
   bulletTrailPrefab: {fileID: 8040479116215429442, guid: 559c957404fbac2438b368edad13cbb8, type: 3}
-  lensFlare: {fileID: 4445547123520234430}
+  lensFlareSpriteRenderer: {fileID: 4197923410728868360}
 --- !u!114 &6807753794218287208
 MonoBehaviour:
   m_ObjectHideFlags: 0

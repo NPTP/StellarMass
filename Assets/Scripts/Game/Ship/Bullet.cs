@@ -35,6 +35,7 @@ namespace StellarMass.Game.Ship
 
         private void Die()
         {
+            Destroy(this.gameObject);
             // NP TODO: State machine
         }
     }
