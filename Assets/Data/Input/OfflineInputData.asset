@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f226b8c5334c7ec4e93fcab0ace58739, type: 3}
   m_Name: OfflineInputData
   m_EditorClassIdentifier: 
+  singlePlayerOnly: 1
   runtimeInputData: {fileID: 11400000, guid: 22bf4881dbbe40b4fb5e1460267b4c30, type: 2}
   mapActionsTemplateFile: {fileID: 11500000, guid: bf2b37578145ed443b1bf77ab51c4fc4, type: 3}
   mapCacheTemplateFile: {fileID: 11500000, guid: b54837a574a47a04cbff802c5fc90613, type: 3}

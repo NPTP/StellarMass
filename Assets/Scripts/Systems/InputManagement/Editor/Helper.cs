@@ -19,11 +19,12 @@ namespace StellarMass.Systems.InputManagement.Editor
         
         // Assets
         public static InputActionAsset InputActionAsset => EditorAssetGetter.GetFirst<RuntimeInputData>().InputActionAsset;
-        private static OfflineInputData OfflineInputData => EditorAssetGetter.GetFirst<OfflineInputData>();
+        public static OfflineInputData OfflineInputData => EditorAssetGetter.GetFirst<OfflineInputData>();
         public static string InputNamespace => GetNamespace(InputManagerFileSystemPath);
         
         // Existing script paths
         public static string InputManagerFileSystemPath => EditorScriptGetter.GetSystemFilePath(typeof(Input));
+        public static string InputPlayerFileSystemPath => EditorScriptGetter.GetSystemFilePath<InputPlayer>();
         public static string ControlSchemeFileSystemPath => EditorScriptGetter.GetSystemFilePath<ControlScheme>();
         public static string InputContextFileSystemPath => EditorScriptGetter.GetSystemFilePath<InputContext>();
         private static string InputManagerFolderSystemPath => EditorScriptGetter.GetSystemFolderPath(typeof(Input));

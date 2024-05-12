@@ -16,18 +16,18 @@ namespace StellarMass.Systems.InputManagement.Editor
             Normal = 0,
             WaitingForMarkerEnd
         }
-
-
-
+        
         [MenuItem(EditorToolNames.GENERATOR_FEATURE)]
         public static void GenerateMapInstances()
         {
-            InputActionAsset asset = Helper.InputActionAsset;
             Helper.ClearFolder(Helper.GeneratedFolderSystemPath);
+            
+            InputActionAsset asset = Helper.InputActionAsset;
             GenerateMapActionClasses(asset);
             GenerateMapCacheClasses(asset);
             ModifyExistingFile(asset, Helper.ControlSchemeFileSystemPath, ControlSchemeContentBuilder.AddContent);
             ModifyExistingFile(asset, Helper.InputContextFileSystemPath, InputContextContentBuilder.AddContent);
+            ModifyExistingFile(asset, Helper.InputPlayerFileSystemPath, InputPlayerContentBuilder.AddContent);
             ModifyExistingFile(asset, Helper.InputManagerFileSystemPath, InputManagerContentBuilder.AddContent);
             
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);

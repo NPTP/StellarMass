@@ -8,7 +8,7 @@ namespace StellarMass.Systems.InputManagement
     public struct InputActionReferenceWrapper
     {
         [SerializeField] private InputActionReference internalReference;
-
+        
         public event Action<InputAction.CallbackContext> OnAction
         {
             add => Input.ChangeSubscription(internalReference, value, subscribe: true);

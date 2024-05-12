@@ -20,6 +20,9 @@ namespace StellarMass.Systems.InputManagement.Data
 #if UNITY_EDITOR
         public const string RUNTIME_INPUT_DATA_ADDRESS = nameof(RuntimeInputData);
 
+        [SerializeField] private bool singlePlayerOnly = true;
+        public bool SinglePlayerOnly => singlePlayerOnly;
+
         [SerializeField] private RuntimeInputData runtimeInputData;
         public RuntimeInputData RuntimeInputData => runtimeInputData;
 
