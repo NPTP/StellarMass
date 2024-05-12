@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Utilities
+namespace StellarMass.Utilities
 {
     public class ClosedSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {

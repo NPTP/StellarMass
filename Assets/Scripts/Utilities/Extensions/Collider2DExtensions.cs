@@ -1,5 +1,5 @@
-using StellarMass.ScreenLoop;
-using StellarMass.Ship;
+using StellarMass.Game.ScreenLoop;
+using StellarMass.Game.Ship;
 using UnityEngine;
 
 namespace StellarMass.Utilities.Extensions

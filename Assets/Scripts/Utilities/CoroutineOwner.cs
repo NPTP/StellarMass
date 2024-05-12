@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace Utilities
+namespace StellarMass.Utilities
 {
     public class CoroutineOwner : ClosedSingleton<CoroutineOwner>
     {

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4118293459506621253}
-  - component: {fileID: 7239626088266339760}
+  - component: {fileID: 7138072304396745065}
   m_Layer: 0
   m_Name: RunTimeData
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7239626088266339760
+--- !u!114 &7138072304396745065
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,9 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7459898641070098279}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cc70fa8543c63945b4e139879eafcb7, type: 3}
+  m_Script: {fileID: 11500000, guid: f8015a859f0f15f4da6c751a87d273e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   audioData: {fileID: 11400000, guid: b017db16c7d4715449d0a6ce5a12894f, type: 2}
-  inputData: {fileID: 11400000, guid: ca9a703e9fbb00b49a1b40f374dce951, type: 2}
   playerData: {fileID: 11400000, guid: 913f09000efdc1249a4cf0c31e0ba550, type: 2}

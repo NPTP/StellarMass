@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StellarMass.Data;
-using StellarMass.LoopBoundaries;
+using StellarMass.Game.ScreenLoop;
+using StellarMass.Game.VFX;
+using StellarMass.Systems.Data;
 using StellarMass.Utilities.Extensions;
-using StellarMass.VFX;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -29,7 +29,7 @@ namespace StellarMass.Editor
 		private readonly FolderShortcut[] folderShortcuts = new[]
 		{
 			new FolderShortcut("Scripts", "Assets/Scripts"),
-			new FolderShortcut("Input Management", "Assets/Scripts/InputManagement"),
+			new FolderShortcut("Input Management", "Assets/Scripts/Systems/InputManagement"),
 			new FolderShortcut("Prefabs", "Assets/Prefabs"),
 			new FolderShortcut("Resources", "Assets/Resources"),
 			new FolderShortcut("Data", "Assets/Data"),
