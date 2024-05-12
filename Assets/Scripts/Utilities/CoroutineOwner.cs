@@ -7,17 +7,17 @@ namespace StellarMass.Utilities
     {
         public static Coroutine StartRoutine(IEnumerator routine)
         {
-            return PrivateInstance.StartCoroutine(routine);
+            return Instance.StartCoroutine(routine);
         }
         
         public static void StopRoutine(IEnumerator routine)
         {
-            PrivateInstance.StopCoroutine(routine);
+            Instance.StopCoroutine(routine);
         }
 
         public static void StopRoutine(Coroutine coroutine)
         {
-            PrivateInstance.StopCoroutine(coroutine);
+            Instance.StopCoroutine(coroutine);
         }
     }
 }

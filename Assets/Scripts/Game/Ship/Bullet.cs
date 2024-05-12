@@ -1,4 +1,4 @@
-using StellarMass.Systems.Data;
+using StellarMass.Game.Data;
 using UnityEngine;
 
 namespace StellarMass.Game.Ship
@@ -15,19 +15,19 @@ namespace StellarMass.Game.Ship
         {
             Transform thisTransform = transform;
 
-            if (elapsedTimeSinceLastTrail >= RTD.Player.TrailFrequency)
+            if (elapsedTimeSinceLastTrail >= PlayerData.TrailFrequency)
             {
                 elapsedTimeSinceLastTrail = 0;
                 Instantiate(bulletTrailPrefab, thisTransform.position, thisTransform.rotation);
             }
 
-            thisTransform.position += thisTransform.up * (RTD.Player.BulletSpeed * Time.deltaTime);
+            thisTransform.position += thisTransform.up * (PlayerData.BulletSpeed * Time.deltaTime);
             elapsedTimeSinceLastTrail += Time.deltaTime;
             
             lensFlareSpriteRenderer.transform.rotation = Quaternion.identity;
 
             elapsedTimeAlive += Time.deltaTime;
-            if (elapsedTimeAlive >= RTD.Player.BulletLifetime)
+            if (elapsedTimeAlive >= PlayerData.BulletLifetime)
             {
                 Die();
             }

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace StellarMass.Game.Data
 {
     [CreateAssetMenu]
-    public class AudioData : DataScriptable
+    public class AudioData : RuntimeData<AudioData>
     {
         [SerializeField] private Sound music;
         public Sound Music => music;

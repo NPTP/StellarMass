@@ -11,7 +11,7 @@ namespace StellarMass.Game.ScreenLoop
         private const int X_INDEX = 0;
         private const int Y_INDEX = 1;
         
-        public static Bounds Bounds => PrivateInstance.boxCollider2D.bounds;
+        public static Bounds Bounds => Instance.boxCollider2D.bounds;
 
         [SerializeField][Required] private BoxCollider2D boxCollider2D;
         [SerializeField][Required] private SpriteRenderer boundsVisualizer;

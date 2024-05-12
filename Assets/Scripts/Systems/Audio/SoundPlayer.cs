@@ -41,7 +41,7 @@ namespace StellarMass.Systems.Audio
             }
         }
 
-        public static void StopAll(Sound sound) => PrivateInstance.StopAllInternal(sound);
+        public static void StopAll(Sound sound) => Instance.StopAllInternal(sound);
         private void StopAllInternal(Sound sound)
         {
             if (!soundToAudioSources.TryGetValue(sound, out List<AudioSource> audioSources))
@@ -55,7 +55,7 @@ namespace StellarMass.Systems.Audio
             }
         }
 
-        public static void PlaySound(Sound sound) => PrivateInstance.PlaySoundInternal(sound);
+        public static void PlaySound(Sound sound) => Instance.PlaySoundInternal(sound);
         private void PlaySoundInternal(Sound sound)
         {
             StartCoroutine(PlaySoundRoutine(sound));

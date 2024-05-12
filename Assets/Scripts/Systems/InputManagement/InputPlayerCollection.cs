@@ -62,7 +62,6 @@ namespace StellarMass.Systems.InputManagement
                 smallestID = id;
             }
 
-            Debug.Log($"Returning ID {smallestID + 1}");
             return smallestID + 1;
         }
 

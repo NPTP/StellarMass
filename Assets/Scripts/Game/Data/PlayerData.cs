@@ -4,37 +4,37 @@ using UnityEngine;
 namespace StellarMass.Game.Data
 {
     [CreateAssetMenu]
-    public class PlayerData : DataScriptable
+    public class PlayerData : RuntimeData<PlayerData>
     {
         [Header("Player Ship")]
         
         [SerializeField] private float thrustFlickerTime = 0.04f;
-        public float ThrustFlickerTime => thrustFlickerTime;
+        public static float ThrustFlickerTime => Instance.thrustFlickerTime;
         
         [SerializeField] private float forwardForce = 200f;
-        public float ForwardForce => forwardForce;
+        public static float ForwardForce => Instance.forwardForce;
         
         [SerializeField] private float maxVelocityMagnitude = 10f;
-        public float MaxVelocityMagnitude => maxVelocityMagnitude;
+        public static float MaxVelocityMagnitude => Instance.maxVelocityMagnitude;
         
         [SerializeField] private float turnSpeed = 25f;
-        public float TurnSpeed => turnSpeed;
+        public static float TurnSpeed => Instance.turnSpeed;
         
         [SerializeField] private float hyperspaceTime = 0.5f;
-        public float HyperspaceTime => hyperspaceTime;
+        public static float HyperspaceTime => Instance.hyperspaceTime;
         
         [SerializeField] private float shootCooldown = 0.1f;
-        public float ShootCooldown => shootCooldown;
+        public static float ShootCooldown => Instance.shootCooldown;
 
         [Header("Bullet")]
         
         [SerializeField] private float bulletLifetime = 1f;
-        public float BulletLifetime => bulletLifetime;
+        public static float BulletLifetime => Instance.bulletLifetime;
 
         [SerializeField] private float bulletSpeed = 15f;
-        public float BulletSpeed => bulletSpeed;
+        public static float BulletSpeed => Instance.bulletSpeed;
 
         [SerializeField] private float trailFrequency = 0.01f;
-        public float TrailFrequency => trailFrequency;
+        public static float TrailFrequency => Instance.trailFrequency;
     }
 }

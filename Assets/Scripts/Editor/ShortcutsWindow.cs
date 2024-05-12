@@ -31,7 +31,6 @@ namespace StellarMass.Editor
 			new FolderShortcut("Scripts", "Assets/Scripts"),
 			new FolderShortcut("Input Management", "Assets/Scripts/Systems/InputManagement"),
 			new FolderShortcut("Prefabs", "Assets/Prefabs"),
-			new FolderShortcut("Resources", "Assets/Resources"),
 			new FolderShortcut("Data", "Assets/Data"),
 			new FolderShortcut("Audio", "Assets/Data/Audio"),
 			new FolderShortcut("Game Phases", "Assets/Data/GamePhases"),

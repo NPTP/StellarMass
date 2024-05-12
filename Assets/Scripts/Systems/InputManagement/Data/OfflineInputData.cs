@@ -1,14 +1,9 @@
 using System.Linq;
 using StellarMass.Systems.Data;
+using StellarMass.Utilities;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Settings;
-#endif
 
 namespace StellarMass.Systems.InputManagement.Data
 {
@@ -40,24 +35,8 @@ namespace StellarMass.Systems.InputManagement.Data
         
         private void OnValidate()
         {
-            SetAssetAddress(runtimeInputData, RUNTIME_INPUT_DATA_ADDRESS);
+            runtimeInputData.SetAddress(RUNTIME_INPUT_DATA_ADDRESS, createIfNotAddressable: true);
             VerifyEventSystemActions();
-        }
-
-        private void SetAssetAddress(Object unityObject, string address)
-        {
-            string path = AssetDatabase.GetAssetPath(unityObject);
-            string guid = AssetDatabase.AssetPathToGUID(path);
-
-            AddressableAssetEntry assetEntry = AddressableAssetSettingsDefaultObject.Settings.FindAssetEntry(guid);
-            if (assetEntry == null)
-            {
-                assetEntry = AddressableAssetSettingsDefaultObject.Settings.CreateOrMoveEntry(
-                    guid, AddressableAssetSettingsDefaultObject.Settings.DefaultGroup);
-                EditorUtility.SetDirty(AddressableAssetSettingsDefaultObject.Settings);
-            }
-
-            assetEntry.address = address;
         }
         
         private void VerifyEventSystemActions()

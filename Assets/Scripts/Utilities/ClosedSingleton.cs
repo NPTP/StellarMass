@@ -5,14 +5,12 @@ namespace StellarMass.Utilities
     public class ClosedSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T instance;
-        protected static T PrivateInstance
+        protected static T Instance
         {
             get
             {
                 if (instance == null)
-                {
                     PopulateInstance();
-                }
                 return instance;
             }
         }
