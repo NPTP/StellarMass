@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace StellarMass.Systems.InputManagement.Data
 {
@@ -9,18 +10,19 @@ namespace StellarMass.Systems.InputManagement.Data
     [Serializable]
     public class BindingPathInfo
     {
-        [SerializeField] private bool overrideDisplayName;
-        public bool OverrideDisplayName => overrideDisplayName;
+        public string RuntimeDisplayName => overrideDisplayName ? overrideName.ToString() : inputControlDisplayName;
 
-        // NP TODO: Use a localized string here instead!
-        [SerializeField] private string displayName;
-        public string DisplayName
-        {
-            get => displayName;
-            set => displayName = value;
-        }
+        [SerializeField] private bool overrideDisplayName;
+        [SerializeField] private LocalizedString overrideName;
 
         [SerializeField] private Sprite icon;
         public Sprite Icon => icon;
+
+        private string inputControlDisplayName = string.Empty;
+        
+        public void SetInputControlDisplayName(string inputControlName)
+        {
+            inputControlDisplayName = inputControlName;
+        }
     }
 }

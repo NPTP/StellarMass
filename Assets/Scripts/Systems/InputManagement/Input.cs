@@ -115,6 +115,7 @@ namespace StellarMass.Systems.InputManagement
         private static void Terminate()
         {
             RemoveSubscriptions();
+            playerCollection.ForEach(p => p.Terminate());
         }
 
         private static void AddSubscriptions()
@@ -125,7 +126,6 @@ namespace StellarMass.Systems.InputManagement
         private static void RemoveSubscriptions()
         {
             anyButtonPressListener.Dispose();
-            playerCollection.ForEach(p => p.Terminate());
         }
 
         #endregion
@@ -154,10 +154,7 @@ namespace StellarMass.Systems.InputManagement
                 return false;
             }
 
-            if (!bindingPathInfo.OverrideDisplayName)
-            {
-                bindingPathInfo.DisplayName = inputControl.displayName;
-            }
+            bindingPathInfo.SetInputControlDisplayName(inputControl.displayName);
 
             return true;
         }
