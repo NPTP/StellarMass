@@ -18,12 +18,12 @@ namespace StellarMass.Game.GameControl
 
         public void TurnOn()
         {
-            this.gameObject.SetActive(true);
+            gameObject.SetActive(true);
         }
         
         public void TurnOff()
         {
-            this.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }

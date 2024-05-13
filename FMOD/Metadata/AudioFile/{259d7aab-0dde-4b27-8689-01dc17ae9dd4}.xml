@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{259d7aab-0dde-4b27-8689-01dc17ae9dd4}">
+		<property name="assetPath">
+			<value>SFX/Ambience/RoomTone01.ogg</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>290</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{0c152a16-982c-4b49-92ca-d44844a72583}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -1,4 +1,4 @@
-using StellarMass.Systems.Audio;
+using FMODUnity;
 using StellarMass.Systems.Data;
 using UnityEngine;
 
@@ -7,10 +7,20 @@ namespace StellarMass.Game.Data
     [CreateAssetMenu]
     public class AudioData : RuntimeData<AudioData>
     {
-        [SerializeField] private Sound music;
-        public Sound Music => music;
+        [Header("Parameters")]
+        
+        [SerializeField] [ParamRef]
+        private string paramReference;
+        public static string ParamReference => Instance.paramReference;
 
-        [SerializeField] private Sound ambience;
-        public Sound Ambience => ambience;
+        [Header("Music")]
+        
+        [SerializeField] private EventReference music;
+        public static EventReference Music => Instance.music;
+
+        [Header("SFX")]
+        
+        [SerializeField] private EventReference ambience;
+        public static EventReference Ambience => Instance.ambience;
     }
 }

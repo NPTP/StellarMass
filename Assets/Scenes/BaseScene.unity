@@ -2060,6 +2060,7 @@ MonoBehaviour:
   audioSourcePoolSize: 32
   startingSounds:
   - {fileID: 11400000, guid: 82ff2264ea0421a40be4810dae33825e, type: 2}
+  pool: []
 --- !u!1001 &903896421
 PrefabInstance:
   m_ObjectHideFlags: 0
