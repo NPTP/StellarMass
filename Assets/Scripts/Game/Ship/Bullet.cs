@@ -1,42 +1,34 @@
-using StellarMass.Game.Data;
+using StellarMass.Game.States.Bullet;
+using StellarMass.Systems.StateMachines;
+using StellarMass.Utilities.Attributes;
 using UnityEngine;
 
 namespace StellarMass.Game.Ship
 {
+    [RequireComponent(typeof(StateMachine))]
     public class Bullet : MonoBehaviour
     {
+        [SerializeField] [Required] private StateMachine stateMachine;
+        [SerializeField] [Required] private Collider2D col2D;
         [SerializeField] private GameObject bulletTrailPrefab;
-        [SerializeField] private SpriteRenderer lensFlareSpriteRenderer;
-
+        [SerializeField] private SpriteRenderer[] spriteRenderers;
+        
         private float elapsedTimeAlive;
         private float elapsedTimeSinceLastTrail;
-        
-        private void Update()
+
+        private void OnValidate()
         {
-            Transform thisTransform = transform;
-
-            if (elapsedTimeSinceLastTrail >= PlayerData.TrailFrequency)
-            {
-                elapsedTimeSinceLastTrail = 0;
-                Instantiate(bulletTrailPrefab, thisTransform.position, thisTransform.rotation);
-            }
-
-            thisTransform.position += thisTransform.up * (PlayerData.BulletSpeed * Time.deltaTime);
-            elapsedTimeSinceLastTrail += Time.deltaTime;
-            
-            lensFlareSpriteRenderer.transform.rotation = Quaternion.identity;
-
-            elapsedTimeAlive += Time.deltaTime;
-            if (elapsedTimeAlive >= PlayerData.BulletLifetime)
-            {
-                Die();
-            }
+            spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         }
 
-        private void Die()
+        private void Start()
         {
-            Destroy(this.gameObject);
-            // NP TODO: State machine
+            stateMachine.QueueState(new BulletFlyState(bulletTrailPrefab, transform, spriteRenderers, col2D));
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision2D)
+        {
+            stateMachine.QueueState(new BulletCollideState(gameObject));
         }
     }
 }

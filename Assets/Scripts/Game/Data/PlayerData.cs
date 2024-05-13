@@ -36,5 +36,11 @@ namespace StellarMass.Game.Data
 
         [SerializeField] private float trailFrequency = 0.01f;
         public static float TrailFrequency => Instance.trailFrequency;
+        
+        [SerializeField] private float trailFadeTime = 0.4f;
+        public static float TrailFadeTime => Instance.trailFadeTime;
+
+        [SerializeField] private float bulletExpirationFadeTime = 0.4f;
+        public static float BulletExpirationFadeTime => Instance.bulletExpirationFadeTime;
     }
 }

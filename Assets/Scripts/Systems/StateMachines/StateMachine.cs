@@ -4,19 +4,33 @@ namespace StellarMass.Systems.StateMachines
 {
     public class StateMachine : MonoBehaviour
     {
-        public State PreviousState { get; private set; }
         public State CurrentState { get; private set; }
 
-        public void ChangeState(State state)
+        private bool updating;
+
+        public void QueueState(State state)
         {
-            CurrentState.End();
-            PreviousState = CurrentState;
+            if (CurrentState != null)
+            {
+                CurrentState.End();
+            }
+            
+            state.Begin();
             CurrentState = state;
         }
-        
+
         public void Update()
         {
-            CurrentState.Update();
+            if (CurrentState == null)
+            {
+                return;
+            }
+            
+            State state = CurrentState.Update();
+            if (state != null)
+            {
+                QueueState(state);
+            }
         }
     }
 }

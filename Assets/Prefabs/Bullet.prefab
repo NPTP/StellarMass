@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6152330231711335938}
   - component: {fileID: 3185813125399848346}
   m_Layer: 8
-  m_Name: Sprite
+  m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1247950132212825173}
   - component: {fileID: -1004814744617694325}
+  - component: {fileID: 7839339142529797943}
   - component: {fileID: 6807753794218287208}
   - component: {fileID: 6988643101506213492}
   - component: {fileID: 4538052915576928831}
@@ -133,8 +134,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c98b395792ee54eafc711e591929a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stateMachine: {fileID: 7839339142529797943}
+  col2D: {fileID: 6988643101506213492}
   bulletTrailPrefab: {fileID: 8040479116215429442, guid: 559c957404fbac2438b368edad13cbb8, type: 3}
-  lensFlareSpriteRenderer: {fileID: 4197923410728868360}
+  spriteRenderers:
+  - {fileID: 3185813125399848346}
+  - {fileID: 4197923410728868360}
+--- !u!114 &7839339142529797943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7658113245964081943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47dbe732da673b447ba5369d26765404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6807753794218287208
 MonoBehaviour:
   m_ObjectHideFlags: 0

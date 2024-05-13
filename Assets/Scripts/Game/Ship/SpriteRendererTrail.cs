@@ -1,5 +1,5 @@
-using StellarMass.Utilities;
-using StellarMass.Utilities.Extensions;
+using DG.Tweening;
+using StellarMass.Game.Data;
 using UnityEngine;
 
 namespace StellarMass.Game.Ship
@@ -7,22 +7,13 @@ namespace StellarMass.Game.Ship
     public class SpriteRendererTrail : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private float fadeTime = 0.4f;
 
-        private float timeElapsed = 0;
-        private float currentAlpha = 1;
-        
-        private void Update()
+        private void Start()
         {
-            if (timeElapsed >= fadeTime)
-            {
-                Destroy(gameObject);
-            }
-            
-            spriteRenderer.SetAlpha(currentAlpha);
-            currentAlpha = Mathf.Lerp(0.75f, 0, Curves.EaseOutExp(timeElapsed / fadeTime));
-
-            timeElapsed += Time.deltaTime;
+            spriteRenderer.DOFade(0, PlayerData.TrailFadeTime)
+                .From(0.75f)
+                .SetEase(Ease.OutExpo)
+                .OnComplete(() => Destroy(gameObject));
         }
     }
 }
