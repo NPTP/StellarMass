@@ -1,9 +1,12 @@
-using UnityEditor;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.AddressableAssets;
+using UnityEditor.AddressableAssets.Settings;
+#endif
 
 namespace StellarMass.Utilities
 {
@@ -29,15 +32,16 @@ namespace StellarMass.Utilities
             return asset;
         }
         
-        public static void SetAddress(this Object unityObject, string address, bool createIfNotAddressable = false)
+#if UNITY_EDITOR
+        public static void EDITOR_SetAddress(this Object unityObject, string address, bool createIfNotAddressable = false)
         {
-            AddressableAssetEntry entry = createIfNotAddressable ? AddObjectToAddressablesDefaultSettings(unityObject) : GetEntry(unityObject);
+            AddressableAssetEntry entry = createIfNotAddressable ? EDITOR_AddObjectToAddressablesDefaultSettings(unityObject) : EDITOR_GetEntry(unityObject);
             entry.address = address;
         }
         
-        public static AddressableAssetEntry AddObjectToAddressablesDefaultSettings(Object unityObject)
+        public static AddressableAssetEntry EDITOR_AddObjectToAddressablesDefaultSettings(Object unityObject)
         {
-            AddressableAssetEntry assetEntry = GetEntry(unityObject);
+            AddressableAssetEntry assetEntry = EDITOR_GetEntry(unityObject);
             if (assetEntry == null)
             {
                 assetEntry = AddressableAssetSettingsDefaultObject.Settings.CreateOrMoveEntry(
@@ -49,12 +53,13 @@ namespace StellarMass.Utilities
             return assetEntry;
         }
 
-        public static AddressableAssetEntry GetEntry(Object unityObject)
+        public static AddressableAssetEntry EDITOR_GetEntry(Object unityObject)
         {
             string path = AssetDatabase.GetAssetPath(unityObject);
             string guid = AssetDatabase.AssetPathToGUID(path);
 
             return AddressableAssetSettingsDefaultObject.Settings.FindAssetEntry(guid);
         }
+#endif
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace StellarMass.Systems.InputManagement
@@ -9,21 +8,8 @@ namespace StellarMass.Systems.InputManagement
     public class InputPlayerCollection : IEnumerable<InputPlayer>
     {
         private readonly SortedList<int, InputPlayer> players = new();
-        
-        public InputPlayerCollection(InputActionAsset asset)
-        {
-            // First player is always auto-added.
-            AddPlayer(asset);
-        }
 
-        public InputPlayer AddPlayer(PlayerInput playerInput, InputDevice pairWithDevice = null)
-        {
-            InputPlayer newPlayer = AddPlayer(playerInput.actions, pairWithDevice);
-            newPlayer.PlayerInput = playerInput;
-            return newPlayer;
-        }
-        
-        public InputPlayer AddPlayer(InputActionAsset asset, InputDevice pairWithDevice = null)
+        public InputPlayer CreateAndAddPlayer(InputActionAsset asset, InputDevice pairWithDevice = null)
         {
             int id = GetSmallestUnusedID();
             InputPlayer newPlayer = new(asset, id);
@@ -43,6 +29,12 @@ namespace StellarMass.Systems.InputManagement
             {
                 action?.Invoke(player);
             }
+        }
+
+        public bool TryGetPlayer(int id, out InputPlayer player)
+        {
+            player = GetPlayer(id);
+            return player != null;
         }
         
         public InputPlayer GetPlayer(int id)

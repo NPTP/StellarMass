@@ -1,4 +1,3 @@
-using StellarMass.Systems.InputManagement.Data;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -24,11 +23,6 @@ namespace StellarMass.Utilities.Extensions
             Addressables.Release(handle);
 #endif
             return asset;
-        }
-
-        public static BindingData LoadAssetSynchronous(this BindingDataAssetReference assetReference)
-        {
-            return assetReference.LoadAssetSynchronous<BindingData>();
         }
     }
 }

@@ -5,18 +5,18 @@ using UnityEngine;
 
 namespace StellarMass.Systems.InputManagement.Data.Editor
 {
-    [CustomEditor(typeof(BindingData))]
-    public class BindingDataEditor : UnityEditor.Editor
+    [CustomEditor(typeof(BindingDataSingle))]
+    public class BindingDataSingleEditor : UnityEditor.Editor
     {
         private const string MOUSE = "Generate Mouse Control Paths";
         private const string KEYBOARD = "Generate Keyboard Control Paths";
         private const string GAMEPAD = "Generate Gamepad Control Paths";
         
-        private BindingData targetBindingData;
+        private BindingDataSingle targetBindingDataSingle;
 
         private void OnEnable()
         {
-            targetBindingData = (BindingData)target;
+            targetBindingDataSingle = (BindingDataSingle)target;
         }
 
         public override void OnInspectorGUI()
@@ -48,8 +48,8 @@ namespace StellarMass.Systems.InputManagement.Data.Editor
                 
                 if (GUILayout.Button($"Delete \"{keyProperty.stringValue}\""))
                 {
-                    targetBindingData.BindingDisplayInfo.EDITOR_Remove(i);
-                    EditorUtility.SetDirty(targetBindingData);
+                    targetBindingDataSingle.BindingDisplayInfo.EDITOR_Remove(i);
+                    EditorUtility.SetDirty(targetBindingDataSingle);
                     serializedObject.Update();
                     break;
                 }
@@ -59,8 +59,8 @@ namespace StellarMass.Systems.InputManagement.Data.Editor
 
             if (GUILayout.Button("Add New Entry"))
             {
-                targetBindingData.BindingDisplayInfo.EDITOR_Add(string.Empty, new BindingPathInfo());
-                EditorUtility.SetDirty(targetBindingData);
+                targetBindingDataSingle.BindingDisplayInfo.EDITOR_Add(string.Empty, new BindingPathInfo());
+                EditorUtility.SetDirty(targetBindingDataSingle);
                 serializedObject.Update();
             }
             
@@ -93,13 +93,13 @@ namespace StellarMass.Systems.InputManagement.Data.Editor
                     break;
             }
 
-            targetBindingData.BindingDisplayInfo.EDITOR_Clear();
+            targetBindingDataSingle.BindingDisplayInfo.EDITOR_Clear();
             foreach (string s in controls)
             {
-                targetBindingData.BindingDisplayInfo.EDITOR_Add(s, new BindingPathInfo());
+                targetBindingDataSingle.BindingDisplayInfo.EDITOR_Add(s, new BindingPathInfo());
             }
 
-            EditorUtility.SetDirty(targetBindingData);
+            EditorUtility.SetDirty(targetBindingDataSingle);
             serializedObject.Update();
         }
     }

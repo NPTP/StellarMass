@@ -35,7 +35,7 @@ namespace StellarMass.Systems.InputManagement.Data
         
         private void OnValidate()
         {
-            runtimeInputData.SetAddress(RUNTIME_INPUT_DATA_ADDRESS, createIfNotAddressable: true);
+            runtimeInputData.EDITOR_SetAddress(RUNTIME_INPUT_DATA_ADDRESS, createIfNotAddressable: true);
             VerifyEventSystemActions();
         }
         

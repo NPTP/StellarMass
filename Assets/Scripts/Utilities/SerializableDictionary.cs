@@ -48,14 +48,22 @@ namespace StellarMass.Utilities
         {
             get
             {
-                List<TKey> keys = new List<TKey>(internalDictionary.Keys);
-                List<TValue> values = new List<TValue>(internalDictionary.Values);
+                List<TKey> keys = new(internalDictionary.Keys);
+                List<TValue> values = new(internalDictionary.Values);
                 int index = values.FindIndex(x => x.Equals(value));
                 if (index < 0)
                 {
                     throw new KeyNotFoundException();
                 }
                 return keys[index];
+            }
+        }
+        
+        public void AddRange(IDictionary<TKey, TValue> items)
+        {
+            foreach (TKey key in items.Keys)
+            {
+                internalDictionary.TryAdd(key, items[key]);
             }
         }
 

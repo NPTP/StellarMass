@@ -23,7 +23,7 @@ namespace StellarMass.Systems.Data
         private void OnValidate()
         {
 #if UNITY_EDITOR
-            this.SetAddress(Address, createIfNotAddressable: true);
+            this.EDITOR_SetAddress(Address, createIfNotAddressable: true);
 #endif
         }
 

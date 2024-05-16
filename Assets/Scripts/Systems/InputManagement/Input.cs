@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using StellarMass.Systems.InputManagement.Data;
 using StellarMass.Systems.InputManagement.Generated.MapActions;
 using StellarMass.Utilities;
@@ -29,32 +30,31 @@ namespace StellarMass.Systems.InputManagement
         
         // This event will invoke regardless of contexts/maps being enabled/disabled.
         public static event Action OnAnyButtonPressed;
-
-        private static InputPlayerCollection playerCollection;
-        
-        // MARKER.PlayerGetter.Start
-        private static InputPlayer Player(int id) => playerCollection.GetPlayer(id);
-        // MARKER.PlayerGetter.End
-        
-        // MARKER.SinglePlayerProperties.Start
-        public static GameplayActions Gameplay => Player(0).Gameplay;
-        public static PauseMenuActions PauseMenu => Player(0).PauseMenu;
-        public static InputContext CurrentContext => Player(0).CurrentContext;
-        public static ControlScheme CurrentControlScheme => Player(0).CurrentControlScheme;
-        public static void EnableContext(InputContext context) => Player(0).EnableContext(context);
-        // MARKER.SinglePlayerProperties.End
-        
-        private static RuntimeInputData runtimeInputData;
-        private static PlayerInput primaryPlayerInput;
-        private static InputSystemUIInputModule primaryUIInputModule;
-        private static IDisposable anyButtonPressListener;
         
         public static bool AllowPlayerJoining { get; set; }
         public static bool UseContextEventSystemActions => runtimeInputData.UseContextEventSystemActions;
         
+        // MARKER.PublicPlayerGetter.Start
+        // MARKER.PublicPlayerGetter.End
+        
+        // MARKER.SinglePlayerPublicProperties.Start
+        public static GameplayActions Gameplay => primaryPlayer.Gameplay;
+        public static PauseMenuActions PauseMenu => primaryPlayer.PauseMenu;
+        public static InputContext CurrentContext => primaryPlayer.CurrentContext;
+        public static ControlScheme CurrentControlScheme => primaryPlayer.CurrentControlScheme;
+        public static void EnableContext(InputContext context) => primaryPlayer.EnableContext(context);
+        // MARKER.SinglePlayerPublicProperties.End
+        
         // MARKER.DefaultContextProperty.Start
         private static InputContext DefaultContext => InputContext.Gameplay;
         // MARKER.DefaultContextProperty.End
+        
+        private static InputPlayerCollection playerCollection;
+        private static InputPlayer primaryPlayer;
+        private static RuntimeInputData runtimeInputData;
+        private static PlayerInput primaryPlayerInput;
+        private static InputSystemUIInputModule primaryUIInputModule;
+        private static IDisposable anyButtonPressListener;
         
         #endregion
 
@@ -82,7 +82,8 @@ namespace StellarMass.Systems.InputManagement
                 throw new MissingFieldException($"Input manager's {nameof(runtimeInputData)} is missing an input action asset!");
             }
 
-            playerCollection = new InputPlayerCollection(asset);
+            playerCollection = new InputPlayerCollection();
+            primaryPlayer = playerCollection.CreateAndAddPlayer(asset);
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -101,11 +102,9 @@ namespace StellarMass.Systems.InputManagement
                 Object.DontDestroyOnLoad(inputMgmtGameObject);
             }
             
-            primaryPlayerInput.actions = runtimeInputData.InputActionAsset;
-
-            InputPlayer primaryPlayer = Player(0);
             primaryPlayer.PlayerInput = primaryPlayerInput;
             primaryPlayer.UIInputModule = primaryUIInputModule;
+            primaryPlayerInput.actions = runtimeInputData.InputActionAsset;
             primaryPlayerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
             
             playerCollection.ForEach(p => p.EnableContext(DefaultContext));
@@ -131,19 +130,33 @@ namespace StellarMass.Systems.InputManagement
         #endregion
 
         #region Public Interface
+
+        public static List<BindingPathInfo> GetAllBindingPathInfos(InputAction action)
+        {
+            List<BindingPathInfo> bindingPathInfos = new();
+            foreach (InputControl inputControl in action.controls)
+            {
+                if (TryGetBindingPathInfo(inputControl, out BindingPathInfo bindingPathInfo))
+                {
+                    bindingPathInfos.Add(bindingPathInfo);
+                }
+            }
+
+            return bindingPathInfos;
+        }
         
         public static bool TryGetBindingPathInfo(InputControl inputControl, out BindingPathInfo bindingPathInfo)
         {
             bindingPathInfo = default;
-
             ParseInputControlPath(inputControl, out string deviceName, out string controlPath);
+            ControlScheme controlScheme = ResolveDeviceToControlScheme(deviceName);
 
-            if (!runtimeInputData.BindingDataReferences.TryGetValue(deviceName, out BindingDataAssetReference bindingDataAssetReference))
+            if (!runtimeInputData.BindingDataReferences.TryGetValue(controlScheme, out BindingDataAssetReference bindingDataAssetReference))
             {
                 return false;
             }
 
-            BindingData bindingData = bindingDataAssetReference.LoadAssetSynchronous();
+            BindingData bindingData = bindingDataAssetReference.LoadAssetSynchronous<BindingData>();
             if (bindingData == null)
             {
                 return false;
@@ -180,6 +193,16 @@ namespace StellarMass.Systems.InputManagement
 
         #region Private Runtime Functionality
 
+        private static ControlScheme ResolveDeviceToControlScheme(string deviceName)
+        {
+            return deviceName switch
+            {
+                "Mouse" => ControlScheme.MouseKeyboard,
+                "Keyboard" => ControlScheme.MouseKeyboard,
+                _ => ControlScheme.Gamepad
+            };
+        }
+
         private static void ParseInputControlPath(InputControl inputControl, out string deviceName, out string controlPath)
         {
             deviceName = inputControl.device.name;
@@ -202,15 +225,22 @@ namespace StellarMass.Systems.InputManagement
             {
                 return;
             }
+            
+            CreateNewNonPrimaryPlayer(device);
+        }
 
-            // Create a new player. (If the player did not end up with a valid input setup, it will return null)
+        private static void CreateNewNonPrimaryPlayer(InputDevice device)
+        {
+            // Note that 'PlayerInput.Instantiate' creates a new copy of the input actions asset for the new player.
             PlayerInput playerInput = PlayerInput.Instantiate(primaryPlayerInput.gameObject, pairWithDevice: device);
+            
+            // (If the player did not end up with a valid input setup, it will return null)
             if (playerInput == null)
             {
                 return;
             }
             
-            InputPlayer newPlayer = playerCollection.AddPlayer(playerInput.actions);
+            InputPlayer newPlayer = playerCollection.CreateAndAddPlayer(playerInput.actions);
             GameObject playerInputGameObject = playerInput.gameObject;
             playerInputGameObject.name = $"Player [{newPlayer.ID}] Input Management";
             newPlayer.PlayerInput = playerInput;

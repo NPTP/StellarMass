@@ -13,22 +13,16 @@ MonoBehaviour:
   m_Name: RuntimeInputData
   m_EditorClassIdentifier: 
   inputActionAsset: {fileID: -944628639613478452, guid: e518c8033fd49f84b9577aae87f8f544, type: 3}
-  useContextEventSystemActions: 1
+  useContextEventSystemActions: 0
   bindingDataReferences:
     keyValueCombos:
-    - key: Mouse
+    - key: 0
       value:
-        m_AssetGUID: 05a3d06048e5cc749b643882ed532ab7
+        m_AssetGUID: 729c930f69a83b2498168a0b27ddf541
         m_SubObjectName: 
         m_SubObjectType: 
         m_EditorAssetChanged: 0
-    - key: Keyboard
-      value:
-        m_AssetGUID: bebca2a4e91eac3419ec24f44e4b5d78
-        m_SubObjectName: 
-        m_SubObjectType: 
-        m_EditorAssetChanged: 0
-    - key: XInputControllerWindows
+    - key: 1
       value:
         m_AssetGUID: 18603268686afd3408f067bf4048bac7
         m_SubObjectName: 

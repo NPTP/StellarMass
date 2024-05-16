@@ -25,12 +25,12 @@ namespace StellarMass.Utilities.Editor
             Rect displayNamePosition = new Rect(boolLabelPosition.x, boolLabelPosition.y + LineHeight, position.width - PropertyHeight - VerticalSpacing, LineHeight);
 
             SerializedProperty overrideDisplayNameProperty = property.FindPropertyRelative("overrideDisplayName");
-            SerializedProperty displayNameProperty = property.FindPropertyRelative("displayName");
+            SerializedProperty overrideNameProperty = property.FindPropertyRelative("overrideName");
             EditorGUI.LabelField(boolLabelPosition, "Override Display Name?");
             EditorGUI.PropertyField(boolPosition, overrideDisplayNameProperty, GUIContent.none);
             if (overrideDisplayNameProperty.boolValue)
             {
-                EditorGUI.PropertyField(displayNamePosition, displayNameProperty, GUIContent.none);
+                EditorGUI.PropertyField(displayNamePosition, overrideNameProperty, GUIContent.none);
             }
 
             EditorGUI.EndProperty();

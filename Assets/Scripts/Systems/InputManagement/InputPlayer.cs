@@ -25,7 +25,7 @@ namespace StellarMass.Systems.InputManagement
                 if (playerInput == value) return;
                 if (playerInput != null) playerInput.onControlsChanged -= HandleControlsChanged;
                 playerInput = value;
-                playerInput.onControlsChanged += HandleControlsChanged;
+                if (playerInput != null) playerInput.onControlsChanged += HandleControlsChanged;
             }
         }
         public InputSystemUIInputModule UIInputModule
@@ -47,9 +47,9 @@ namespace StellarMass.Systems.InputManagement
         private readonly PauseMenuMapCache pauseMenuMap;
         // MARKER.MapCacheFields.End
         
+        private readonly InputActionAsset asset;
         private PlayerInput playerInput;
         private InputSystemUIInputModule uiInputModule;
-        private readonly InputActionAsset asset;
         
         #endregion
 

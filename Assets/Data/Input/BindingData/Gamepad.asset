@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 735317971e3794148ab36acbf39031b5, type: 3}
-  m_Name: XInputControllerWindows
+  m_Name: Gamepad
   m_EditorClassIdentifier: 
   bindingDisplayInfo:
     keyValueCombos:

@@ -10,20 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: InputAssets
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: InputAssets
   m_Data:
     m_SerializedData: []
-  m_GUID: c1b148b97de68e945bed2c5c22c8db96
+  m_GUID: c8c9f7a4ef5dfb246bb094d2e300b0d3
   m_SerializeEntries:
-  - m_GUID: b017db16c7d4715449d0a6ce5a12894f
-    m_Address: AudioData
+  - m_GUID: 18603268686afd3408f067bf4048bac7
+    m_Address: Assets/Data/Input/BindingData/Gamepad.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 913f09000efdc1249a4cf0c31e0ba550
-    m_Address: PlayerData
+  - m_GUID: 729c930f69a83b2498168a0b27ddf541
+    m_Address: Assets/Data/Input/BindingData/MouseKeyboard.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22bf4881dbbe40b4fb5e1460267b4c30
+    m_Address: RuntimeInputData
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -31,5 +36,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 85c3b8e98bc101545b9a5c6b6164ab9e, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 7a8e63c96be03f5449fed3c922f696d6, type: 2}
-    - {fileID: 11400000, guid: d8508e2866a11414a95b423fb1e67300, type: 2}
+    - {fileID: 11400000, guid: 30a91f0f58b7e2049ba1fb71dd1b9e72, type: 2}
+    - {fileID: 11400000, guid: f88d0478af53761408f26e4ba5993cc4, type: 2}
