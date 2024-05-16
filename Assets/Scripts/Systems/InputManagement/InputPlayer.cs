@@ -77,6 +77,20 @@ namespace StellarMass.Systems.InputManagement
             Object.Destroy(uiInputModule);
         }
         
+        public void EnableKeyboardTextInput()
+        {
+            GetKeyboards().ForEach(keyboard =>
+            {
+                keyboard.onTextInput -= HandleTextInput;
+                keyboard.onTextInput += HandleTextInput;
+            });
+        }
+
+        public void DisableKeyboardTextInput()
+        {
+            GetKeyboards().ForEach(keyboard => keyboard.onTextInput -= HandleTextInput);
+        }
+        
         public void EnableContext(InputContext context)
         {
             CurrentContext = context;
@@ -139,7 +153,7 @@ namespace StellarMass.Systems.InputManagement
             }
             // MARKER.ChangeSubscriptionIfStatements.End
         }
-        
+
         #endregion
 
         #region Private Functionality
@@ -151,21 +165,7 @@ namespace StellarMass.Systems.InputManagement
             pauseMenuMap.RemoveCallbacks(PauseMenu);
             // MARKER.MapActionsRemoveCallbacks.End
         }
-
-        private void EnableKeyboardTextInput()
-        {
-            GetKeyboards().ForEach(keyboard =>
-            {
-                keyboard.onTextInput -= HandleTextInput;
-                keyboard.onTextInput += HandleTextInput;
-            });
-        }
-
-        private void DisableKeyboardTextInput()
-        {
-            GetKeyboards().ForEach(keyboard => keyboard.onTextInput -= HandleTextInput);
-        }
-
+        
         private List<Keyboard> GetKeyboards()
         {
             List<Keyboard> keyboards = new();
@@ -180,7 +180,10 @@ namespace StellarMass.Systems.InputManagement
             return keyboards;
         }
 
-        private void HandleTextInput(char c) => OnKeyboardTextInput?.Invoke(c);
+        private void HandleTextInput(char c)
+        {
+            OnKeyboardTextInput?.Invoke(c);
+        }
 
         private void HandleControlsChanged(PlayerInput pi)
         {

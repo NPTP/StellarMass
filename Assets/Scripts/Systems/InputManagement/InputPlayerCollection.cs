@@ -23,24 +23,20 @@ namespace StellarMass.Systems.InputManagement
             return newPlayer;
         }
 
-        public void ForEach(Action<InputPlayer> action)
+        public void EnableContextForAll(InputContext inputContext) => ForEach(p => p.EnableContext(inputContext));
+        public void TerminateAll() => ForEach(p => p.Terminate());
+        public void FindActionEventAndSubscribeAll(InputActionReference actionReference, Action<InputAction.CallbackContext> callback, bool subscribe)
+            => ForEach(p => p.FindActionEventAndSubscribe(actionReference, callback, subscribe));
+
+        private void ForEach(Action<InputPlayer> action)
         {
             foreach (InputPlayer player in players.Values)
-            {
                 action?.Invoke(player);
-            }
         }
 
         public bool TryGetPlayer(int id, out InputPlayer player)
         {
-            player = GetPlayer(id);
-            return player != null;
-        }
-        
-        public InputPlayer GetPlayer(int id)
-        {
-            players.TryGetValue(id, out InputPlayer player);
-            return player;
+            return players.TryGetValue(id, out player);
         }
 
         private int GetSmallestUnusedID()

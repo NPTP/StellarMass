@@ -34,20 +34,31 @@ namespace StellarMass.Systems.InputManagement
         public static bool AllowPlayerJoining { get; set; }
         public static bool UseContextEventSystemActions => runtimeInputData.UseContextEventSystemActions;
         
-        // MARKER.PublicPlayerGetter.Start
-        // MARKER.PublicPlayerGetter.End
-        
-        // MARKER.SinglePlayerPublicProperties.Start
+        // MARKER.SingleOrMultiPlayerFieldsAndProperties.Start
+        public static event Action<ControlScheme> OnControlSchemeChanged
+        {
+            add => primaryPlayer.OnControlSchemeChanged += value;
+            remove => primaryPlayer.OnControlSchemeChanged -= value;
+        }
+        public static event Action<char> OnKeyboardTextInput
+        {
+            add => primaryPlayer.OnKeyboardTextInput += value;
+            remove => primaryPlayer.OnKeyboardTextInput -= value;
+        }
         public static GameplayActions Gameplay => primaryPlayer.Gameplay;
         public static PauseMenuActions PauseMenu => primaryPlayer.PauseMenu;
         public static InputContext CurrentContext => primaryPlayer.CurrentContext;
         public static ControlScheme CurrentControlScheme => primaryPlayer.CurrentControlScheme;
         public static void EnableContext(InputContext context) => primaryPlayer.EnableContext(context);
-        // MARKER.SinglePlayerPublicProperties.End
+        public static void EnableKeyboardTextInput() => primaryPlayer.EnableKeyboardTextInput();
+        public static void DisableKeyboardTextInput() => primaryPlayer.DisableKeyboardTextInput();
+        // MARKER.SingleOrMultiPlayerFieldsAndProperties.End
         
         // MARKER.DefaultContextProperty.Start
         private static InputContext DefaultContext => InputContext.Gameplay;
         // MARKER.DefaultContextProperty.End
+
+        private static InputActionAsset PrimaryInputActionAsset => runtimeInputData.InputActionAsset;
         
         private static InputPlayerCollection playerCollection;
         private static InputPlayer primaryPlayer;
@@ -104,17 +115,17 @@ namespace StellarMass.Systems.InputManagement
             
             primaryPlayer.PlayerInput = primaryPlayerInput;
             primaryPlayer.UIInputModule = primaryUIInputModule;
-            primaryPlayerInput.actions = runtimeInputData.InputActionAsset;
+            primaryPlayerInput.actions = PrimaryInputActionAsset;
             primaryPlayerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
             
-            playerCollection.ForEach(p => p.EnableContext(DefaultContext));
+            playerCollection.EnableContextForAll(DefaultContext);
             AddSubscriptions();
         }
 
         private static void Terminate()
         {
             RemoveSubscriptions();
-            playerCollection.ForEach(p => p.Terminate());
+            playerCollection.TerminateAll();
         }
 
         private static void AddSubscriptions()
@@ -186,7 +197,7 @@ namespace StellarMass.Systems.InputManagement
                 return;
             }
             
-            playerCollection.ForEach(p => p.FindActionEventAndSubscribe(actionReference, callback, subscribe));
+            playerCollection.FindActionEventAndSubscribeAll(actionReference, callback, subscribe);
         }
         
         #endregion
