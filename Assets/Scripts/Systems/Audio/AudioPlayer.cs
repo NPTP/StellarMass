@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using FMOD.Studio;
 using FMODUnity;
 
-namespace StellarMass.Systems.AudioSystem
+namespace StellarMass.Systems.Audio
 {
     public static class AudioPlayer
     {

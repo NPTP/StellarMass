@@ -1,6 +1,6 @@
 using StellarMass.Game.Data;
 using StellarMass.Game.GameControl.Phases;
-using StellarMass.Systems.AudioSystem;
+using StellarMass.Systems.Audio;
 using UnityEngine;
 
 namespace StellarMass.Game.GameControl
