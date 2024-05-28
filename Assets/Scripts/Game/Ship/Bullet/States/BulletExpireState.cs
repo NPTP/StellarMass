@@ -10,8 +10,6 @@ namespace StellarMass.Game.Ship.Bullet.States
         private readonly SpriteRenderer[] spriteRenderers;
         private readonly Collider2D collider;
 
-        private bool fading;
-        
         public BulletExpireState(SpriteRenderer[] spriteRenderers, Collider2D collider)
         {
             this.collider = collider;

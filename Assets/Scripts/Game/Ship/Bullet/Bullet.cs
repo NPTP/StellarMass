@@ -28,7 +28,7 @@ namespace StellarMass.Game.Ship.Bullet
 
         private void OnCollisionEnter2D(Collision2D collision2D)
         {
-            stateMachine.QueueState(new BulletCollideState(gameObject));
+            stateMachine.QueueState(new BulletCollideState(gameObject, collision2D));
         }
     }
 }

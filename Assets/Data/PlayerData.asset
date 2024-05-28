@@ -21,3 +21,5 @@ MonoBehaviour:
   bulletLifetime: 0.6
   bulletSpeed: 15
   trailFrequency: 0.01
+  trailFadeTime: 0.4
+  bulletExpirationFadeTime: 0.15
