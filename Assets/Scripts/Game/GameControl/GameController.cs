@@ -1,4 +1,6 @@
+using StellarMass.Game.Data;
 using StellarMass.Game.GameControl.Phases;
+using StellarMass.Systems.AudioSystem;
 using UnityEngine;
 
 namespace StellarMass.Game.GameControl
@@ -11,10 +13,17 @@ namespace StellarMass.Game.GameControl
         public MainDisplay MainDisplay => mainDisplay;
 
         [Space]
+        [SerializeField] private bool playMusicOnStart;
+        [SerializeField] private bool playAmbienceOnStart;
+
+        [Space]
         [SerializeField] private GamePhase[] gamePhases;
         [SerializeField] private int startingPhaseIndex = 0;
         [SerializeField] private bool executeGamePhases = true;
 
+        private static PersistentAudio music;
+        private static PersistentAudio ambience;
+        
         private static GameState previousGameState = GameState.Undefined;
         private static GameState gameState = GameState.Undefined;
         public static GameState GameState
@@ -32,6 +41,9 @@ namespace StellarMass.Game.GameControl
 #if !UNITY_EDITOR
             Cursor.visible = false;
 #endif
+            
+            if (playMusicOnStart) music = AudioPlayer.PlayPersistentAudio(AudioData.Music);
+            if (playAmbienceOnStart) ambience = AudioPlayer.PlayPersistentAudio(AudioData.Ambience);
             
             ExecuteGamePhases(startingPhaseIndex);
         }

@@ -1,6 +1,8 @@
-﻿using FMOD.Studio;
+﻿using FMOD;
+using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace StellarMass.Utilities.FMODUtilities
 {
@@ -14,6 +16,28 @@ namespace StellarMass.Utilities.FMODUtilities
         public static void SetParameter(this EventInstance eventInstance, string parameterName, float value)
         {
             eventInstance.setParameterByName(parameterName, value);
+        }
+        
+        public static bool IsSameEvent(this EventInstance eventInstance, EventReference eventReference)
+        {
+            if (!eventInstance.isValid() || eventReference.IsNull) return false;
+            
+            eventInstance.getDescription(out EventDescription eventInstanceDescription);
+            eventInstanceDescription.getID(out GUID eventInstanceGuid);
+
+            return eventInstanceGuid == eventReference.Guid;
+        }
+
+        public static void StopFadeOut(this EventInstance eventInstance, bool release = false)
+        {
+            eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            if (release) eventInstance.release();
+        }
+        
+        public static void StopImmediate(this EventInstance eventInstance, bool release = false)
+        {
+            eventInstance.stop(STOP_MODE.IMMEDIATE);
+            if (release) eventInstance.release();
         }
     }
 }

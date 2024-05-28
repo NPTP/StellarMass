@@ -2498,6 +2498,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 362978075}
   mainDisplay: {fileID: 979386066}
+  playMusicOnStart: 1
+  playAmbienceOnStart: 1
   gamePhases:
   - {fileID: 11400000, guid: 7b56578603bf670499e4679b5770bd97, type: 2}
   - {fileID: 11400000, guid: 9c10ae35999462346841e9d8084ec577, type: 2}

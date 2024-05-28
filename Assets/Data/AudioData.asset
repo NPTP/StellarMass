@@ -12,5 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb71b605a33a40343b051c9e82c1c59d, type: 3}
   m_Name: AudioData
   m_EditorClassIdentifier: 
-  music: {fileID: 11400000, guid: 842aad4d90e429241b737e6d0b1da7b4, type: 2}
-  ambience: {fileID: 11400000, guid: 82ff2264ea0421a40be4810dae33825e, type: 2}
+  paramReference: 
+  music:
+    Guid:
+      Data1: -1708793475
+      Data2: 1313996326
+      Data3: -518177902
+      Data4: 1931282281
+    Path: event:/Music/TheDeep
+  ambience:
+    Guid:
+      Data1: -1585532244
+      Data2: 1207429159
+      Data3: -1598382939
+      Data4: 217927903
+    Path: event:/SFX/RoomTone01
