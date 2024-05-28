@@ -1,7 +1,6 @@
 using System.Collections;
 using StellarMass.Game.Data;
 using StellarMass.Game.ScreenLoop;
-using StellarMass.Systems.InputManagement.Data;
 using StellarMass.Utilities;
 using StellarMass.Utilities.Attributes;
 using StellarMass.Utilities.Extensions;
@@ -88,11 +87,6 @@ namespace StellarMass.Game.Ship
             if (!context.started)
             {
                 return;
-            }
-            
-            if (Input.TryGetBindingPathInfo(context.control, out BindingPathInfo bindingPathInfo))
-            {
-                Debug.Log(bindingPathInfo.RuntimeDisplayName);
             }
 
             if (Time.time - lastShotTime >= PlayerData.ShootCooldown)

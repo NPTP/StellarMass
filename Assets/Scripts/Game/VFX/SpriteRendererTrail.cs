@@ -2,7 +2,7 @@ using DG.Tweening;
 using StellarMass.Game.Data;
 using UnityEngine;
 
-namespace StellarMass.Game.Ship
+namespace StellarMass.Game.VFX
 {
     public class SpriteRendererTrail : MonoBehaviour
     {

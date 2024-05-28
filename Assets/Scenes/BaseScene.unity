@@ -1452,6 +1452,7 @@ GameObject:
   - component: {fileID: 794664080}
   - component: {fileID: 794664082}
   - component: {fileID: 794664081}
+  - component: {fileID: 794664083}
   m_Layer: 0
   m_Name: StartPrompt
   m_TagString: Untagged
@@ -1632,6 +1633,31 @@ MeshRenderer:
   m_SortingLayer: 6
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &794664083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794664078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b26e7b67bbec05e4ba0983b41c48ba11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tmpText: {fileID: 794664081}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: GUID:90adad9a3c17243469706b1d9255d792
+    m_TableEntryReference:
+      m_KeyId: 51933974528
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &805988972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1773,6 +1799,7 @@ GameObject:
   - component: {fileID: 823125581}
   - component: {fileID: 823125580}
   - component: {fileID: 823125579}
+  - component: {fileID: 823125582}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -1933,6 +1960,31 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 3.25}
   m_SizeDelta: {x: 10, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &823125582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823125578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b26e7b67bbec05e4ba0983b41c48ba11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tmpText: {fileID: 823125579}
+  localizedString:
+    m_TableReference:
+      m_TableCollectionName: GUID:90adad9a3c17243469706b1d9255d792
+    m_TableEntryReference:
+      m_KeyId: 21751762944
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!4 &831032272 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1247950132212825173, guid: 4a2060d25d95f7144a586da04200efd7, type: 3}

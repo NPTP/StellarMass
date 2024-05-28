@@ -30,8 +30,8 @@ namespace StellarMass.Systems.InputManagement
         
         // This event will invoke regardless of contexts/maps being enabled/disabled.
         public static event Action OnAnyButtonPressed;
-        
-        public static bool AllowPlayerJoining { get; set; }
+
+        public static bool AllowPlayerJoining { get; set; } = false;
         public static bool UseContextEventSystemActions => runtimeInputData.UseContextEventSystemActions;
         
         // MARKER.SingleOrMultiPlayerFieldsAndProperties.Start
@@ -71,8 +71,7 @@ namespace StellarMass.Systems.InputManagement
 
         #region Setup
         
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void BeforeSceneLoad()
+        public static void InitializeBeforeSceneLoad()
         {
 #if UNITY_EDITOR
             EditorApplication.playModeStateChanged -= handlePlayModeStateChanged;
@@ -97,8 +96,7 @@ namespace StellarMass.Systems.InputManagement
             primaryPlayer = playerCollection.CreateAndAddPlayer(asset);
         }
 
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void AfterSceneLoad()
+        public static void InitializeAfterSceneLoad()
         {
             primaryPlayerInput = Object.FindObjectOfType<PlayerInput>();
             primaryUIInputModule = Object.FindObjectOfType<InputSystemUIInputModule>();

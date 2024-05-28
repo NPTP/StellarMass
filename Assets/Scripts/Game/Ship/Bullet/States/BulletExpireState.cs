@@ -3,7 +3,7 @@ using StellarMass.Game.Data;
 using StellarMass.Systems.StateMachines;
 using UnityEngine;
 
-namespace StellarMass.Game.States.Bullet
+namespace StellarMass.Game.Ship.Bullet.States
 {
     public class BulletExpireState : State
     {

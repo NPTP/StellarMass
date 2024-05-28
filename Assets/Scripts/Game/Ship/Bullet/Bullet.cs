@@ -1,9 +1,9 @@
-using StellarMass.Game.States.Bullet;
+using StellarMass.Game.Ship.Bullet.States;
 using StellarMass.Systems.StateMachines;
 using StellarMass.Utilities.Attributes;
 using UnityEngine;
 
-namespace StellarMass.Game.Ship
+namespace StellarMass.Game.Ship.Bullet
 {
     [RequireComponent(typeof(StateMachine))]
     public class Bullet : MonoBehaviour
