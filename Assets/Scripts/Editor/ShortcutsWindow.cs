@@ -56,9 +56,9 @@ namespace StellarMass.Editor
 		private void Refresh()
 		{
 			globalPostProcessing = FindObjectOfType<PostProcessingChanger>(includeInactive: true);
-			postProcessingEnabled = globalPostProcessing.Volume.enabled;
+			if (globalPostProcessing != null) postProcessingEnabled = globalPostProcessing.Volume.enabled;
 			loopBoundingBox = FindObjectOfType<LoopBoundingBox>(includeInactive: true);
-			loopBoundingBoxVisualizerEnabled = loopBoundingBox.BoundsVisualizer.enabled;
+			if (loopBoundingBox != null) loopBoundingBoxVisualizerEnabled = loopBoundingBox.BoundsVisualizer.enabled;
 			GetData();
 		}
 
@@ -93,8 +93,25 @@ namespace StellarMass.Editor
 			GUILayout.EndHorizontal();
 		}
 
-		private void PostProcessingToggle() => ValueToggle(ref postProcessingEnabled, globalPostProcessing.Volume, "Enable PostProcessing");
-		private void BoundsVisualizeToggle() => ValueToggle(ref loopBoundingBoxVisualizerEnabled, loopBoundingBox.BoundsVisualizer, "Visualize Loop Bounds");
+		private void PostProcessingToggle()
+		{
+			if (globalPostProcessing == null)
+			{
+				return;
+			}
+			
+			ValueToggle(ref postProcessingEnabled, globalPostProcessing.Volume, "Enable PostProcessing");
+		}
+
+		private void BoundsVisualizeToggle()
+		{
+			if (loopBoundingBox == null)
+			{
+				return;
+			}
+			
+			ValueToggle(ref loopBoundingBoxVisualizerEnabled, loopBoundingBox.BoundsVisualizer, "Visualize Loop Bounds");
+		}
 
 		private void ValueToggle(ref bool toggle, Behaviour toggleable, string label)
 		{
