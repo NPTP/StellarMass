@@ -87,7 +87,7 @@ namespace StellarMass.Systems.InputManagement
             InputActionAsset asset = runtimeInputData.InputActionAsset;
             if (asset == null)
             {
-                throw new MissingFieldException($"Input manager's {nameof(runtimeInputData)} is missing an input action asset!");
+                throw new Exception($"Input manager's {nameof(runtimeInputData)} is missing an input action asset!");
             }
 
             playerCollection = new InputPlayerCollection();
