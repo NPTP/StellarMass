@@ -29,6 +29,7 @@ namespace StellarMass.Editor
 		private readonly FolderShortcut[] folderShortcuts = new[]
 		{
 			new FolderShortcut("Scripts", "Assets/Scripts"),
+			new FolderShortcut("Scenes", "Assets/Scenes"),
 			new FolderShortcut("Input Management", "Assets/Scripts/Systems/InputManagement"),
 			new FolderShortcut("Prefabs", "Assets/Prefabs"),
 			new FolderShortcut("Data", "Assets/Data"),

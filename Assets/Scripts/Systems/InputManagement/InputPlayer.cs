@@ -76,8 +76,8 @@ namespace StellarMass.Systems.InputManagement
             Object.Destroy(playerInput);
             Object.Destroy(uiInputModule);
         }
-        
-        public void EnableKeyboardTextInput()
+
+        private void EnableKeyboardTextInput()
         {
             GetKeyboards().ForEach(keyboard =>
             {
@@ -86,7 +86,7 @@ namespace StellarMass.Systems.InputManagement
             });
         }
 
-        public void DisableKeyboardTextInput()
+        private void DisableKeyboardTextInput()
         {
             GetKeyboards().ForEach(keyboard => keyboard.onTextInput -= HandleTextInput);
         }

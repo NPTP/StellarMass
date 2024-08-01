@@ -50,8 +50,6 @@ namespace StellarMass.Systems.InputManagement
         public static InputContext CurrentContext => primaryPlayer.CurrentContext;
         public static ControlScheme CurrentControlScheme => primaryPlayer.CurrentControlScheme;
         public static void EnableContext(InputContext context) => primaryPlayer.EnableContext(context);
-        public static void EnableKeyboardTextInput() => primaryPlayer.EnableKeyboardTextInput();
-        public static void DisableKeyboardTextInput() => primaryPlayer.DisableKeyboardTextInput();
         // MARKER.SingleOrMultiPlayerFieldsAndProperties.End
         
         // MARKER.DefaultContextProperty.Start

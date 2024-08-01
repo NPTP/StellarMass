@@ -26,8 +26,6 @@ namespace StellarMass.Systems.InputManagement.Editor.ScriptContentBuilders
                     lines.Add($"        public static {nameof(InputContext)} CurrentContext => primaryPlayer.CurrentContext;");
                     lines.Add($"        public static {nameof(ControlScheme)} CurrentControlScheme => primaryPlayer.CurrentControlScheme;");
                     lines.Add($"        public static void EnableContext({nameof(InputContext)} context) => primaryPlayer.EnableContext(context);");
-                    lines.Add($"        public static void EnableKeyboardTextInput() => primaryPlayer.EnableKeyboardTextInput();");
-                    lines.Add($"        public static void DisableKeyboardTextInput() => primaryPlayer.DisableKeyboardTextInput();");
                     break;
                 case "DefaultContextProperty":
                     lines.Add($"        private static {nameof(InputContext)} DefaultContext => {nameof(InputContext)}.{Helper.OfflineInputData.DefaultContext};");
