@@ -25,7 +25,7 @@ namespace StellarMass.Systems.InputManagement
         #region Fields & Properties
         
         // MARKER.RuntimeInputAddress.Start
-        private const string RUNTIME_INPUT_DATA_ADDRESS = "RuntimeInputData";
+        private const string RUNTIME_INPUT_DATA_PATH = "RuntimeInputData";
         // MARKER.RuntimeInputAddress.End
         
         // This event will invoke regardless of contexts/maps being enabled/disabled.
@@ -83,7 +83,7 @@ namespace StellarMass.Systems.InputManagement
             Application.quitting -= Terminate;
             Application.quitting += Terminate;
 #endif
-            runtimeInputData = AddressablesUtility.LoadAssetSynchronous<RuntimeInputData>(RUNTIME_INPUT_DATA_ADDRESS);
+            runtimeInputData = Resources.Load<RuntimeInputData>(RUNTIME_INPUT_DATA_PATH);
             InputActionAsset asset = runtimeInputData.InputActionAsset;
             if (asset == null)
             {

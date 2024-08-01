@@ -15,7 +15,7 @@ namespace StellarMass.Systems.Data
             get
             {
                 if (instance == null)
-                    instance = AddressablesUtility.LoadAssetSynchronous<T>(Address);
+                    instance = Resources.Load<T>(Address);
                 return instance;
             }
         }

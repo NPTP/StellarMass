@@ -11,7 +11,7 @@ namespace StellarMass.Systems.InputManagement.Editor.ScriptContentBuilders
             switch (markerName)
             {
                 case "RuntimeInputAddress":
-                    lines.Add($"        private const string RUNTIME_INPUT_DATA_ADDRESS = \"{OfflineInputData.RUNTIME_INPUT_DATA_ADDRESS}\";");
+                    lines.Add($"        private const string RUNTIME_INPUT_DATA_PATH = \"{OfflineInputData.RUNTIME_INPUT_DATA_PATH}\";");
                     break;
                 case "SingleOrMultiPlayerFieldsAndProperties":
                     if (!Helper.OfflineInputData.SinglePlayerOnly)

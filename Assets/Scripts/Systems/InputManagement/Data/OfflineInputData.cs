@@ -1,6 +1,5 @@
 using System.Linq;
 using StellarMass.Systems.Data;
-using StellarMass.Utilities;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,7 +12,7 @@ namespace StellarMass.Systems.InputManagement.Data
     public class OfflineInputData : DataScriptable
     {
 #if UNITY_EDITOR
-        public const string RUNTIME_INPUT_DATA_ADDRESS = nameof(RuntimeInputData);
+        public const string RUNTIME_INPUT_DATA_PATH = nameof(RuntimeInputData);
 
         [SerializeField] private bool singlePlayerOnly = true;
         public bool SinglePlayerOnly => singlePlayerOnly;
@@ -35,7 +34,6 @@ namespace StellarMass.Systems.InputManagement.Data
         
         private void OnValidate()
         {
-            runtimeInputData.EDITOR_SetAddress(RUNTIME_INPUT_DATA_ADDRESS, createIfNotAddressable: true);
             VerifyEventSystemActions();
         }
         
