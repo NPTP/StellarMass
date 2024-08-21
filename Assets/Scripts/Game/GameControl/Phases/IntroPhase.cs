@@ -1,7 +1,8 @@
 using System.Collections;
 using StellarMass.Systems.Animation;
 using UnityEngine;
-using Input = StellarMass.Systems.InputManagement.Input;
+using UnityEngine.InputSystem;
+using Input = NPTP.InputSystemWrapper.Input;
 
 namespace StellarMass.Game.GameControl.Phases
 {
@@ -22,12 +23,12 @@ namespace StellarMass.Game.GameControl.Phases
             
             void handleAnimationCompleted()
             {
-                Input.OnAnyButtonPressed += handleAnyButtonPressed;
+                Input.OnAnyButtonPress += handleAnyButtonPress;
             }
             
-            void handleAnyButtonPressed()
+            void handleAnyButtonPress(InputControl inputControl)
             {
-                Input.OnAnyButtonPressed -= handleAnyButtonPressed;
+                Input.OnAnyButtonPress -= handleAnyButtonPress;
                 
                 inputReceived = true;
                 gameController.MainDisplay.Title.SetActive(false);

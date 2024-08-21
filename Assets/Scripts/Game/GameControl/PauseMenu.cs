@@ -1,7 +1,5 @@
-using StellarMass.Systems.InputManagement;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Input = StellarMass.Systems.InputManagement.Input;
 
 namespace StellarMass.Game.GameControl
 {
@@ -14,18 +12,18 @@ namespace StellarMass.Game.GameControl
         
         private void Start()
         {
-            Input.Gameplay.OnPause += HandlePause;
-            Input.PauseMenu.OnNavigate += HandleNavigate;
-            Input.PauseMenu.OnSubmit += HandleSubmit;
-            Input.PauseMenu.OnUnpause += HandleUnpause;
+            // Input.Gameplay.OnPause += HandlePause;
+            // Input.PauseMenu.OnNavigate += HandleNavigate;
+            // Input.PauseMenu.OnSubmit += HandleSubmit;
+            // Input.PauseMenu.OnUnpause += HandleUnpause;
         }
         
         private void OnDestroy()
         {
-            Input.Gameplay.OnPause -= HandlePause;
-            Input.PauseMenu.OnNavigate -= HandleNavigate;
-            Input.PauseMenu.OnSubmit -= HandleSubmit;
-            Input.PauseMenu.OnUnpause -= HandleUnpause;
+            // Input.Gameplay.OnPause -= HandlePause;
+            // Input.PauseMenu.OnNavigate -= HandleNavigate;
+            // Input.PauseMenu.OnSubmit -= HandleSubmit;
+            // Input.PauseMenu.OnUnpause -= HandleUnpause;
         }
 
         private void HandlePause(InputAction.CallbackContext callbackContext)
@@ -40,7 +38,7 @@ namespace StellarMass.Game.GameControl
                 return;
             }
 
-            Input.EnableContext(InputContext.PauseMenu);
+            // Input.EnableContext(InputContext.PauseMenu);
             GameController.GameState = GameState.PauseMenu;
             menuParent.SetActive(true);
             
@@ -62,7 +60,7 @@ namespace StellarMass.Game.GameControl
                 return;
             }
             
-            Input.EnableContext(InputContext.Gameplay);
+            // Input.EnableContext(InputContext.Gameplay);
             GameController.ReturnToPreviousGameState();
             menuParent.SetActive(false);
         }

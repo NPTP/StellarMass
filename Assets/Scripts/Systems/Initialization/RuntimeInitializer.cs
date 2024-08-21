@@ -1,12 +1,9 @@
 using UnityEngine;
-using Input = StellarMass.Systems.InputManagement.Input;
 
 namespace StellarMass.Systems.Initialization
 {
     public static class RuntimeInitializer
     {
-        public static bool FirstSceneLoadCompleted { get; private set; }
-        
         /// <summary>
         /// Step 1: Callback invoked when starting up the runtime. Called before the first scene is loaded.
         /// </summary>
@@ -37,7 +34,6 @@ namespace StellarMass.Systems.Initialization
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void BeforeSceneLoad()
         {
-            Input.InitializeBeforeSceneLoad();
         }
 
         /// <summary>
@@ -46,9 +42,6 @@ namespace StellarMass.Systems.Initialization
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void AfterSceneLoad()
         {
-            FirstSceneLoadCompleted = true;
-            
-            Input.InitializeAfterSceneLoad();
         }
     }
 }

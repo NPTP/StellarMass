@@ -7,12 +7,11 @@ using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.U2D;
-using Input = StellarMass.Systems.InputManagement.Input;
 using Random = UnityEngine.Random;
 
 namespace StellarMass.Game.Ship
 {
-    public class ShipControl : TransformCacher
+    public class ShipControl : MonoBehaviour
     {
         private static Collider2D playerCollider2DReference;
         public static Collider2D PlayerCollider2DReference => playerCollider2DReference;
@@ -28,9 +27,8 @@ namespace StellarMass.Game.Ship
         private bool thrusting;
         private bool turning;
 
-        protected override void Awake()
+        private void Awake()
         {
-            base.Awake();
             playerCollider2DReference = playerCollider2D;
             sqrMaxVelocityMagnitude = PlayerData.MaxVelocityMagnitude.Squared();
         }
@@ -54,18 +52,18 @@ namespace StellarMass.Game.Ship
 
         private void AddInputListeners()
         {
-            Input.Gameplay.OnThrust += OnThrust;
-            Input.Gameplay.OnShoot += OnShoot;
-            Input.Gameplay.OnTurn += OnTurn;
-            Input.Gameplay.OnHyperspace += OnHyperspace;
+            // Input.Gameplay.OnThrust += OnThrust;
+            // Input.Gameplay.OnShoot += OnShoot;
+            // Input.Gameplay.OnTurn += OnTurn;
+            // Input.Gameplay.OnHyperspace += OnHyperspace;
         }
 
         private void RemoveInputListeners()
         {
-            Input.Gameplay.OnThrust -= OnThrust;
-            Input.Gameplay.OnShoot -= OnShoot;
-            Input.Gameplay.OnTurn -= OnTurn;
-            Input.Gameplay.OnHyperspace -= OnHyperspace;
+            // Input.Gameplay.OnThrust -= OnThrust;
+            // Input.Gameplay.OnShoot -= OnShoot;
+            // Input.Gameplay.OnTurn -= OnTurn;
+            // Input.Gameplay.OnHyperspace -= OnHyperspace;
         }
 
         private void FixedUpdate()
