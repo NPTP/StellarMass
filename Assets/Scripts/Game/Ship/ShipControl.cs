@@ -1,12 +1,12 @@
 using System.Collections;
 using StellarMass.Game.Data;
 using StellarMass.Game.ScreenLoop;
-using StellarMass.Utilities;
 using StellarMass.Utilities.Attributes;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.U2D;
+using Input = NPTP.InputSystemWrapper.Input;
 using Random = UnityEngine.Random;
 
 namespace StellarMass.Game.Ship
@@ -52,18 +52,18 @@ namespace StellarMass.Game.Ship
 
         private void AddInputListeners()
         {
-            // Input.Gameplay.OnThrust += OnThrust;
-            // Input.Gameplay.OnShoot += OnShoot;
-            // Input.Gameplay.OnTurn += OnTurn;
-            // Input.Gameplay.OnHyperspace += OnHyperspace;
+            Input.Gameplay.OnThrust += OnThrust;
+            Input.Gameplay.OnShoot += OnShoot;
+            Input.Gameplay.OnTurn += OnTurn;
+            Input.Gameplay.OnHyperspace += OnHyperspace;
         }
 
         private void RemoveInputListeners()
         {
-            // Input.Gameplay.OnThrust -= OnThrust;
-            // Input.Gameplay.OnShoot -= OnShoot;
-            // Input.Gameplay.OnTurn -= OnTurn;
-            // Input.Gameplay.OnHyperspace -= OnHyperspace;
+            Input.Gameplay.OnThrust -= OnThrust;
+            Input.Gameplay.OnShoot -= OnShoot;
+            Input.Gameplay.OnTurn -= OnTurn;
+            Input.Gameplay.OnHyperspace -= OnHyperspace;
         }
 
         private void FixedUpdate()

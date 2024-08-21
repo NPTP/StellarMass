@@ -63,10 +63,13 @@ namespace NPTP.InputSystemWrapper
         }
         public static GameplayActions Gameplay => GetPlayer(PlayerID.Player1).Gameplay;
         public static PauseMenuActions PauseMenu => GetPlayer(PlayerID.Player1).PauseMenu;
-        public static InputContext CurrentContext => GetPlayer(PlayerID.Player1).CurrentContext;
+        public static InputContext CurrentContext
+        {
+            get => GetPlayer(PlayerID.Player1).CurrentContext;
+            set => GetPlayer(PlayerID.Player1).CurrentContext = value;
+        }
         public static ControlScheme CurrentControlScheme => GetPlayer(PlayerID.Player1).CurrentControlScheme;
         public static InputDevice LastUsedDevice => GetPlayer(PlayerID.Player1).LastUsedDevice;
-        public static void EnableContext(InputContext context) => GetPlayer(PlayerID.Player1).CurrentContext = context;
         // MARKER.SingleOrMultiPlayerFieldsAndProperties.End
         
         // MARKER.DefaultContextProperty.Start

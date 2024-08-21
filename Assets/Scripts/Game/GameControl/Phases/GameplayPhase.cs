@@ -10,7 +10,7 @@ namespace StellarMass.Game.GameControl.Phases
     {
         protected override IEnumerator Execution(GameController gameController)
         {
-            // Input.EnableContext(InputContext.Gameplay);
+            Input.CurrentContext = InputContext.Gameplay;
             
             while (true)
             {
