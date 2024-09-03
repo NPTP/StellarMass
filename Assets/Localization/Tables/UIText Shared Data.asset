@@ -23,6 +23,10 @@ MonoBehaviour:
     m_Key: Press Any Button to Start
     m_Metadata:
       m_Items: []
+  - m_Id: 31186736734375936
+    m_Key: Summoner
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

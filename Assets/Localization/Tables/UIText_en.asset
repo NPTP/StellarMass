@@ -26,6 +26,10 @@ MonoBehaviour:
     m_Localized: Press Any Button to Start
     m_Metadata:
       m_Items: []
+  - m_Id: 31186736734375936
+    m_Localized: SUMMONER
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
