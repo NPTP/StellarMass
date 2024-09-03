@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using StellarMass.Utilities.References;
 using UnityEditor;
 using UnityEngine;
@@ -9,9 +8,18 @@ namespace StellarMass.Editor
     [CustomPropertyDrawer(typeof(SceneReference))]
     public class SceneReferenceDrawer : PropertyDrawer
     {
-        private static EditorBuildSettingsScene[] GetActiveBuildSettingsScenes()
+        private const string GUID_FIELD_NAME = "guid";
+        private const string BUILD_INDEX_FIELD_NAME = "buildIndex";
+        
+        private static EditorBuildSettingsScene[] GetActiveBuildSettingsScenesWithoutBootstrap()
         {
-            return EditorBuildSettings.scenes.Where(t => t.enabled).ToArray();
+            EditorBuildSettingsScene[] scenes = new EditorBuildSettingsScene[EditorBuildSettings.scenes.Length - 1];
+            for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
+            {
+                if (i == 0 || !EditorBuildSettings.scenes[i].enabled) continue;
+                scenes[i - 1] = EditorBuildSettings.scenes[i];
+            }
+            return scenes;
         }
 
         private static bool TryGetSceneBuildIndex(SceneAsset sceneAsset, out int buildIndex)
@@ -34,26 +42,29 @@ namespace StellarMass.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorBuildSettingsScene[] scenes = GetActiveBuildSettingsScenes();
+            EditorBuildSettingsScene[] scenes = GetActiveBuildSettingsScenesWithoutBootstrap();
 
-            if (scenes.Length == 0)
+            if (scenes.Length <= 1)
             {
                 EditorGUI.LabelField(position, $"No scenes found", EditorStyles.helpBox);
                 position.y += position.height;
                 return;
             }
 
-            SerializedProperty sceneGuidProperty = property.FindPropertyRelative("guid");
-            SerializedProperty buildIndexProperty = property.FindPropertyRelative("buildIndex");
+            SerializedProperty sceneGuidProperty = property.FindPropertyRelative(GUID_FIELD_NAME);
+            SerializedProperty buildIndexProperty = property.FindPropertyRelative(BUILD_INDEX_FIELD_NAME);
             
             int index = -1;
             List<string> guids = new List<string>();
             List<string> paths = new List<string>();
             for (int i = 0; i < scenes.Length; i++)
             {
-                guids.Add(scenes[i].guid.ToString());
-                paths.Add(scenes[i].path.Replace("Assets/Scenes/", string.Empty).Replace(".unity", string.Empty));
-                if (guids[i] == sceneGuidProperty.stringValue)
+                EditorBuildSettingsScene scene = scenes[i];
+                string guid = scene.guid.ToString();
+                string path = scene.path.Replace("Assets/Scenes/", string.Empty).Replace(".unity", string.Empty);
+                guids.Add(guid);
+                paths.Add(path);
+                if (guid == sceneGuidProperty.stringValue)
                 {
                     index = i;
                 }

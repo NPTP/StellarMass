@@ -8,7 +8,6 @@ namespace StellarMass.Utilities.References
     {
 #if UNITY_EDITOR
         [SerializeField] private string guid;
-        public string Guid => guid;
 #endif
         
         [SerializeField] private int buildIndex;

@@ -1,3 +1,4 @@
+using StellarMass.Utilities.References;
 using UnityEngine.SceneManagement;
 
 namespace StellarMass.Systems.SceneLoading
@@ -5,6 +6,11 @@ namespace StellarMass.Systems.SceneLoading
     public static class SceneLoader
     {
         private static Scene currentlyLoadedAdditiveScene;
+
+        public static void LoadScene(SceneReference sceneReference)
+        {
+            LoadScene(sceneReference.BuildIndex);
+        }
         
         public static void LoadScene(int buildIndex)
         {
@@ -14,6 +20,7 @@ namespace StellarMass.Systems.SceneLoading
             }
             
             SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
+            currentlyLoadedAdditiveScene = SceneManager.GetSceneByBuildIndex(buildIndex);
         }
     }
 }
