@@ -4,6 +4,7 @@ namespace StellarMass.Systems.Initialization
 {
     public static class RuntimeInitializer
     {
+        /*
         /// <summary>
         /// Step 1: Callback invoked when starting up the runtime. Called before the first scene is loaded.
         /// </summary>
@@ -43,5 +44,6 @@ namespace StellarMass.Systems.Initialization
         private static void AfterSceneLoad()
         {
         }
+        */
     }
 }

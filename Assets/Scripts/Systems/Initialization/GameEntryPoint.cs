@@ -1,6 +1,7 @@
 using System.Collections;
 using StellarMass.Systems.Data.Persistent;
 using StellarMass.Systems.SceneManagement;
+using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,6 +14,8 @@ namespace StellarMass.Systems.Initialization
 {
     public class GameEntryPoint : MonoBehaviour
     {
+        [SerializeField] private ExecutableStep[] initializationSteps;
+        
         [SerializeField] private SceneReference firstScene;
 
 #if UNITY_EDITOR
@@ -47,10 +50,10 @@ namespace StellarMass.Systems.Initialization
         /// </summary>
         private IEnumerator Start()
         {
-            // Initialize systems here in desired order.
-            // ...
+            // Perform initialization steps.
+            initializationSteps.For(step => step.Execute());
 
-            // Wait 1 frame to allow updates to occur in systems that require a frame to update.
+            // Wait 1 frame for systems that require a frame to update/set up.
             yield return null;
             
 #if UNITY_EDITOR

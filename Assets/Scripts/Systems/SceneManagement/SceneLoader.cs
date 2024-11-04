@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace StellarMass.Systems.SceneManagement
@@ -13,13 +14,20 @@ namespace StellarMass.Systems.SceneManagement
         
         public static void LoadScene(int buildIndex)
         {
-            if (currentlyLoadedAdditiveScene.isLoaded)
+            if (!currentlyLoadedAdditiveScene.isLoaded)
             {
-                SceneManager.UnloadSceneAsync(currentlyLoadedAdditiveScene);
+                loadScene();
+                return;
             }
             
-            SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
-            currentlyLoadedAdditiveScene = SceneManager.GetSceneByBuildIndex(buildIndex);
+            AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(currentlyLoadedAdditiveScene);
+            unloadOperation.completed += op => loadScene();
+            
+            void loadScene()
+            {
+                SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
+                currentlyLoadedAdditiveScene = SceneManager.GetSceneByBuildIndex(buildIndex);
+            }
         }
     }
 }
