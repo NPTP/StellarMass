@@ -1,5 +1,5 @@
 using DG.Tweening;
-using StellarMass.Game.Data;
+using StellarMass.Systems.Data.Persistent;
 using StellarMass.Systems.StateMachines;
 using UnityEngine;
 
@@ -24,7 +24,7 @@ namespace StellarMass.Game.Ship.Bullet.States
             for (int i = 0; i < spriteRenderers.Length; i++)
             {
                 SpriteRenderer spriteRenderer = spriteRenderers[i];
-                Tween t = spriteRenderer.DOFade(0, PlayerData.BulletExpirationFadeTime);
+                Tween t = spriteRenderer.DOFade(0, PD.Player.BulletExpirationFadeTime);
                 if (i == 0)
                 {
                     t.OnComplete(End);

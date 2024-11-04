@@ -1,8 +1,7 @@
 using FMODUnity;
 using StellarMass.Game.Splash;
-using StellarMass.Systems.SceneLoading;
+using StellarMass.Systems.SceneManagement;
 using StellarMass.Utilities.FMODUtilities;
-using StellarMass.Utilities.References;
 using UnityEngine;
 
 public class SplashScreen : MonoBehaviour

@@ -1,26 +1,25 @@
 using FMODUnity;
-using StellarMass.Systems.Data;
+using StellarMass.Systems.Data.Persistent;
 using UnityEngine;
 
 namespace StellarMass.Game.Data
 {
-    [CreateAssetMenu]
-    public class AudioData : RuntimeData<AudioData>
+    public sealed class AudioPersistentData : PersistentDataContainer
     {
         [Header("Parameters")]
         
         [SerializeField] [ParamRef]
         private string paramReference;
-        public static string ParamReference => Instance.paramReference;
+        public string ParamReference => paramReference;
 
         [Header("Music")]
         
         [SerializeField] private EventReference music;
-        public static EventReference Music => Instance.music;
+        public EventReference Music => music;
 
         [Header("SFX")]
         
         [SerializeField] private EventReference ambience;
-        public static EventReference Ambience => Instance.ambience;
+        public EventReference Ambience => ambience;
     }
 }

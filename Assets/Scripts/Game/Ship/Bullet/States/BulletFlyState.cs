@@ -1,4 +1,4 @@
-using StellarMass.Game.Data;
+using StellarMass.Systems.Data.Persistent;
 using StellarMass.Systems.StateMachines;
 using UnityEngine;
 
@@ -26,13 +26,13 @@ namespace StellarMass.Game.Ship.Bullet.States
         {
             base.Update();
 
-            if (elapsedTimeSinceLastTrail >= PlayerData.TrailFrequency)
+            if (elapsedTimeSinceLastTrail >= PD.Player.TrailFrequency)
             {
                 elapsedTimeSinceLastTrail = 0;
                 Object.Instantiate(bulletTrailPrefab, bulletTransform.position, bulletTransform.rotation);
             }
 
-            bulletTransform.position += bulletTransform.up * (PlayerData.BulletSpeed * Time.deltaTime);
+            bulletTransform.position += bulletTransform.up * (PD.Player.BulletSpeed * Time.deltaTime);
             elapsedTimeSinceLastTrail += Time.deltaTime;
 
             foreach (SpriteRenderer spriteRenderer in spriteRenderers)
@@ -41,7 +41,7 @@ namespace StellarMass.Game.Ship.Bullet.States
             }
 
             elapsedTimeAlive += Time.deltaTime;
-            if (elapsedTimeAlive >= PlayerData.BulletLifetime)
+            if (elapsedTimeAlive >= PD.Player.BulletLifetime)
             {
                 return new BulletExpireState(spriteRenderers, collider);
             }

@@ -1,7 +1,6 @@
-using StellarMass.Utilities.References;
 using UnityEngine.SceneManagement;
 
-namespace StellarMass.Systems.SceneLoading
+namespace StellarMass.Systems.SceneManagement
 {
     public static class SceneLoader
     {

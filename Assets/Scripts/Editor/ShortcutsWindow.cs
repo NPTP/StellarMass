@@ -13,26 +13,33 @@ namespace StellarMass.Editor
 {
 	public class ShortcutsWindow : EditorWindow
 	{
-		private class FolderShortcut
+		private class WindowItem { }
+		private abstract class Shortcut : WindowItem
 		{
 			public readonly string name;
 			public readonly string path;
 
-			public FolderShortcut(string name, string path)
+			protected Shortcut(string name, string path)
 			{
 				this.name = name;
 				this.path = path;
 			}
 		}
+		private sealed class AssetShortcut : Shortcut { public AssetShortcut(string name, string path) : base(name, path) { } }
+		private sealed class FolderShortcut : Shortcut { public FolderShortcut(string name, string path) : base(name, path) { } }
+		private sealed class Space : WindowItem { }
+		private sealed class Line : WindowItem { }
 
 		private readonly List<DataScriptable> dataScriptables = new List<DataScriptable>();
-		private readonly FolderShortcut[] folderShortcuts = new[]
+		private readonly WindowItem[] assetAndFolderShortcuts = new WindowItem[]
 		{
 			new FolderShortcut("Scripts", "Assets/Scripts"),
 			new FolderShortcut("Scenes", "Assets/Scenes"),
 			new FolderShortcut("Prefabs", "Assets/Prefabs"),
 			new FolderShortcut("Data", "Assets/Data"),
-			new FolderShortcut("Game Phases", "Assets/Data/GamePhases")
+			new FolderShortcut("Game Phases", "Assets/Data/GamePhases"),
+			new Space(),
+			new Line()
 		};
 
 		private bool RefreshRequired => globalPostProcessing == null || loopBoundingBox == null || dataScriptables.IsEmpty();
@@ -86,7 +93,7 @@ namespace StellarMass.Editor
 
 				GUILayout.BeginVertical();
 				{
-					ShowFolderShortcuts();
+					ShowAssetAndFolderShortcuts();
 				}
 				GUILayout.EndVertical();
 			}
@@ -152,42 +159,7 @@ namespace StellarMass.Editor
 				}
 			}
 		}
-
-		private void ShowFolderShortcuts()
-		{
-			GUILayout.Label("Folders");
-
-			foreach (FolderShortcut folderShortcut in folderShortcuts)
-			{
-				if (GUILayout.Button(folderShortcut.name))
-				{
-					OpenFolder(folderShortcut.path);
-				}
-			}
-		}
-
-		private void OpenFolder(string folderPath)
-		{
-			EditorUtility.FocusProjectWindow();
-			Object folder = AssetDatabase.LoadAssetAtPath<Object>(folderPath);
-			Type projectBrowserType = Type.GetType("UnityEditor.ProjectBrowser,UnityEditor");
-			object lastInteractedBrowser = projectBrowserType.GetField("s_LastInteractedProjectBrowser", BindingFlags.Static | BindingFlags.Public).GetValue(null);
-			MethodInfo showFolderContentsMethod = projectBrowserType.GetMethod("ShowFolderContents", BindingFlags.NonPublic | BindingFlags.Instance);
-			showFolderContentsMethod?.Invoke(lastInteractedBrowser, new object[] { folder.GetInstanceID(), true });
-
-			// Puts us at the top of the folder we just opened.
-			EditorWindow projectWindow = GetWindow(projectBrowserType);
-			if (projectWindow != null)
-			{
-				Event e = new()
-				{
-					type = EventType.KeyDown,
-					keyCode = KeyCode.Home
-				};
-				projectWindow.SendEvent(e);
-			}
-		}
-
+		
 		private void GetData()
 		{
 			string[] guids = AssetDatabase.FindAssets($"t:{nameof(DataScriptable)}");
@@ -207,6 +179,58 @@ namespace StellarMass.Editor
 			}
         
 			Selection.activeObject = selectedData;
+		}
+
+		private void ShowAssetAndFolderShortcuts()
+		{
+			GUILayout.Label("Assets & Folders");
+
+			foreach (WindowItem item in assetAndFolderShortcuts)
+			{
+				switch (item)
+				{
+					case Space:
+						// GUILayout.Space(EditorGUIUtility.singleLineHeight);
+						break;
+					case Line:
+						// EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
+						break;
+					case AssetShortcut assetShortcut when GUILayout.Button(assetShortcut.name):
+						SelectAsset(assetShortcut.path);
+						break;
+					case FolderShortcut folderShortcut when GUILayout.Button(folderShortcut.name):
+						OpenFolder(folderShortcut.path);
+						break;
+				}
+			}
+		}
+
+		private static void SelectAsset(string path)
+		{
+			Object asset = AssetDatabase.LoadAssetAtPath<Object>(path);
+			Selection.activeObject = asset;
+		}
+
+		private void OpenFolder(string path)
+		{
+			EditorUtility.FocusProjectWindow();
+			Object folder = AssetDatabase.LoadAssetAtPath<Object>(path);
+			Type projectBrowserType = Type.GetType("UnityEditor.ProjectBrowser,UnityEditor");
+			object lastInteractedBrowser = projectBrowserType.GetField("s_LastInteractedProjectBrowser", BindingFlags.Static | BindingFlags.Public).GetValue(null);
+			MethodInfo showFolderContentsMethod = projectBrowserType.GetMethod("ShowFolderContents", BindingFlags.NonPublic | BindingFlags.Instance);
+			showFolderContentsMethod?.Invoke(lastInteractedBrowser, new object[] { folder.GetInstanceID(), true });
+
+			// Puts us at the top of the folder we just opened.
+			EditorWindow projectWindow = GetWindow(projectBrowserType);
+			if (projectWindow != null)
+			{
+				Event e = new()
+				{
+					type = EventType.KeyDown,
+					keyCode = KeyCode.Home
+				};
+				projectWindow.SendEvent(e);
+			}
 		}
 	}
 }

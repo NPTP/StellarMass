@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace StellarMass.Utilities.References
+namespace StellarMass.Systems.SceneManagement
 {
     [Serializable]
     public class SceneReference

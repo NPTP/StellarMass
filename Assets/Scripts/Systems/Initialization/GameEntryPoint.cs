@@ -1,6 +1,6 @@
 using System.Collections;
-using StellarMass.Systems.SceneLoading;
-using StellarMass.Utilities.References;
+using StellarMass.Systems.Data.Persistent;
+using StellarMass.Systems.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,9 +13,8 @@ namespace StellarMass.Systems.Initialization
 {
     public class GameEntryPoint : MonoBehaviour
     {
-        [SerializeField] private bool hideCursor = true;
         [SerializeField] private SceneReference firstScene;
-        
+
 #if UNITY_EDITOR
         private const string EDITOR_OPEN_SCENE_KEY = "EditorOpenScene";
         private const string BOOTSTRAP_SCENE_ASSET_PATH = "Assets/Scenes/Bootstrap.unity";
@@ -40,7 +39,7 @@ namespace StellarMass.Systems.Initialization
 
         private void Awake()
         {
-            Cursor.visible = !hideCursor;
+            Cursor.visible = !PD.Game.HideCursorOnGameStart;
         }
 
         /// <summary>

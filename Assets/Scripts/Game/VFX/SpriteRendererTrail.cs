@@ -1,5 +1,5 @@
 using DG.Tweening;
-using StellarMass.Game.Data;
+using StellarMass.Systems.Data.Persistent;
 using UnityEngine;
 
 namespace StellarMass.Game.VFX
@@ -10,7 +10,7 @@ namespace StellarMass.Game.VFX
 
         private void Start()
         {
-            spriteRenderer.DOFade(0, PlayerData.TrailFadeTime)
+            spriteRenderer.DOFade(0, PD.Player.TrailFadeTime)
                 .From(0.75f)
                 .SetEase(Ease.OutExpo)
                 .OnComplete(() => Destroy(gameObject));
