@@ -4,6 +4,7 @@ using System.Reflection;
 using StellarMass.Game.ScreenLoop;
 using StellarMass.Game.VFX;
 using StellarMass.Systems.Data;
+using StellarMass.Systems.Data.Persistent;
 using StellarMass.Utilities.Extensions;
 using UnityEditor;
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace StellarMass.Editor
 		private sealed class Space : WindowItem { }
 		private sealed class Line : WindowItem { }
 
-		private readonly List<DataScriptable> dataScriptables = new List<DataScriptable>();
+		private readonly List<PersistentDataContainer> persistentDataContainers = new List<PersistentDataContainer>();
 		private readonly WindowItem[] assetAndFolderShortcuts = new WindowItem[]
 		{
 			new FolderShortcut("Scripts", "Assets/Scripts"),
@@ -42,7 +43,7 @@ namespace StellarMass.Editor
 			new Line()
 		};
 
-		private bool RefreshRequired => globalPostProcessing == null || loopBoundingBox == null || dataScriptables.IsEmpty();
+		private bool RefreshRequired => globalPostProcessing == null || loopBoundingBox == null || persistentDataContainers.IsEmpty();
 
 		private PostProcessingChanger globalPostProcessing;
 		private bool postProcessingEnabled;
@@ -146,32 +147,32 @@ namespace StellarMass.Editor
 		{
 			GUILayout.Label("Data");
 			
-			foreach (DataScriptable data in dataScriptables)
+			foreach (PersistentDataContainer container in persistentDataContainers)
 			{
-				if (data == null)
+				if (container == null)
 				{
 					continue;
 				}
 
-				if (GUILayout.Button(data.name.Replace("Data", string.Empty)))
+				if (GUILayout.Button(container.name.Replace("Data", string.Empty)))
 				{
-					SelectData(data);
+					SelectData(container);
 				}
 			}
 		}
 		
 		private void GetData()
 		{
-			string[] guids = AssetDatabase.FindAssets($"t:{nameof(DataScriptable)}");
-			dataScriptables.Clear();
+			string[] guids = AssetDatabase.FindAssets($"t:{nameof(PersistentDataContainer)}");
+			persistentDataContainers.Clear();
 			foreach (string guid in guids)
 			{
-				DataScriptable globalData = AssetDatabase.LoadAssetAtPath<DataScriptable>(AssetDatabase.GUIDToAssetPath(guid));
-				dataScriptables.Add(globalData);
+				PersistentDataContainer container = AssetDatabase.LoadAssetAtPath<PersistentDataContainer>(AssetDatabase.GUIDToAssetPath(guid));
+				persistentDataContainers.Add(container);
 			}
 		}
 		
-		private void SelectData(DataScriptable selectedData)
+		private void SelectData(PersistentDataContainer selectedData)
 		{
 			if (selectedData == null)
 			{

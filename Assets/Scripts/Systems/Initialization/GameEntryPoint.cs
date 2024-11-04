@@ -1,5 +1,4 @@
 using System.Collections;
-using StellarMass.Systems.Data.Persistent;
 using StellarMass.Systems.SceneManagement;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
@@ -39,11 +38,6 @@ namespace StellarMass.Systems.Initialization
             }
         }
 #endif
-
-        private void Awake()
-        {
-            Cursor.visible = !PD.Game.HideCursorOnGameStart;
-        }
 
         /// <summary>
         /// Right here is the entire game's entry point. Supreme control created!
