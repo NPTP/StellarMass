@@ -1,6 +1,5 @@
 using System.Collections;
 using StellarMass.Game.ScreenLoop;
-using StellarMass.Systems.Data.Persistent;
 using StellarMass.Utilities.Attributes;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
@@ -8,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.U2D;
 using Input = NPTP.InputSystemWrapper.Input;
 using Random = UnityEngine.Random;
+using StellarMass.Systems.Data.Persistent;
 
 namespace StellarMass.Game.Ship
 {
@@ -30,7 +30,7 @@ namespace StellarMass.Game.Ship
         private void Awake()
         {
             playerCollider2DReference = playerCollider2D;
-            sqrMaxVelocityMagnitude = PD.Player.MaxVelocityMagnitude.Squared();
+            sqrMaxVelocityMagnitude = PersistentData.Player.MaxVelocityMagnitude.Squared();
         }
 
         private void Start()
@@ -52,18 +52,18 @@ namespace StellarMass.Game.Ship
 
         private void AddInputListeners()
         {
-            Input.Gameplay.OnThrust += OnThrust;
-            Input.Gameplay.OnShoot += OnShoot;
-            Input.Gameplay.OnTurn += OnTurn;
-            Input.Gameplay.OnHyperspace += OnHyperspace;
+            Input.Gameplay.Thrust.OnEvent += OnThrust;
+            Input.Gameplay.Shoot.OnEvent += OnShoot;
+            Input.Gameplay.Turn.OnEvent += OnTurn;
+            Input.Gameplay.Hyperspace.OnEvent += OnHyperspace;
         }
 
         private void RemoveInputListeners()
         {
-            Input.Gameplay.OnThrust -= OnThrust;
-            Input.Gameplay.OnShoot -= OnShoot;
-            Input.Gameplay.OnTurn -= OnTurn;
-            Input.Gameplay.OnHyperspace -= OnHyperspace;
+            Input.Gameplay.Thrust.OnEvent -= OnThrust;
+            Input.Gameplay.Shoot.OnEvent -= OnShoot;
+            Input.Gameplay.Turn.OnEvent -= OnTurn;
+            Input.Gameplay.Hyperspace.OnEvent -= OnHyperspace;
         }
 
         private void FixedUpdate()
@@ -76,7 +76,7 @@ namespace StellarMass.Game.Ship
             Vector2 shipVelocity = shipRb.velocity;
             if (shipVelocity.sqrMagnitude > sqrMaxVelocityMagnitude)
             {
-                shipRb.velocity = shipVelocity.normalized * PD.Player.MaxVelocityMagnitude;
+                shipRb.velocity = shipVelocity.normalized * PersistentData.Player.MaxVelocityMagnitude;
             }
         }
 
@@ -87,7 +87,7 @@ namespace StellarMass.Game.Ship
                 return;
             }
 
-            if (Time.time - lastShotTime >= PD.Player.ShootCooldown)
+            if (Time.time - lastShotTime >= PersistentData.Player.ShootCooldown)
             {
                 Instantiate(bulletPrefab, transform.position, transform.rotation);
                 lastShotTime = Time.time;
@@ -163,7 +163,7 @@ namespace StellarMass.Game.Ship
                 float flickerElapsed = 0f;
                 while (thrusting)
                 {
-                    if (flickerElapsed >= PD.Player.ThrustFlickerTime)
+                    if (flickerElapsed >= PersistentData.Player.ThrustFlickerTime)
                     {
                         flickerElapsed = 0;
                         jetsRenderer.enabled = !jetsRenderer.enabled;
@@ -179,12 +179,12 @@ namespace StellarMass.Game.Ship
         
         private void PhysicsThrust(bool negative)
         {
-            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (PD.Player.ForwardForce * Time.fixedDeltaTime)), ForceMode2D.Force);
+            shipRb.AddForce(shipRb.transform.up * ((negative ? -1 : 1) * (PersistentData.Player.ForwardForce * Time.fixedDeltaTime)), ForceMode2D.Force);
         }
 
         private void Turn(bool left)
         {
-            shipRb.transform.rotation *= Quaternion.Euler(new Vector3(0, 0, (left ? 1 : -1) * 10 * (PD.Player.TurnSpeed * Time.deltaTime)));
+            shipRb.transform.rotation *= Quaternion.Euler(new Vector3(0, 0, (left ? 1 : -1) * 10 * (PersistentData.Player.TurnSpeed * Time.deltaTime)));
         }
     }
 }

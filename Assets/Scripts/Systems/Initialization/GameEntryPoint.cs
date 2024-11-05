@@ -1,8 +1,9 @@
 using System.Collections;
+using StellarMass.Systems.Data.Persistent;
 using StellarMass.Systems.SceneManagement;
-using StellarMass.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Input = NPTP.InputSystemWrapper.Input;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -13,10 +14,20 @@ namespace StellarMass.Systems.Initialization
 {
     public class GameEntryPoint : MonoBehaviour
     {
-        [SerializeField] private ExecutableStep[] initializationSteps;
-        
         [SerializeField] private SceneReference firstScene;
+        
+        /// <summary>
+        /// This method executes as the entry point of the entire game.
+        /// This will run before ANY other developer code for this game, after which "firstScene" will be loaded.
+        /// </summary>
+        private void EntryPointExecute()
+        {
+            Cursor.visible = !PersistentData.Game.HideCursor;
+            Input.Initialize();
+        }
 
+        #region Implementation
+        
 #if UNITY_EDITOR
         private const string EDITOR_OPEN_SCENE_KEY = "EditorOpenScene";
         private const string BOOTSTRAP_SCENE_ASSET_PATH = "Assets/Scenes/Bootstrap.unity";
@@ -38,14 +49,11 @@ namespace StellarMass.Systems.Initialization
             }
         }
 #endif
-
-        /// <summary>
-        /// Right here is the entire game's entry point. Supreme control created!
-        /// </summary>
+        
         private IEnumerator Start()
         {
             // Perform initialization steps.
-            initializationSteps.For(step => step.Execute());
+            EntryPointExecute();
 
             // Wait 1 frame for systems that require a frame to update/set up.
             yield return null;
@@ -61,5 +69,6 @@ namespace StellarMass.Systems.Initialization
             
             Destroy(gameObject);
         }
+        #endregion
     }
 }

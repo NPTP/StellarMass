@@ -1,7 +1,7 @@
 using StellarMass.Game.GameControl.Phases;
 using StellarMass.Systems.Audio;
-using StellarMass.Systems.Data.Persistent;
 using UnityEngine;
+using StellarMass.Systems.Data.Persistent;
 
 namespace StellarMass.Game.GameControl
 {
@@ -38,12 +38,8 @@ namespace StellarMass.Game.GameControl
 
         private void Start()
         {
-#if !UNITY_EDITOR
-            Cursor.visible = false;
-#endif
-            
-            if (playMusicOnStart) music = AudioPlayer.PlayPersistentAudio(PD.Audio.Music);
-            if (playAmbienceOnStart) ambience = AudioPlayer.PlayPersistentAudio(PD.Audio.Ambience);
+            if (playMusicOnStart) music = AudioPlayer.PlayPersistentAudio(PersistentData.Audio.Music);
+            if (playAmbienceOnStart) ambience = AudioPlayer.PlayPersistentAudio(PersistentData.Audio.Ambience);
             
             ExecuteGamePhases(startingPhaseIndex);
         }

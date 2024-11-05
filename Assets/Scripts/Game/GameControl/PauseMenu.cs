@@ -14,18 +14,18 @@ namespace StellarMass.Game.GameControl
         
         private void Start()
         {
-            Input.Gameplay.OnPause += HandlePause;
-            Input.PauseMenu.OnNavigate += HandleNavigate;
-            Input.PauseMenu.OnSubmit += HandleSubmit;
-            Input.PauseMenu.OnUnpause += HandleUnpause;
+            Input.Gameplay.Pause.OnEvent += HandlePause;
+            Input.PauseMenu.Navigate.OnEvent += HandleNavigate;
+            Input.PauseMenu.Submit.OnEvent += HandleSubmit;
+            Input.PauseMenu.Unpause.OnEvent += HandleUnpause;
         }
         
         private void OnDestroy()
         {
-            Input.Gameplay.OnPause -= HandlePause;
-            Input.PauseMenu.OnNavigate -= HandleNavigate;
-            Input.PauseMenu.OnSubmit -= HandleSubmit;
-            Input.PauseMenu.OnUnpause -= HandleUnpause;
+            Input.Gameplay.Pause.OnEvent -= HandlePause;
+            Input.PauseMenu.Navigate.OnEvent -= HandleNavigate;
+            Input.PauseMenu.Submit.OnEvent -= HandleSubmit;
+            Input.PauseMenu.Unpause.OnEvent -= HandleUnpause;
         }
 
         private void HandlePause(InputAction.CallbackContext callbackContext)
@@ -40,7 +40,7 @@ namespace StellarMass.Game.GameControl
                 return;
             }
 
-            Input.CurrentContext = InputContext.UI;
+            Input.Context = InputContext.Menu;
             GameController.GameState = GameState.PauseMenu;
             menuParent.SetActive(true);
             
@@ -62,7 +62,7 @@ namespace StellarMass.Game.GameControl
                 return;
             }
 
-            Input.CurrentContext = InputContext.Gameplay;
+            // Input.CurrentContext = InputContext.Gameplay;
             GameController.ReturnToPreviousGameState();
             menuParent.SetActive(false);
         }
