@@ -1,6 +1,8 @@
 using System.Collections;
+using StellarMass.Game.SaveLoad;
 using StellarMass.Systems.Coroutines;
 using StellarMass.Systems.ReferenceTable;
+using StellarMass.Systems.SaveLoad;
 using StellarMass.Systems.SceneManagement;
 using StellarMass.Utilities.Attributes;
 using UnityEngine;
@@ -30,6 +32,9 @@ namespace StellarMass.Systems.Initialization
             MonoReferenceTable.Initialize();
             Input.Initialize();
             CoroutineOwner.Initialize();
+
+            StellarMassSaveData saveData = Saves.Get<StellarMassSaveData>(0);
+            Debug.Log($"saveData : {saveData.z}");
         }
 
         #region Implementation
