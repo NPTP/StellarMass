@@ -297,7 +297,7 @@
             ]
         },
         {
-            "name": "PauseMenu",
+            "name": "Menu",
             "id": "a678130e-30c3-4d3f-8fbf-5c97664e8ebf",
             "actions": [
                 {
@@ -313,6 +313,15 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "9d40871e-5615-4343-a832-dc37fd431297",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "7593878a-c79e-4e90-b212-30bf9ac46ddb",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -540,17 +549,6 @@
                 },
                 {
                     "name": "",
-                    "id": "19e41963-0282-43d1-b929-8eb058cca6cc",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Submit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "2ab5c39e-8bc7-4577-9ef1-5534a9358bb0",
                     "path": "<Keyboard>/enter",
                     "interactions": "",
@@ -590,6 +588,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Unpause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7fc8cb35-f11b-41eb-823e-62690fa77f81",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c48e79c4-dacc-4b37-9459-608f340b086a",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

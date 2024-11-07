@@ -62,7 +62,7 @@ namespace NPTP.InputSystemWrapper
         }
 
         public static GameplayActions Gameplay => Player1.Gameplay;
-        public static PauseMenuActions PauseMenu => Player1.PauseMenu;
+        public static MenuActions Menu => Player1.Menu;
 
         public static InputContext Context
         {

@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb36b56b67883d54695cc023434b104a, type: 3}
   m_Name: GamePersistentData
   m_EditorClassIdentifier: 
-  hideCursorOnGameStart: 1
+  hideCursor: 1
+  firstScene:
+    guid: 980eb1e7a9c1b5f49b9fe0d7c2225711
+    buildIndex: 1

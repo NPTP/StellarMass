@@ -15,17 +15,17 @@ namespace StellarMass.Game.GameControl
         private void Start()
         {
             Input.Gameplay.Pause.OnEvent += HandlePause;
-            Input.PauseMenu.Navigate.OnEvent += HandleNavigate;
-            Input.PauseMenu.Submit.OnEvent += HandleSubmit;
-            Input.PauseMenu.Unpause.OnEvent += HandleUnpause;
+            Input.Menu.Navigate.OnEvent += HandleNavigate;
+            Input.Menu.Submit.OnEvent += HandleSubmit;
+            Input.Menu.Unpause.OnEvent += HandleUnpause;
         }
         
         private void OnDestroy()
         {
             Input.Gameplay.Pause.OnEvent -= HandlePause;
-            Input.PauseMenu.Navigate.OnEvent -= HandleNavigate;
-            Input.PauseMenu.Submit.OnEvent -= HandleSubmit;
-            Input.PauseMenu.Unpause.OnEvent -= HandleUnpause;
+            Input.Menu.Navigate.OnEvent -= HandleNavigate;
+            Input.Menu.Submit.OnEvent -= HandleSubmit;
+            Input.Menu.Unpause.OnEvent -= HandleUnpause;
         }
 
         private void HandlePause(InputAction.CallbackContext callbackContext)

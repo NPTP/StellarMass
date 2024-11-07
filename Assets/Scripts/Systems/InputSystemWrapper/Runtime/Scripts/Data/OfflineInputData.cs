@@ -47,6 +47,7 @@ namespace NPTP.InputSystemWrapper.Data
         public string[] BindingCancelPaths => bindingCancelPaths;
         
         // TODO (architecture): these can probably just be ActionReference, now (and change how they get initialized then)
+        // TODO (architecture): Allow defining per-InputContext event system actions
         [Header("Event System Actions")]
         [SerializeField] private InputActionReference point;
         [SerializeField] private InputActionReference leftClick;

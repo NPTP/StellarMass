@@ -8,6 +8,7 @@ using UnityEngine.U2D;
 using Input = NPTP.InputSystemWrapper.Input;
 using Random = UnityEngine.Random;
 using StellarMass.Systems.Data.Persistent;
+using StellarMass.Systems.ReferenceTable;
 
 namespace StellarMass.Game.Ship
 {
@@ -126,9 +127,14 @@ namespace StellarMass.Game.Ship
                 return;
             }
 
+            if (!MonoReferenceTable.TryGet(out LoopBoundingBox loopBoundingBox))
+            {
+                return;
+            }
+            
             shipRb.isKinematic = true;
 
-            Bounds boxBounds = LoopBoundingBox.Bounds;
+            Bounds boxBounds = loopBoundingBox.Bounds;
             Vector3 boxMin = boxBounds.min;
             Vector3 boxMax = boxBounds.max;
 

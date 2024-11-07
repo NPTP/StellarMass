@@ -73,7 +73,7 @@ namespace NPTP.InputSystemWrapper
         
         // MARKER.ActionsProperties.Start
         public GameplayActions Gameplay { get; }
-        public PauseMenuActions PauseMenu { get; }
+        public MenuActions Menu { get; }
         // MARKER.ActionsProperties.End
 
         private InputDevice lastUsedDevice;
@@ -105,7 +105,7 @@ namespace NPTP.InputSystemWrapper
             
             // MARKER.ActionsInstantiation.Start
             Gameplay = new GameplayActions(Asset);
-            PauseMenu = new PauseMenuActions(Asset);
+            Menu = new MenuActions(Asset);
             // MARKER.ActionsInstantiation.End
             
             SetUpInputPlayerGameObject(isMultiplayer, parent);
@@ -171,6 +171,9 @@ namespace NPTP.InputSystemWrapper
         private void SetEventSystemActions()
         {
             // MARKER.EventSystemActions.Start
+            uiInputModule.move = createLocalAssetReference("33d7d08d-c733-4d29-8a19-3414d8312c5f");
+            uiInputModule.submit = createLocalAssetReference("9d40871e-5615-4343-a832-dc37fd431297");
+            uiInputModule.cancel = createLocalAssetReference("7593878a-c79e-4e90-b212-30bf9ac46ddb");
             // MARKER.EventSystemActions.End
 
 #pragma warning disable CS8321
@@ -299,11 +302,12 @@ namespace NPTP.InputSystemWrapper
                 if (action == Gameplay.Turn.InputAction) return Gameplay.Turn;
                 if (action == Gameplay.Pause.InputAction) return Gameplay.Pause;
             }
-            else if (PauseMenu.ActionMap == map)
+            else if (Menu.ActionMap == map)
             {
-                if (action == PauseMenu.Navigate.InputAction) return PauseMenu.Navigate;
-                if (action == PauseMenu.Submit.InputAction) return PauseMenu.Submit;
-                if (action == PauseMenu.Unpause.InputAction) return PauseMenu.Unpause;
+                if (action == Menu.Navigate.InputAction) return Menu.Navigate;
+                if (action == Menu.Submit.InputAction) return Menu.Submit;
+                if (action == Menu.Cancel.InputAction) return Menu.Cancel;
+                if (action == Menu.Unpause.InputAction) return Menu.Unpause;
             }
             // MARKER.FindActionWrapperIfElse.End
 
@@ -354,7 +358,7 @@ namespace NPTP.InputSystemWrapper
         {
             // MARKER.DisableAllMapsAndRemoveCallbacksBody.Start
             Gameplay.DisableAndUnregisterCallbacks();
-            PauseMenu.DisableAndUnregisterCallbacks();
+            Menu.DisableAndUnregisterCallbacks();
             // MARKER.DisableAllMapsAndRemoveCallbacksBody.End
         }
         
@@ -395,17 +399,17 @@ namespace NPTP.InputSystemWrapper
                 case InputContext.AllInputDisabled:
                     DisableKeyboardTextInput();
                     Gameplay.DisableAndUnregisterCallbacks();
-                    PauseMenu.DisableAndUnregisterCallbacks();
+                    Menu.DisableAndUnregisterCallbacks();
                     break;
                 case InputContext.Gameplay:
                     DisableKeyboardTextInput();
                     Gameplay.EnableAndRegisterCallbacks();
-                    PauseMenu.DisableAndUnregisterCallbacks();
+                    Menu.DisableAndUnregisterCallbacks();
                     break;
                 case InputContext.Menu:
                     DisableKeyboardTextInput();
-                    Gameplay.DisableAndUnregisterCallbacks();
-                    PauseMenu.EnableAndRegisterCallbacks();
+                    Gameplay.EnableAndRegisterCallbacks();
+                    Menu.DisableAndUnregisterCallbacks();
                     break;
                 // MARKER.EnableContextSwitchMembers.End
                 default:

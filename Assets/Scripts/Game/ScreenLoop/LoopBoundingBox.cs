@@ -1,26 +1,25 @@
-using StellarMass.Utilities;
+using StellarMass.Systems.ReferenceTable;
 using StellarMass.Utilities.Attributes;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
 
 namespace StellarMass.Game.ScreenLoop
 {
-    public class LoopBoundingBox : ClosedSingleton<LoopBoundingBox>
+    public class LoopBoundingBox : ReferenceableMonoBehaviour
     {
         private const float BUFFER_SPACING = 0f;
         private const int X_INDEX = 0;
         private const int Y_INDEX = 1;
         
-        public static Bounds Bounds => Instance.boxCollider2D.bounds;
+        public Bounds Bounds => boxCollider2D.bounds;
 
         [SerializeField][Required] private BoxCollider2D boxCollider2D;
         [SerializeField][Required] private SpriteRenderer boundsVisualizer;
         public SpriteRenderer BoundsVisualizer => boundsVisualizer;
 
-        protected override void AwakeInitialize()
+        protected override void Awake()
         {
-            base.AwakeInitialize();
-
+            base.Awake();
             boundsVisualizer.enabled = false;
         }
 

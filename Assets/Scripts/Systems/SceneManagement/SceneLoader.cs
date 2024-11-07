@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,7 +6,11 @@ namespace StellarMass.Systems.SceneManagement
 {
     public static class SceneLoader
     {
+        public static event Action<Scene> OnSceneUnloaded;
+        public static event Action<Scene> OnSceneLoaded;
+        
         private static Scene currentlyLoadedAdditiveScene;
+        private static bool sceneLoadingInProgress;
 
         public static void LoadScene(SceneReference sceneReference)
         {
@@ -14,19 +19,34 @@ namespace StellarMass.Systems.SceneManagement
         
         public static void LoadScene(int buildIndex)
         {
-            if (!currentlyLoadedAdditiveScene.isLoaded)
+            if (sceneLoadingInProgress)
             {
-                loadScene();
+                Debug.LogError($"Tried to load scene while a scene load was already in progress. Either fix that, or make {nameof(SceneLoader)} support interrupting loads!");
                 return;
             }
             
-            AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(currentlyLoadedAdditiveScene);
-            unloadOperation.completed += op => loadScene();
+            sceneLoadingInProgress = true;
             
-            void loadScene()
+            if (!currentlyLoadedAdditiveScene.isLoaded)
+            {
+                loadNextScene();
+                return;
+            }
+
+            Scene unloadingScene = currentlyLoadedAdditiveScene;
+            AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(unloadingScene);
+            unloadOperation.completed += op =>
+            {
+                OnSceneUnloaded?.Invoke(unloadingScene);
+                loadNextScene();
+            };
+            
+            void loadNextScene()
             {
                 SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
                 currentlyLoadedAdditiveScene = SceneManager.GetSceneByBuildIndex(buildIndex);
+                sceneLoadingInProgress = false;
+                OnSceneLoaded?.Invoke(currentlyLoadedAdditiveScene);
             }
         }
     }

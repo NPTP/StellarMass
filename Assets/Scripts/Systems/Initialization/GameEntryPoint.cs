@@ -1,5 +1,7 @@
 using System.Collections;
+using StellarMass.Systems.Coroutines;
 using StellarMass.Systems.Data.Persistent;
+using StellarMass.Systems.ReferenceTable;
 using StellarMass.Systems.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -14,16 +16,18 @@ namespace StellarMass.Systems.Initialization
 {
     public class GameEntryPoint : MonoBehaviour
     {
-        [SerializeField] private SceneReference firstScene;
         
         /// <summary>
-        /// This method executes as the entry point of the entire game.
-        /// This will run before ANY other developer code for this game, after which "firstScene" will be loaded.
+        /// This method executes as the entry point of the entire game in the bootstrap scene.
+        /// This will run before ANY other developer code for this game.
+        /// Afterwards the first scene specified in the persistent game data will be loaded.
         /// </summary>
         private void EntryPointExecute()
         {
-            Cursor.visible = !PersistentData.Game.HideCursor;
+            Cursor.visible = !PersistentData.Game.HideCursorOnStart;
+            MonoReferenceTable.Initialize();
             Input.Initialize();
+            CoroutineOwner.Initialize();
         }
 
         #region Implementation
@@ -60,7 +64,7 @@ namespace StellarMass.Systems.Initialization
             
 #if UNITY_EDITOR
             // Disallow recursive loading of the bootstrapper from the bootstrapper itself.
-            int buildIndex = Mathf.Max(1, EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, firstScene.BuildIndex));
+            int buildIndex = Mathf.Max(1, EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, PersistentData.Game.FirstScene.BuildIndex));
 #else
             int buildIndex = firstScene.BuildIndex;
 #endif
