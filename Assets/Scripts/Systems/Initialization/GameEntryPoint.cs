@@ -1,8 +1,8 @@
 using System.Collections;
 using StellarMass.Systems.Coroutines;
-using StellarMass.Systems.Data.Persistent;
 using StellarMass.Systems.ReferenceTable;
 using StellarMass.Systems.SceneManagement;
+using StellarMass.Utilities.Attributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Input = NPTP.InputSystemWrapper.Input;
@@ -15,7 +15,9 @@ using UnityEditor.SceneManagement;
 namespace StellarMass.Systems.Initialization
 {
     public class GameEntryPoint : MonoBehaviour
-    {
+    { 
+        [ExpandableScriptable][SerializeField]
+        private InitializationOptions initializationOptions;
         
         /// <summary>
         /// This method executes as the entry point of the entire game in the bootstrap scene.
@@ -24,7 +26,7 @@ namespace StellarMass.Systems.Initialization
         /// </summary>
         private void EntryPointExecute()
         {
-            Cursor.visible = !PersistentData.Game.HideCursorOnStart;
+            Cursor.visible = !initializationOptions.HideCursor;
             MonoReferenceTable.Initialize();
             Input.Initialize();
             CoroutineOwner.Initialize();
@@ -56,7 +58,7 @@ namespace StellarMass.Systems.Initialization
         
         private IEnumerator Start()
         {
-            // Perform initialization steps.
+            // Execute game logic entry point.
             EntryPointExecute();
 
             // Wait 1 frame for systems that require a frame to update/set up.
@@ -64,13 +66,12 @@ namespace StellarMass.Systems.Initialization
             
 #if UNITY_EDITOR
             // Disallow recursive loading of the bootstrapper from the bootstrapper itself.
-            int buildIndex = Mathf.Max(1, EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, PersistentData.Game.FirstScene.BuildIndex));
+            int buildIndex = Mathf.Max(1, EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex));
 #else
             int buildIndex = firstScene.BuildIndex;
 #endif
             
             SceneLoader.LoadScene(buildIndex);
-            
             Destroy(gameObject);
         }
         #endregion

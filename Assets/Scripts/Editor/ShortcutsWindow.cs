@@ -31,7 +31,7 @@ namespace StellarMass.Editor
 		private sealed class Space : WindowItem { }
 		private sealed class Line : WindowItem { }
 
-		private readonly List<PersistentDataContainer> persistentDataContainers = new List<PersistentDataContainer>();
+		private readonly List<DataScriptable> dataScriptables = new List<DataScriptable>();
 		private readonly WindowItem[] assetAndFolderShortcuts = new WindowItem[]
 		{
 			new FolderShortcut("Scripts", "Assets/Scripts"),
@@ -43,7 +43,7 @@ namespace StellarMass.Editor
 			new Line()
 		};
 
-		private bool RefreshRequired => globalPostProcessing == null || loopBoundingBox == null || persistentDataContainers.IsEmpty();
+		private bool RefreshRequired => globalPostProcessing == null || loopBoundingBox == null || dataScriptables.IsEmpty();
 
 		private PostProcessingChanger globalPostProcessing;
 		private bool postProcessingEnabled;
@@ -147,32 +147,32 @@ namespace StellarMass.Editor
 		{
 			GUILayout.Label("Data");
 			
-			foreach (PersistentDataContainer container in persistentDataContainers)
+			foreach (DataScriptable scriptable in dataScriptables)
 			{
-				if (container == null)
+				if (scriptable == null)
 				{
 					continue;
 				}
 
-				if (GUILayout.Button(container.name.Replace("Data", string.Empty)))
+				if (GUILayout.Button(scriptable.name.Replace("Data", string.Empty)))
 				{
-					SelectData(container);
+					SelectData(scriptable);
 				}
 			}
 		}
 		
 		private void GetData()
 		{
-			string[] guids = AssetDatabase.FindAssets($"t:{nameof(PersistentDataContainer)}");
-			persistentDataContainers.Clear();
+			string[] guids = AssetDatabase.FindAssets($"t:{nameof(DataScriptable)}");
+			dataScriptables.Clear();
 			foreach (string guid in guids)
 			{
-				PersistentDataContainer container = AssetDatabase.LoadAssetAtPath<PersistentDataContainer>(AssetDatabase.GUIDToAssetPath(guid));
-				persistentDataContainers.Add(container);
+				DataScriptable scriptable = AssetDatabase.LoadAssetAtPath<DataScriptable>(AssetDatabase.GUIDToAssetPath(guid));
+				dataScriptables.Add(scriptable);
 			}
 		}
 		
-		private void SelectData(PersistentDataContainer selectedData)
+		private void SelectData(DataScriptable selectedData)
 		{
 			if (selectedData == null)
 			{
