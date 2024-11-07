@@ -8,9 +8,10 @@ namespace StellarMass.Systems.SceneManagement
     {
         public static event Action<Scene> OnSceneUnloaded;
         public static event Action<Scene> OnSceneLoaded;
+
+        public static Scene CurrentScene { get; private set; }
         
-        private static Scene currentlyLoadedAdditiveScene;
-        private static bool sceneLoadingInProgress;
+        private static bool isLoading;
 
         public static void LoadScene(SceneReference sceneReference)
         {
@@ -19,21 +20,21 @@ namespace StellarMass.Systems.SceneManagement
         
         public static void LoadScene(int buildIndex)
         {
-            if (sceneLoadingInProgress)
+            if (isLoading)
             {
-                Debug.LogError($"Tried to load scene while a scene load was already in progress. Either fix that, or make {nameof(SceneLoader)} support interrupting loads!");
+                Debug.LogError($"Tried to load scene while a scene load was already in progress.");
                 return;
             }
             
-            sceneLoadingInProgress = true;
+            isLoading = true;
             
-            if (!currentlyLoadedAdditiveScene.isLoaded)
+            if (!CurrentScene.isLoaded)
             {
                 loadNextScene();
                 return;
             }
 
-            Scene unloadingScene = currentlyLoadedAdditiveScene;
+            Scene unloadingScene = CurrentScene;
             AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(unloadingScene);
             unloadOperation.completed += op =>
             {
@@ -44,9 +45,9 @@ namespace StellarMass.Systems.SceneManagement
             void loadNextScene()
             {
                 SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
-                currentlyLoadedAdditiveScene = SceneManager.GetSceneByBuildIndex(buildIndex);
-                sceneLoadingInProgress = false;
-                OnSceneLoaded?.Invoke(currentlyLoadedAdditiveScene);
+                CurrentScene = SceneManager.GetSceneByBuildIndex(buildIndex);
+                isLoading = false;
+                OnSceneLoaded?.Invoke(CurrentScene);
             }
         }
     }
