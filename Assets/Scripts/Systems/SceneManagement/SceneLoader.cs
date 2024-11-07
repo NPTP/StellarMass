@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using StellarMass.Systems.Coroutines;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,13 +8,16 @@ namespace StellarMass.Systems.SceneManagement
 {
     public static class SceneLoader
     {
+        private const float LOADING_PROGRESS_SCENE_ACTIVATION_MAGIC_NUMBER = 0.9f;
         public static event Action OnStartedLoading;
         public static event Action<Scene> OnSceneUnloadCompleted;
         public static event Action<Scene> OnSceneLoadCompleted;
 
         public static Scene CurrentScene { get; private set; }
+        public static float LoadingProgress => isLoading && loadSceneOperation != null ? loadSceneOperation.progress : 0;
         
         private static bool isLoading;
+        private static AsyncOperation loadSceneOperation;
 
         public static void LoadScene(SceneReference sceneReference)
         {
@@ -32,21 +37,35 @@ namespace StellarMass.Systems.SceneManagement
             
             if (!CurrentScene.isLoaded)
             {
-                loadNextScene();
+                CoroutineOwner.StartRoutine(loadNextScene());
                 return;
             }
 
             Scene unloadingScene = CurrentScene;
-            AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(unloadingScene);
-            unloadOperation.completed += op =>
+            AsyncOperation unloadSceneOperation = SceneManager.UnloadSceneAsync(unloadingScene);
+            unloadSceneOperation.completed += op =>
             {
                 OnSceneUnloadCompleted?.Invoke(unloadingScene);
-                loadNextScene();
+                CoroutineOwner.StartRoutine(loadNextScene());
             };
             
-            void loadNextScene()
+            IEnumerator loadNextScene()
             {
-                SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
+                loadSceneOperation = SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Additive);
+                loadSceneOperation.allowSceneActivation = false;
+                
+                while (!loadSceneOperation.isDone)
+                {
+                    if (loadSceneOperation.progress >= LOADING_PROGRESS_SCENE_ACTIVATION_MAGIC_NUMBER &&
+                        !loadSceneOperation.allowSceneActivation)
+                    {
+                        loadSceneOperation.allowSceneActivation = true;
+                    }
+
+                    yield return null;
+                }
+
+                loadSceneOperation = null;
                 CurrentScene = SceneManager.GetSceneByBuildIndex(buildIndex);
                 isLoading = false;
                 OnSceneLoadCompleted?.Invoke(CurrentScene);
