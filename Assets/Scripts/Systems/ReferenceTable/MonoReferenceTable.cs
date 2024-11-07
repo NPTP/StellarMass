@@ -18,8 +18,8 @@ namespace StellarMass.Systems.ReferenceTable
             // Ensures references are refreshed in all cases.
             references = new Dictionary<Type, ReferenceableMonoBehaviour>();
             initialized = true;
-            SceneLoader.OnSceneUnloaded -= HandleSceneUnloaded;
-            SceneLoader.OnSceneUnloaded += HandleSceneUnloaded;
+            SceneLoader.OnSceneUnloadCompleted -= HandleSceneUnloadCompleted;
+            SceneLoader.OnSceneUnloadCompleted += HandleSceneUnloadCompleted;
         }
 
         public static bool TryGet<T>(out T reference) where T : ReferenceableMonoBehaviour
@@ -49,7 +49,7 @@ namespace StellarMass.Systems.ReferenceTable
             return references.Remove(typeof(T));
         }
         
-        private static void HandleSceneUnloaded(Scene scene)
+        private static void HandleSceneUnloadCompleted(Scene scene)
         {
             PurgeDeadReferences();
         }

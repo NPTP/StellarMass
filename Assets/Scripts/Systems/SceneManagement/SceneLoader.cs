@@ -6,8 +6,9 @@ namespace StellarMass.Systems.SceneManagement
 {
     public static class SceneLoader
     {
-        public static event Action<Scene> OnSceneUnloaded;
-        public static event Action<Scene> OnSceneLoaded;
+        public static event Action OnStartedLoading;
+        public static event Action<Scene> OnSceneUnloadCompleted;
+        public static event Action<Scene> OnSceneLoadCompleted;
 
         public static Scene CurrentScene { get; private set; }
         
@@ -27,6 +28,7 @@ namespace StellarMass.Systems.SceneManagement
             }
             
             isLoading = true;
+            OnStartedLoading?.Invoke();
             
             if (!CurrentScene.isLoaded)
             {
@@ -38,7 +40,7 @@ namespace StellarMass.Systems.SceneManagement
             AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(unloadingScene);
             unloadOperation.completed += op =>
             {
-                OnSceneUnloaded?.Invoke(unloadingScene);
+                OnSceneUnloadCompleted?.Invoke(unloadingScene);
                 loadNextScene();
             };
             
@@ -47,7 +49,7 @@ namespace StellarMass.Systems.SceneManagement
                 SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
                 CurrentScene = SceneManager.GetSceneByBuildIndex(buildIndex);
                 isLoading = false;
-                OnSceneLoaded?.Invoke(CurrentScene);
+                OnSceneLoadCompleted?.Invoke(CurrentScene);
             }
         }
     }
