@@ -2,18 +2,21 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using StellarMass.Game.ScreenLoop;
-using StellarMass.Game.VFX;
+using StellarMass.Systems.Camera;
 using StellarMass.Systems.Data;
-using StellarMass.Systems.Data.Persistent;
+using StellarMass.Utilities;
 using StellarMass.Utilities.Extensions;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
 
 namespace StellarMass.Editor
 {
 	public class ShortcutsWindow : EditorWindow
 	{
+		private const string VOLUME = "volume";
+		
 		private class WindowItem { }
 		private abstract class Shortcut : WindowItem
 		{
@@ -43,9 +46,9 @@ namespace StellarMass.Editor
 			new Line()
 		};
 
-		private bool RefreshRequired => globalPostProcessing == null || loopBoundingBox == null || dataScriptables.IsEmpty();
+		private bool RefreshRequired => cameraController == null || loopBoundingBox == null || dataScriptables.IsEmpty();
 
-		private PostProcessingChanger globalPostProcessing;
+		private CameraController cameraController;
 		private bool postProcessingEnabled;
 		private LoopBoundingBox loopBoundingBox;
 		private bool loopBoundingBoxVisualizerEnabled;
@@ -63,8 +66,8 @@ namespace StellarMass.Editor
 
 		private void Refresh()
 		{
-			globalPostProcessing = FindObjectOfType<PostProcessingChanger>(includeInactive: true);
-			if (globalPostProcessing != null) postProcessingEnabled = globalPostProcessing.Volume.enabled;
+			cameraController = FindObjectOfType<CameraController>(includeInactive: true);
+			if (cameraController != null) postProcessingEnabled = cameraController.GetField<PostProcessVolume>(VOLUME).enabled;
 			loopBoundingBox = FindObjectOfType<LoopBoundingBox>(includeInactive: true);
 			if (loopBoundingBox != null) loopBoundingBoxVisualizerEnabled = loopBoundingBox.BoundsVisualizer.enabled;
 			GetData();
@@ -103,12 +106,12 @@ namespace StellarMass.Editor
 
 		private void PostProcessingToggle()
 		{
-			if (globalPostProcessing == null)
+			if (cameraController == null)
 			{
 				return;
 			}
 			
-			ValueToggle(ref postProcessingEnabled, globalPostProcessing.Volume, "Enable PostProcessing");
+			ValueToggle(ref postProcessingEnabled, cameraController.GetField<PostProcessVolume>(VOLUME), "Enable PostProcessing");
 		}
 
 		private void BoundsVisualizeToggle()

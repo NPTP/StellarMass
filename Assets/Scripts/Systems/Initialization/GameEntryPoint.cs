@@ -1,5 +1,6 @@
 using System.Collections;
 using StellarMass.Systems.AudioSystem;
+using StellarMass.Systems.Camera;
 using StellarMass.Systems.Coroutines;
 using StellarMass.Systems.ReferenceTable;
 using StellarMass.Systems.SaveAndLoad;
@@ -32,8 +33,9 @@ namespace StellarMass.Systems.Initialization
             
             SaveLoad.Initialize();
             Input.Initialize();
-            Audio.Initialize();
+            Audio.Initialize(initializationOptions);
             
+            CameraController.Initialize();
             CoroutineOwner.Initialize();
             MonoReferenceTable.Initialize();
         }

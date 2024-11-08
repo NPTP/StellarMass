@@ -13,19 +13,14 @@ namespace StellarMass.Utilities.Singletons
     /// which are initialized intentionally on startup, and persist through the entire play session,
     /// so they look like and can be treated like static classes.
     /// </summary>
-    public class ManualInitSingleton<T> : ManualInitSingleton where T : MonoBehaviour
+    public abstract class ManualInitSingleton<T> : ManualInitSingleton where T : MonoBehaviour
     {
         protected static T Instance { get; private set; }
 
-        private void Awake()
-        {
-            // Not to be overriden.
-        }
-
-        private void OnDestroy()
-        {
-            // Not to be overriden.
-        }
+        // There are not to be overridden.
+        private void Awake() { }
+        private void OnEnable() { }
+        private void OnDestroy() { }
         
         public static void Initialize()
         {
@@ -37,6 +32,13 @@ namespace StellarMass.Utilities.Singletons
             Instance = FindObjectOfType<T>();
             if (Instance == null)
                 Instance = new GameObject(typeof(T).Name).AddComponent<T>();
+
+            if (Instance is ManualInitSingleton<T> manualInitSingleton)
+            {
+                manualInitSingleton.InitializeOverrideable();
+            }
         }
+
+        protected virtual void InitializeOverrideable() { }
     }
 }

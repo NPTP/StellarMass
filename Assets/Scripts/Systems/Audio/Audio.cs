@@ -1,6 +1,6 @@
 using System;
 using FMOD.Studio;
-using StellarMass.Systems.Data.Persistent;
+using StellarMass.Systems.Initialization;
 using StellarMass.Systems.SaveAndLoad;
 using UnityEngine;
 
@@ -14,23 +14,23 @@ namespace StellarMass.Systems.AudioSystem
         
         private static bool initialized;
 
-        public static void Initialize()
+        public static void Initialize(InitializationOptions initializationOptions)
         {
             if (initialized)
             {
                 return;
             }
 
-            InitializeFmodBuses();
+            InitializeFmodBuses(initializationOptions.MasterBusPath, initializationOptions.MusicBusPath, initializationOptions.SfxBusPath);
 
             initialized = true;
         }
         
-        private static void InitializeFmodBuses()
+        private static void InitializeFmodBuses(string masterBusPath, string musicBusPath, string sfxBusPath)
         {
-            masterBus = FMODUnity.RuntimeManager.GetBus(PersistentData.Core.MasterBusPath);
-            musicBus = FMODUnity.RuntimeManager.GetBus(PersistentData.Core.MusicBusPath);
-            sfxBus = FMODUnity.RuntimeManager.GetBus(PersistentData.Core.SfxBusPath);
+            masterBus = FMODUnity.RuntimeManager.GetBus(masterBusPath);
+            musicBus = FMODUnity.RuntimeManager.GetBus(musicBusPath);
+            sfxBus = FMODUnity.RuntimeManager.GetBus(sfxBusPath);
 
             SaveLoad.Get(out AudioBusSettings settings);
             SetMasterVolume(settings.masterVolume);

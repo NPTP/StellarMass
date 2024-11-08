@@ -41,6 +41,9 @@ namespace StellarMass.Systems.Data.Persistent
         [SerializeField] private AudioPersistentData audio;
         public static AudioPersistentData Audio => Instance.audio;
         
+        [SerializeField] private CameraPersistentData camera;
+        public static CameraPersistentData Camera => Instance.camera;
+
         private void OnEnable()
         {
             if (instance == null || instance == this)
