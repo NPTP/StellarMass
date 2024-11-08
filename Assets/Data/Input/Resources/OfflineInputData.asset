@@ -21,19 +21,27 @@ MonoBehaviour:
   defaultContext: 0
   inputContexts:
   - name: AllInputDisabled
+    enableKeyboardTextInput: 0
     activeMaps: []
-    enableKeyboardTextInput: 0
+    eventSystemActionOverrides: []
   - name: Gameplay
+    enableKeyboardTextInput: 0
     activeMaps:
     - Gameplay
-    enableKeyboardTextInput: 0
+    eventSystemActionOverrides: []
   - name: Menu
-    activeMaps:
-    - Gameplay
     enableKeyboardTextInput: 0
+    activeMaps:
+    - Menu
+    eventSystemActionOverrides: []
   bindingExcludedPaths: []
   bindingCancelPaths:
   - /Keyboard/escape
+  moveRepeatDelay: 0.5
+  moveRepeatRate: 0.1
+  deselectOnBackgroundClick: 0
+  pointerBehavior: 0
+  cursorLockBehavior: 0
   point: {fileID: -1654692200621890270, guid: ab3e06bb3f2f86d4ba4cb19225032823, type: 3}
   leftClick: {fileID: 3001919216989983466, guid: ab3e06bb3f2f86d4ba4cb19225032823, type: 3}
   middleClick: {fileID: -2185481485913320682, guid: ab3e06bb3f2f86d4ba4cb19225032823, type: 3}

@@ -91,10 +91,7 @@ namespace NPTP.InputSystemWrapper
         #endregion
 
         #region Setup
-
-        // MARKER.InitializeBeforeSceneLoad.Start
-        // MARKER.InitializeBeforeSceneLoad.End
-
+        
         // MARKER.Initialize.Start
         public static void Initialize()
         // MARKER.Initialize.End
@@ -106,13 +103,17 @@ namespace NPTP.InputSystemWrapper
 
             // Allows input system to work even when domain reload is disabled in editor.
             if (RuntimeSafeEditorUtility.IsDomainReloadDisabled())
+            {
                 ReflectionUtility.ResetStaticClassMembersToDefault(typeof(Input));
+            }
             
             SetUpTerminationConditions();
             
             runtimeInputData = Resources.Load<RuntimeInputData>(RUNTIME_INPUT_DATA_PATH);
             if (runtimeInputData == null || runtimeInputData.InputActionAsset == null)
+            {
                 throw new Exception($"{nameof(RuntimeInputData)} is null or its input action asset is null - input will not work!");
+            }
             
             int maxPlayers = Enum.GetValues(typeof(PlayerID)).Length;
             
@@ -120,6 +121,9 @@ namespace NPTP.InputSystemWrapper
             ObjectUtility.DestroyAllObjectsOfType<PlayerInput, InputSystemUIInputModule, StandaloneInputModule, EventSystem>();
             
             playerCollection = new InputPlayerCollection(runtimeInputData.InputActionAsset, maxPlayers);
+#if UNITY_EDITOR
+            playerCollection.EDITOR_OnPlayerInputContextChanged += EDITOR_HandlePlayerInputContextChanged;
+#endif
             LoadBindingsForAllPlayers();
             EnableContextForAllPlayers(DefaultContext);
             
@@ -148,6 +152,9 @@ namespace NPTP.InputSystemWrapper
         private static void Terminate()
         {
             UnregisterAllAnyButtonPressListeners();
+#if UNITY_EDITOR
+            playerCollection.EDITOR_OnPlayerInputContextChanged -= EDITOR_HandlePlayerInputContextChanged;
+#endif
             playerCollection.TerminateAll();
             --InputUser.listenForUnpairedDeviceActivity;
             InputUser.onChange -= HandleInputUserChange;
@@ -456,6 +463,17 @@ namespace NPTP.InputSystemWrapper
             playerCollection.HandleInputUserChange(inputUser, inputUserChange, inputDevice);
         }
         
+        #endregion
+
+        #region Editor-Only Debug
+#if UNITY_EDITOR
+        public static event Action<PlayerID, InputContext> EDITOR_OnPlayerInputContextChanged;
+
+        private static void EDITOR_HandlePlayerInputContextChanged(InputPlayer inputPlayer)
+        {
+            EDITOR_OnPlayerInputContextChanged?.Invoke(inputPlayer.ID, inputPlayer.InputContext);
+        }
+#endif
         #endregion
     }
 }

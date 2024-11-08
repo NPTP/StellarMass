@@ -65,6 +65,9 @@ namespace NPTP.InputSystemWrapper
             {
                 inputContext = value;
                 EnableMapsForContext(value);
+#if UNITY_EDITOR
+                EDITOR_OnInputContextChanged?.Invoke(this);
+#endif
             }
         }
 
@@ -110,7 +113,7 @@ namespace NPTP.InputSystemWrapper
             
             SetUpInputPlayerGameObject(isMultiplayer, parent);
             
-            SetEventSystemActions();
+            // Input context gets set by top Input class after this instantiation, which sets up maps & event system actions/overrides, so we don't have to handle that here.
         }
         
         internal void Terminate()
@@ -159,31 +162,41 @@ namespace NPTP.InputSystemWrapper
                 
             uiInputModule = playerInputGameObject.AddComponent<InputSystemUIInputModule>();
             uiInputModule.actionsAsset = Asset;
+            SetEventSystemOptions();
             
             playerInput.actions = Asset;
             playerInput.uiInputModule = uiInputModule;
-            playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
-                        // Set this manually because the initial control scheme gets set before we are able to respond to it with event handlers.
-
+            playerInput.notificationBehavior = PlayerNotifications.InvokeCSharpEvents; 
+            
+            // Set this manually because the initial control scheme gets set before we are able to respond to it with event handlers.
             CurrentControlScheme = playerInput.currentControlScheme.ToControlSchemeEnum();
         }
 
-        private void SetEventSystemActions()
+        private void SetEventSystemOptions()
+        {
+            // MARKER.EventSystemOptions.Start
+            uiInputModule.moveRepeatDelay = 0.5f;
+            uiInputModule.moveRepeatRate = 0.1f;
+            uiInputModule.deselectOnBackgroundClick = false;
+            uiInputModule.pointerBehavior = UIPointerBehavior.SingleMouseOrPenButMultiTouchAndTrack;
+            uiInputModule.cursorLockBehavior = InputSystemUIInputModule.CursorLockBehavior.OutsideScreen;
+            // MARKER.EventSystemOptions.End
+        }
+
+        private void SetDefaultEventSystemActions()
         {
             // MARKER.EventSystemActions.Start
-            uiInputModule.move = createLocalAssetReference("33d7d08d-c733-4d29-8a19-3414d8312c5f");
-            uiInputModule.submit = createLocalAssetReference("9d40871e-5615-4343-a832-dc37fd431297");
-            uiInputModule.cancel = createLocalAssetReference("7593878a-c79e-4e90-b212-30bf9ac46ddb");
+            uiInputModule.move = CreateInputActionReferenceToPlayerAsset("33d7d08d-c733-4d29-8a19-3414d8312c5f");
+            uiInputModule.submit = CreateInputActionReferenceToPlayerAsset("9d40871e-5615-4343-a832-dc37fd431297");
+            uiInputModule.cancel = CreateInputActionReferenceToPlayerAsset("7593878a-c79e-4e90-b212-30bf9ac46ddb");
             // MARKER.EventSystemActions.End
-
-#pragma warning disable CS8321
-            InputActionReference createLocalAssetReference(string actionID)
-#pragma warning restore CS8321
-            {
-                return string.IsNullOrEmpty(actionID)
-                    ? null
-                    : InputActionReference.Create(Asset.FindAction(actionID, throwIfNotFound: false));
-            }
+        }
+        
+        private InputActionReference CreateInputActionReferenceToPlayerAsset(string actionID)
+        {
+            return string.IsNullOrEmpty(actionID)
+                ? null
+                : InputActionReference.Create(Asset.FindAction(actionID, throwIfNotFound: false));
         }
 
         #endregion
@@ -393,6 +406,8 @@ namespace NPTP.InputSystemWrapper
                 return;
             }
             
+            SetDefaultEventSystemActions();
+            
             switch (context)
             {
                 // MARKER.EnableContextSwitchMembers.Start
@@ -408,15 +423,30 @@ namespace NPTP.InputSystemWrapper
                     break;
                 case InputContext.Menu:
                     DisableKeyboardTextInput();
-                    Gameplay.EnableAndRegisterCallbacks();
-                    Menu.DisableAndUnregisterCallbacks();
+                    Gameplay.DisableAndUnregisterCallbacks();
+                    Menu.EnableAndRegisterCallbacks();
                     break;
                 // MARKER.EnableContextSwitchMembers.End
                 default:
                     throw new ArgumentOutOfRangeException(nameof(context), context, null);
             }
+            
+            // TODO (optimization): possibility that the InputActionReference ScriptableObjects (for event system actions)
+            // do not get garbage collected as one might expect, so we do it manually via Resources.UnloadUnusedAssets.
+            // However, this can be overkill if there are lots of other assets to unload, and can cause a performance hitch.
+            // So, we should have a much more controlled management of which InputActionReferences are destroyed, maintained etc. by
+            // keeping track of which ones were overridden and which weren't, and call Destroy on those specific ones so the GC
+            // takes care of them at a better time.
+            
+            Resources.UnloadUnusedAssets();
         }
 
+        #endregion
+        
+        #region Editor-Only Debug
+#if UNITY_EDITOR
+        public event Action<InputPlayer> EDITOR_OnInputContextChanged;
+#endif
         #endregion
     }
 }
