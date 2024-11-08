@@ -32,9 +32,7 @@ namespace StellarMass.Systems.Initialization
             MonoReferenceTable.Initialize();
             Input.Initialize();
             CoroutineOwner.Initialize();
-
-            StellarMassSaveData saveData = Saves.Get<StellarMassSaveData>(0);
-            Debug.Log($"saveData : {saveData.z}");
+            GameDataSaver.Initialize();
         }
 
         #region Implementation

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6a163460383e3949bfa47a439debcd3, type: 3}
   m_Name: PersistentData
   m_EditorClassIdentifier: 
+  core: {fileID: 11400000, guid: 5d2c77ab79ed247448b129d1b9e02a30, type: 2}
   game: {fileID: 11400000, guid: 2c61a0cace6d35e40a184bac35f8bfa4, type: 2}
   player: {fileID: 11400000, guid: 913f09000efdc1249a4cf0c31e0ba550, type: 2}
   audio: {fileID: 11400000, guid: b017db16c7d4715449d0a6ce5a12894f, type: 2}

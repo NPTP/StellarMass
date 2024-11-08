@@ -8,13 +8,12 @@ namespace StellarMass.Systems.Data.Persistent
     /// Scriptable object accessible at any point during runtime.
     /// Loads when requested, but never unloads, therefore - persistent!
     /// </summary>
-    [CreateAssetMenu]
-    public sealed class PersistentData : DataScriptable
+    public sealed partial class PersistentData : DataScriptable
     {
         private static string Address => nameof(PersistentData);
 
         private static bool isLoaded;
-        
+
         private static PersistentData instance;
         private static PersistentData Instance
         {
@@ -29,15 +28,9 @@ namespace StellarMass.Systems.Data.Persistent
                 return instance;
             }
         }
-                
-        [SerializeField] private GamePersistentData game;
-        public static GamePersistentData Game => Instance.game;
-
-        [SerializeField] private PlayerPersistentData player;
-        public static PlayerPersistentData Player => Instance.player;
         
-        [SerializeField] private AudioPersistentData audio;
-        public static AudioPersistentData Audio => Instance.audio;
+        [SerializeField] private CorePersistentData core;
+        public static CorePersistentData Core => Instance.core;
 
         private void OnEnable()
         {

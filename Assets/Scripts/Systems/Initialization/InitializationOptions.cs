@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace StellarMass.Systems.Initialization
 {
-    [CreateAssetMenu]
     public class InitializationOptions : DataScriptable
     {
         [SerializeField] private bool hideCursor = true;

@@ -9,5 +9,8 @@ namespace StellarMass.Systems.SaveLoad
     public abstract class SaveData
     {
         public int id;
+        public abstract bool ScrambleData { get; }
+        
+        public abstract void Reset();
     }
 }

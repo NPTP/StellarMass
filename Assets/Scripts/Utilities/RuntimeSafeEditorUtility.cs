@@ -1,3 +1,5 @@
+
+using System;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -7,9 +9,9 @@ namespace StellarMass.Utilities
     /// <summary>
     /// Contains methods with editor-only functionality that are safe to call at runtime.
     /// </summary>
-    internal static class RuntimeSafeEditorUtility
+    public static class RuntimeSafeEditorUtility
     {
-        internal static bool IsDomainReloadDisabled()
+        public static bool IsDomainReloadDisabled()
         {
 #if UNITY_EDITOR
             return EditorSettings.enterPlayModeOptionsEnabled &&
@@ -20,6 +22,26 @@ namespace StellarMass.Utilities
             // Domain is always reloaded in a build.
             return false;
 #pragma warning restore CS0162
+        }
+
+        public static void RegisterApplicationQuittingCallback(Action callback)
+        {
+            if (callback == null)
+            {
+                return;
+            }
+            
+#if UNITY_EDITOR
+            EditorApplication.playModeStateChanged -= handlePlayModeStateChanged;
+            EditorApplication.playModeStateChanged += handlePlayModeStateChanged;
+            void handlePlayModeStateChanged(PlayModeStateChange playModeStateChange)
+            {
+                if (playModeStateChange is PlayModeStateChange.ExitingPlayMode) callback();
+            }
+#else
+            Application.quitting -= callback;
+            Application.quitting += callback;
+#endif
         }
     }
 }
