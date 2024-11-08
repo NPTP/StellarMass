@@ -1,8 +1,8 @@
 using System.Collections;
-using StellarMass.Game.SaveLoad;
+using StellarMass.Systems.AudioSystem;
 using StellarMass.Systems.Coroutines;
 using StellarMass.Systems.ReferenceTable;
-using StellarMass.Systems.SaveLoad;
+using StellarMass.Systems.SaveAndLoad;
 using StellarMass.Systems.SceneManagement;
 using StellarMass.Utilities.Attributes;
 using UnityEngine;
@@ -29,10 +29,13 @@ namespace StellarMass.Systems.Initialization
         private void EntryPointExecute()
         {
             Cursor.visible = !initializationOptions.HideCursor;
-            MonoReferenceTable.Initialize();
+            
+            SaveLoad.Initialize();
             Input.Initialize();
+            Audio.Initialize();
+            
             CoroutineOwner.Initialize();
-            GameDataSaver.Initialize();
+            MonoReferenceTable.Initialize();
         }
 
         #region Implementation

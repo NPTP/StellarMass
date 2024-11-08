@@ -8,7 +8,12 @@ namespace StellarMass.Utilities.FMODUtilities
 {
     public static class EventReferenceExtensions
     {
-        public static void PlayOneShot(this EventReference eventReference, Vector3 position = new())
+        public static void PlayOneShot(this EventReference eventReference)
+        {
+            RuntimeManager.PlayOneShot(eventReference);
+        }
+        
+        public static void PlayOneShot(this EventReference eventReference, Vector3 position)
         {
             RuntimeManager.PlayOneShot(eventReference, position);
         }
@@ -27,11 +32,18 @@ namespace StellarMass.Utilities.FMODUtilities
             eventDesc.createInstance(out EventInstance newInstance);
             return newInstance;
         }
+
+        public static bool IsOneShot(this EventReference eventReference)
+        {
+            EventDescription eventDescription = GetEventDescription(eventReference);
+            eventDescription.isOneshot(out bool isOneShot);
+            return isOneShot;
+        }
         
         /// <summary>
         /// This wrapper prevents exceptions from being thrown. We prefer audio code to fail silently! (Pun intended)
         /// </summary>
-        private static EventDescription GetEventDescription(EventReference eventReference)
+        private static EventDescription GetEventDescription(this EventReference eventReference)
         {
             try
             {

@@ -6,17 +6,13 @@ using StellarMass.Utilities;
 using StellarMass.Utilities.Extensions;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-namespace StellarMass.Systems.SaveLoad
+namespace StellarMass.Systems.SaveAndLoad
 {
     /// <summary>
-    /// Saves any type of data using an ID identifier.
+    /// Saves & loads any type of data using an ID identifier.
     /// Use for game saves, player settings, etc.
     /// </summary>
-    public static class GameDataSaver
+    public static class SaveLoad
     {
         private const string SAVE_PAD = "YjQaLfWUskRQHP4lO9eWbsKWJGzKwwoK";
         private const string SAVE_FILE_EXTENSION = "sum";
@@ -40,10 +36,10 @@ namespace StellarMass.Systems.SaveLoad
         private static void HandleApplicationQuitting()
         {
             if (PersistentData.Core.SaveOnApplicationExit)
-                activeSaveData.Values.ForEach(saveData => saveData.Save());
+                activeSaveData.Values.ForEach(saveData => saveData.Save(modifyActiveSaveData: false));
         }
 
-        public static void Save(this SaveData saveData)
+        public static void Save(this SaveData saveData, bool modifyActiveSaveData = true)
         {
             if (saveData == null)
             {
@@ -52,7 +48,9 @@ namespace StellarMass.Systems.SaveLoad
             
             try
             {
-                activeSaveData.TryAdd(saveData.id, saveData);
+                if (modifyActiveSaveData)
+                    activeSaveData.TryAdd(saveData.id, saveData);
+                
                 string json = JsonUtility.ToJson(saveData, prettyPrint: true);
                 
                 if (saveData.ScrambleData)
@@ -77,7 +75,12 @@ namespace StellarMass.Systems.SaveLoad
             saveData.Reset();
         }
 
-        public static T Get<T>(int id) where T : SaveData
+        /// <summary>
+        /// Ignore the id parameter when there's only one of something.
+        /// E.g. a game with only one game save, or one set of game settings.
+        /// Otherwise use the id to specify which instance of SaveData you're looking for.
+        /// </summary>
+        public static T Get<T>(int id = 0) where T : SaveData
         {
             if (activeSaveData.TryGetValue(id, out SaveData value))
             {
@@ -94,14 +97,13 @@ namespace StellarMass.Systems.SaveLoad
         }
 
         /// <summary>
-        /// Use this when you don't need an ID, e.g. in a game where there's only one
-        /// save game, or only one set of game settings, etc.
+        /// Just another syntax for the above Get method.
         /// </summary>
-        public static T GetFirst<T>() where T : SaveData
+        public static void Get<T>(out T saveData, int id = 0) where T : SaveData
         {
-            return Get<T>(0);
+            saveData = Get<T>();
         }
-        
+
         private static bool TryLoad<T>(int id, out T saveData) where T : SaveData
         {
             try
@@ -142,7 +144,7 @@ namespace StellarMass.Systems.SaveLoad
 
         private static string GetSaveDataPath(int id)
         {
-            return $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{id}_{nameof(SaveData)}.{SAVE_FILE_EXTENSION}";
+            return $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{nameof(SaveData)}_{id}.{SAVE_FILE_EXTENSION}";
         }
     }
 }

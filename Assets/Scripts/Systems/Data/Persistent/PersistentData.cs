@@ -1,3 +1,5 @@
+using StellarMass.Game.Data;
+using StellarMass.Game.Data.Persistent;
 using UnityEngine;
 
 namespace StellarMass.Systems.Data.Persistent
@@ -6,7 +8,7 @@ namespace StellarMass.Systems.Data.Persistent
     /// Scriptable object accessible at any point during runtime.
     /// Loads when requested, but never unloads, therefore - persistent!
     /// </summary>
-    public sealed partial class PersistentData : DataScriptable
+    public sealed class PersistentData : DataScriptable
     {
         private static string Address => nameof(PersistentData);
 
@@ -29,7 +31,16 @@ namespace StellarMass.Systems.Data.Persistent
         
         [SerializeField] private CorePersistentData core;
         public static CorePersistentData Core => Instance.core;
-
+        
+        [SerializeField] private GamePersistentData game;
+        public static GamePersistentData Game => Instance.game;
+        
+        [SerializeField] private PlayerPersistentData player;
+        public static PlayerPersistentData Player => Instance.player;
+        
+        [SerializeField] private AudioPersistentData audio;
+        public static AudioPersistentData Audio => Instance.audio;
+        
         private void OnEnable()
         {
             if (instance == null || instance == this)

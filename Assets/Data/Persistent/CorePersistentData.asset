@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 535d0faa1fb2765418790885ff24bc36, type: 3}
   m_Name: CorePersistentData
   m_EditorClassIdentifier: 
+  masterBusPath: bus:/
+  musicBusPath: bus:/Music
+  sfxBusPath: bus:/SFX
   saveOnApplicationExit: 1
-  scrambleSaves: 0

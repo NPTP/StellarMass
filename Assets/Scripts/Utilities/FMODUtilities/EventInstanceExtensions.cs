@@ -18,6 +18,13 @@ namespace StellarMass.Utilities.FMODUtilities
             eventInstance.setParameterByName(parameterName, value);
         }
         
+        public static bool IsOneShot(this EventInstance eventInstance)
+        {
+            eventInstance.getDescription(out EventDescription description);
+            description.isOneshot(out bool isOneShot);
+            return isOneShot;
+        }
+        
         public static bool IsSameEvent(this EventInstance eventInstance, EventReference eventReference)
         {
             if (!eventInstance.isValid() || eventReference.IsNull) return false;

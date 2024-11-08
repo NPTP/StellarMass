@@ -1,14 +1,10 @@
 using System.Collections.Generic;
-using FMOD.Studio;
 using FMODUnity;
 
-namespace StellarMass.Systems.Audio
+namespace StellarMass.Systems.AudioSystem
 {
-    public static class AudioPlayer
+    public static class PersistentAudioPlayer
     {
-        private static EventInstance currentMusic;
-        private static EventInstance currentAmbience;
-
         private static readonly List<PersistentAudio> persistentAudios = new List<PersistentAudio>();
 
         public static PersistentAudio PlayPersistentAudio(EventReference eventReference)

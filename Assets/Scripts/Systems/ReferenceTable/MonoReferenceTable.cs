@@ -15,11 +15,15 @@ namespace StellarMass.Systems.ReferenceTable
 
         public static void Initialize()
         {
-            // Ensures references are refreshed in all cases.
+            if (initialized)
+            {
+                return;
+            }
+            
             references = new Dictionary<Type, ReferenceableMonoBehaviour>();
-            initialized = true;
-            SceneLoader.OnSceneUnloadCompleted -= HandleSceneUnloadCompleted;
             SceneLoader.OnSceneUnloadCompleted += HandleSceneUnloadCompleted;
+            
+            initialized = true;
         }
 
         public static bool TryGet<T>(out T reference) where T : ReferenceableMonoBehaviour
@@ -53,7 +57,7 @@ namespace StellarMass.Systems.ReferenceTable
         {
             PurgeDeadReferences();
         }
-
+        
         private static void PurgeDeadReferences()
         {
             List<Type> keysToDeadReferences = new();
