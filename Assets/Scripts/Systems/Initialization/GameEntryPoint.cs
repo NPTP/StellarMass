@@ -21,23 +21,27 @@ namespace StellarMass.Systems.Initialization
     { 
         [ExpandableScriptable][SerializeField]
         private InitializationOptions initializationOptions;
+
+        [Header("Manual Initializations")]
+        [SerializeField] private CameraController cameraController;
+        [SerializeField] private CoroutineOwner coroutineOwner;
         
         /// <summary>
-        /// This method executes as the entry point of the entire game in the bootstrap scene.
-        /// This will run before ANY other developer code for this game.
+        /// This method executes as the entry point of the entire game (so long as no scripts have their own Awake
+        /// implementation in the bootstrap scene). This will run before ANY other developer code for this game.
         /// Afterwards the first scene specified in the persistent game data will be loaded.
         /// </summary>
-        private void EntryPointExecute()
+        private void ExecuteOnAwake()
         {
             Cursor.visible = !initializationOptions.HideCursor;
             
-            SaveLoad.Initialize();
-            Input.Initialize();
             Audio.Initialize(initializationOptions);
-            
-            CameraController.Initialize();
-            CoroutineOwner.Initialize();
+            Input.Initialize();
+            SaveLoad.Initialize();
             MonoReferenceTable.Initialize();
+            
+            cameraController.Initialize();
+            coroutineOwner.Initialize();
         }
 
         #region Implementation
@@ -63,12 +67,14 @@ namespace StellarMass.Systems.Initialization
             }
         }
 #endif
-        
+
+        private void Awake()
+        {
+            ExecuteOnAwake();
+        }
+
         private IEnumerator Start()
         {
-            // Execute game logic entry point.
-            EntryPointExecute();
-
             // Wait 1 frame for systems that require a frame to update/set up.
             yield return null;
             
@@ -81,6 +87,7 @@ namespace StellarMass.Systems.Initialization
             
             SceneLoader.LoadScene(buildIndex);
             Destroy(gameObject);
+            Resources.UnloadUnusedAssets();
         }
         #endregion
     }

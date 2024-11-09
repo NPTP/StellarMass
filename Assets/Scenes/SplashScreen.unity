@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 837180639}
+  splashScreenAnimationClip: {fileID: 7400000, guid: 14bb4d06d0be1544f82bc0cdfe692675, type: 2}
   logoAppearEvent:
     Guid:
       Data1: -1008849142
