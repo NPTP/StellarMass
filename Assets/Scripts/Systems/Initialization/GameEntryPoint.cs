@@ -4,6 +4,7 @@ using Summoner.Systems.Camera;
 using Summoner.Systems.Coroutines;
 using Summoner.Systems.ReferenceTable;
 using Summoner.Systems.SaveAndLoad;
+using Summoner.Systems.SceneManagement;
 using Summoner.Utilities.Attributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -86,7 +87,7 @@ namespace Summoner.Systems.Initialization
             
             // Only place in the game code a Scene should be loaded by calling Unity SceneManager API directly.
             // Elsewhere, always use SceneLoader.
-            SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
+            SceneLoader.LoadScene(buildIndex, instant: true);
             
             Destroy(gameObject);
             Resources.UnloadUnusedAssets();

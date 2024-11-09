@@ -19,7 +19,7 @@ namespace Summoner.Game.Splash
     
         private void Awake()
         {
-            if (SaveLoad.Get<StellarMassSettings>().hasSeenSplashScreen)
+            if (SaveLoad.Get<GameSettings>().hasSeenSplashScreen)
             {
                 Input.OnAnyButtonPress += HandleAnyButtonPress;
             }
@@ -34,7 +34,7 @@ namespace Summoner.Game.Splash
         {
             Input.OnAnyButtonPress -= HandleAnyButtonPress;
             animationStateExitBehaviour.OnAnimationStateExit -= HandleAnimationStateExit;
-            SaveLoad.Get<StellarMassSettings>().hasSeenSplashScreen = true;
+            SaveLoad.Get<GameSettings>().hasSeenSplashScreen = true;
             SceneLoader.LoadScene(nextScene);
         }
 

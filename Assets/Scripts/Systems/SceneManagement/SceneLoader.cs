@@ -18,13 +18,18 @@ namespace Summoner.Systems.SceneManagement
         
         private static bool isLoading;
         private static AsyncOperation loadSceneOperation;
-
-        public static void LoadScene(SceneReference sceneReference)
+        
+        public static void LoadScene(SceneReference sceneReference, bool instant = false)
         {
-            LoadScene(sceneReference.BuildIndex);
+            LoadSceneProcess(sceneReference.BuildIndex, instant);
         }
         
-        public static void LoadScene(int buildIndex)
+        public static void LoadScene(int buildIndex, bool instant = false)
+        {
+            LoadSceneProcess(buildIndex, instant);
+        }
+
+        private static void LoadSceneProcess(int buildIndex, bool instant)
         {
             if (isLoading)
             {
@@ -37,7 +42,7 @@ namespace Summoner.Systems.SceneManagement
             
             if (!CurrentScene.isLoaded)
             {
-                CoroutineOwner.StartRoutine(loadNextScene());
+                loadNextScene();
                 return;
             }
 
@@ -46,25 +51,42 @@ namespace Summoner.Systems.SceneManagement
             unloadSceneOperation.completed += op =>
             {
                 OnSceneUnloadCompleted?.Invoke(unloadingScene);
-                CoroutineOwner.StartRoutine(loadNextScene());
+                loadNextScene();
             };
-            
-            IEnumerator loadNextScene()
+
+            void loadNextScene()
             {
-                loadSceneOperation = SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Additive);
-                loadSceneOperation.allowSceneActivation = false;
-                
-                while (!loadSceneOperation.isDone)
+                if (instant)
                 {
-                    if (loadSceneOperation.progress >= LOADING_PROGRESS_SCENE_ACTIVATION_MAGIC_NUMBER &&
-                        !loadSceneOperation.allowSceneActivation)
-                    {
-                        loadSceneOperation.allowSceneActivation = true;
-                    }
-
-                    yield return null;
+                    SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
+                    completeSceneLoad();
                 }
+                else
+                {
+                    loadSceneOperation = SceneManager.LoadSceneAsync(buildIndex, LoadSceneMode.Additive);
+                    loadSceneOperation.allowSceneActivation = false;
+                    CoroutineOwner.StartRoutine(asyncLoadWait());
+                    
+                    IEnumerator asyncLoadWait()
+                    {
+                        while (!loadSceneOperation.isDone)
+                        {
+                            if (loadSceneOperation.progress >= LOADING_PROGRESS_SCENE_ACTIVATION_MAGIC_NUMBER &&
+                                !loadSceneOperation.allowSceneActivation)
+                            {
+                                loadSceneOperation.allowSceneActivation = true;
+                            }
 
+                            yield return null;
+                        }
+                        
+                        completeSceneLoad();
+                    }
+                }
+            }
+
+            void completeSceneLoad()
+            {
                 loadSceneOperation = null;
                 CurrentScene = SceneManager.GetSceneByBuildIndex(buildIndex);
                 isLoading = false;

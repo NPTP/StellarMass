@@ -45,7 +45,7 @@ namespace Summoner.Systems.SaveAndLoad
                 subDict.Values.ForEach(saveData => saveData.Save()));
         }
 
-        public static void Save<T>(this T saveData) where T : SaveData
+        public static void Save(this SaveData saveData)
         {
             if (saveData == null)
             {
@@ -59,22 +59,22 @@ namespace Summoner.Systems.SaveAndLoad
                 if (saveData.ScrambleData)
                     json = XorScramblerUtility.Scramble(json, SAVE_PAD);
 
-                File.WriteAllText(GetSaveDataPath<T>(saveData.id), json);
+                File.WriteAllText(GetSaveDataPath(saveData.GetType(), saveData.id), json);
             }
             catch (Exception e)
             {
-                Debug.Log(e);
+                Debug.LogError(e);
             }
         }
 
-        public static void Unload<T>(this T saveData) where T : SaveData
+        public static void Unload(this SaveData saveData)
         {
             if (saveData == null)
             {
                 return;
             }
 
-            if (activeSaveData.TryGetValue(typeof(T), out Dictionary<int, SaveData> subDict))
+            if (activeSaveData.TryGetValue(saveData.GetType(), out Dictionary<int, SaveData> subDict))
             {
                 subDict.Remove(saveData.id);
             }
@@ -95,14 +95,14 @@ namespace Summoner.Systems.SaveAndLoad
                 return saveData as T;
             }
 
-            if (!TryLoad(id, out saveData))
+            if (!TryLoad(id, out T saveDataGeneric))
             {
-                saveData = Activator.CreateInstance<T>();
+                saveDataGeneric = Activator.CreateInstance<T>();
             }
 
-            subDict = new Dictionary<int, SaveData> { [id] = saveData };
+            subDict = new Dictionary<int, SaveData> { [id] = saveDataGeneric };
             activeSaveData[typeof(T)] = subDict;
-            return saveData as T;
+            return saveDataGeneric;
         }
 
         /// <summary>
@@ -115,9 +115,11 @@ namespace Summoner.Systems.SaveAndLoad
 
         private static bool TryLoad<T>(int id, out T saveData) where T : SaveData
         {
+            string filePath = GetSaveDataPath(typeof(T), id);
+            
             try
             {
-                string text = File.ReadAllText(GetSaveDataPath<T>(id));
+                string text = File.ReadAllText(filePath);
 
                 // Try to read Json from text as-is.
                 try
@@ -125,8 +127,10 @@ namespace Summoner.Systems.SaveAndLoad
                     saveData = JsonUtility.FromJson<T>(text);
                     return true;
                 }
-                catch (Exception fromJsonException1)
+                catch (Exception)
                 {
+                    Debug.Log("Couldn't read from JSON as-is. Attempting unscramble.");
+                    
                     // If as-is didn't work, try to unscramble it, then read it.
                     try
                     {
@@ -134,26 +138,24 @@ namespace Summoner.Systems.SaveAndLoad
                         saveData = JsonUtility.FromJson<T>(text);
                         return true;
                     }
-                    catch (Exception fromJsonException2)
+                    catch (Exception)
                     {
-                        Debug.LogError(fromJsonException2);
+                        Debug.Log("Couldn't read unscrambled JSON.");
                     }
-                    
-                    Debug.LogError(fromJsonException1);
                 }
             }
-            catch (Exception readFileException)
+            catch (Exception)
             {
-                Debug.LogError(readFileException);
+                Debug.Log($"Couldn't read JSON at {filePath}.");
             }
 
             saveData = null;
             return false;
         }
 
-        private static string GetSaveDataPath<T>(int id) where T : SaveData
+        private static string GetSaveDataPath(Type type, int id)
         {
-            return $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{typeof(T).Name}_{id}.{SAVE_FILE_EXTENSION}";
+            return $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{type.Name}_{id}.{SAVE_FILE_EXTENSION}";
         }
     }
 }

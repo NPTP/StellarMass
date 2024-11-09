@@ -1,5 +1,6 @@
 using System;
 using FMOD.Studio;
+using Summoner.Game.SaveAndLoad;
 using Summoner.Systems.Initialization;
 using Summoner.Systems.SaveAndLoad;
 using UnityEngine;
@@ -32,7 +33,7 @@ namespace Summoner.Systems.AudioSystem
             musicBus = FMODUnity.RuntimeManager.GetBus(musicBusPath);
             sfxBus = FMODUnity.RuntimeManager.GetBus(sfxBusPath);
 
-            SaveLoad.Get(out AudioBusSettings settings);
+            SaveLoad.Get(out GameSettings settings);
             SetMasterVolume(settings.masterVolume);
             SetMusicVolume(settings.musicVolume);
             SetSfxVolume(settings.sfxVolume);
@@ -40,17 +41,17 @@ namespace Summoner.Systems.AudioSystem
 
         private static void SetMasterVolume(float linearInput)
         {
-            SetBusVolume(linearInput, masterBus, vol => SaveLoad.Get<AudioBusSettings>().masterVolume = vol);
+            SetBusVolume(linearInput, masterBus, vol => SaveLoad.Get<GameSettings>().masterVolume = vol);
         }
         
         private static void SetMusicVolume(float linearInput)
         {
-            SetBusVolume(linearInput, musicBus, vol => SaveLoad.Get<AudioBusSettings>().musicVolume = vol);
+            SetBusVolume(linearInput, musicBus, vol => SaveLoad.Get<GameSettings>().musicVolume = vol);
         }
         
         private static void SetSfxVolume(float linearInput)
         {
-            SetBusVolume(linearInput, sfxBus, vol => SaveLoad.Get<AudioBusSettings>().sfxVolume = vol);
+            SetBusVolume(linearInput, sfxBus, vol => SaveLoad.Get<GameSettings>().sfxVolume = vol);
         }
 
         private static void SetBusVolume(float linearInput, Bus bus, Action<float> settingsSetter)
