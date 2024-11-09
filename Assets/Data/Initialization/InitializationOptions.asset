@@ -16,3 +16,6 @@ MonoBehaviour:
   firstScene:
     guid: 980eb1e7a9c1b5f49b9fe0d7c2225711
     buildIndex: 1
+  masterBusPath: bus:/
+  musicBusPath: bus:/Music
+  sfxBusPath: bus:/SFX

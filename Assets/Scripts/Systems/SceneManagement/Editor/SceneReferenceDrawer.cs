@@ -9,14 +9,16 @@ namespace StellarMass.Systems.SceneManagement.Editor
     {
         private const string GUID_FIELD_NAME = "guid";
         private const string BUILD_INDEX_FIELD_NAME = "buildIndex";
+        private const string BOOTSTRAP = "Bootstrap";
         
         private static EditorBuildSettingsScene[] GetActiveBuildSettingsScenesWithoutBootstrap()
         {
             EditorBuildSettingsScene[] scenes = new EditorBuildSettingsScene[EditorBuildSettings.scenes.Length - 1];
             for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
             {
-                if (i == 0 || !EditorBuildSettings.scenes[i].enabled) continue;
-                scenes[i - 1] = EditorBuildSettings.scenes[i];
+                EditorBuildSettingsScene scene = EditorBuildSettings.scenes[i];
+                if (scene.path.Contains(BOOTSTRAP) || !scene.enabled) continue;
+                scenes[i - 1] = scene;
             }
             return scenes;
         }
