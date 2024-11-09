@@ -4,7 +4,6 @@ using StellarMass.Systems.Camera;
 using StellarMass.Systems.Coroutines;
 using StellarMass.Systems.ReferenceTable;
 using StellarMass.Systems.SaveAndLoad;
-using StellarMass.Systems.SceneManagement;
 using StellarMass.Utilities.Attributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -35,9 +34,9 @@ namespace StellarMass.Systems.Initialization
         {
             Cursor.visible = !initializationOptions.HideCursor;
             
+            SaveLoad.Initialize();
             Audio.Initialize(initializationOptions);
             Input.Initialize();
-            SaveLoad.Initialize();
             MonoReferenceTable.Initialize();
             
             cameraController.Initialize();
@@ -85,7 +84,10 @@ namespace StellarMass.Systems.Initialization
             int buildIndex = firstScene.BuildIndex;
 #endif
             
-            SceneLoader.LoadScene(buildIndex);
+            // Only place in the game code a Scene should be loaded by calling Unity SceneManager API directly.
+            // Elsewhere, always use SceneLoader.
+            SceneManager.LoadScene(buildIndex, LoadSceneMode.Additive);
+            
             Destroy(gameObject);
             Resources.UnloadUnusedAssets();
         }
