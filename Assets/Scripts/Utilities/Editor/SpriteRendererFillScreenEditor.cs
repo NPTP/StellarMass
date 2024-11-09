@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace StellarMass.Utilities.Editor
+namespace Summoner.Utilities.Editor
 {
     [CustomEditor(typeof(SpriteRendererFillScreen))]
     public class SpriteRendererFillScreenEditor : UnityEditor.Editor

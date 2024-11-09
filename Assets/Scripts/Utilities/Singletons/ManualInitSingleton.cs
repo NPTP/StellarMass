@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StellarMass.Utilities.Singletons
+namespace Summoner.Utilities.Singletons
 {
     /// <summary>
     /// "ManualInit" because Initialize must be called on it before it can be used.

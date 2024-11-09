@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace StellarMass.Utilities.Extensions
+namespace Summoner.Utilities.Extensions
 {
     public static class ListExtensions
     {

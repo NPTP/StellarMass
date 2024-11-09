@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace StellarMass.Utilities.Attributes
+namespace Summoner.Utilities.Attributes
 {
     [AttributeUsage(AttributeTargets.Field)]
     public class GUIDisabledAttribute : PropertyAttribute { }

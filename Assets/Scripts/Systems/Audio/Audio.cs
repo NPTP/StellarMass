@@ -1,10 +1,10 @@
 using System;
 using FMOD.Studio;
-using StellarMass.Systems.Initialization;
-using StellarMass.Systems.SaveAndLoad;
+using Summoner.Systems.Initialization;
+using Summoner.Systems.SaveAndLoad;
 using UnityEngine;
 
-namespace StellarMass.Systems.AudioSystem
+namespace Summoner.Systems.AudioSystem
 {
     public static class Audio
     {

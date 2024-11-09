@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
-using StellarMass.Systems.Coroutines;
+using Summoner.Systems.Coroutines;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace StellarMass.Systems.SceneManagement
+namespace Summoner.Systems.SceneManagement
 {
     public static class SceneLoader
     {

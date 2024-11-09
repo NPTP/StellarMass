@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace StellarMass.Utilities.Attributes.Editor
+namespace Summoner.Utilities.Attributes.Editor
 {
     [CustomPropertyDrawer(typeof(GUIDisabledAttribute))]
     public class GUIDisabledAttributeDrawer : PropertyDrawer

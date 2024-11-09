@@ -1,10 +1,10 @@
 using System.Collections;
-using StellarMass.Systems.Animation;
+using Summoner.Systems.Animation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Input = NPTP.InputSystemWrapper.Input;
 
-namespace StellarMass.Game.GameControl.Phases
+namespace Summoner.Game.GameControl.Phases
 {
     [CreateAssetMenu]
     public class IntroPhase : GamePhase

@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace StellarMass.Utilities.Extensions
+namespace Summoner.Utilities.Extensions
 {
     public static class StringExtensions
     {

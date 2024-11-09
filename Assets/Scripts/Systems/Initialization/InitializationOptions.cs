@@ -1,8 +1,8 @@
-using StellarMass.Systems.Data;
-using StellarMass.Systems.SceneManagement;
+using Summoner.Systems.Data;
+using Summoner.Systems.SceneManagement;
 using UnityEngine;
 
-namespace StellarMass.Systems.Initialization
+namespace Summoner.Systems.Initialization
 {
     public class InitializationOptions : DataScriptable
     {

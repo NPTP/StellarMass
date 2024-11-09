@@ -123,62 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &325994377
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 325994379}
-  - component: {fileID: 325994378}
-  m_Layer: 0
-  m_Name: SplashScreen
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &325994378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325994377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02561691781cbef4ea649126bcdbb54e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 837180639}
-  splashScreenAnimationClip: {fileID: 7400000, guid: 14bb4d06d0be1544f82bc0cdfe692675, type: 2}
-  logoAppearEvent:
-    Guid:
-      Data1: -1008849142
-      Data2: 1305784457
-      Data3: -994503802
-      Data4: -1581562752
-    Path: event:/SFX/LogoAppear
-  nextScene:
-    guid: 2cda990e2423bbf4892e6590ba056729
-    buildIndex: 2
---- !u!4 &325994379
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325994377}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &364845518
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,9 +164,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 837180637}
+  - component: {fileID: 837180640}
   - component: {fileID: 837180639}
   m_Layer: 0
-  m_Name: Display
+  m_Name: SplashScreenDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -266,6 +211,29 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &837180640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837180633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02561691781cbef4ea649126bcdbb54e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 837180639}
+  logoAppearEvent:
+    Guid:
+      Data1: -1008849142
+      Data2: 1305784457
+      Data3: -994503802
+      Data4: -1581562752
+    Path: event:/SFX/LogoAppear
+  nextScene:
+    guid: 2cda990e2423bbf4892e6590ba056729
+    buildIndex: 2
 --- !u!1 &1317261892
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,14 +398,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: SUMMONER
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 7458f112f0b414d40a6af6bb3e058f48, type: 2}
-  m_sharedMaterial: {fileID: 5445744638949707013, guid: 7458f112f0b414d40a6af6bb3e058f48, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a282dcf8f2e533f4a8e6ceaa3b14803f, type: 2}
+  m_sharedMaterial: {fileID: 5710647645577573601, guid: a282dcf8f2e533f4a8e6ceaa3b14803f, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4278190311
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -465,13 +433,13 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -61.1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -520,7 +488,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5445744638949707013, guid: 7458f112f0b414d40a6af6bb3e058f48, type: 2}
+  - {fileID: 5710647645577573601, guid: a282dcf8f2e533f4a8e6ceaa3b14803f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -565,5 +533,4 @@ RectTransform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 325994379}
   - {fileID: 837180637}

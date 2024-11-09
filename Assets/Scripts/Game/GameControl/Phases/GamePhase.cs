@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
-using StellarMass.Systems.Coroutines;
-using StellarMass.Utilities;
+using Summoner.Utilities;
+using Summoner.Systems.Coroutines;
 using UnityEngine;
 
-namespace StellarMass.Game.GameControl.Phases
+namespace Summoner.Game.GameControl.Phases
 {
     public abstract class GamePhase : ScriptableObject
     {

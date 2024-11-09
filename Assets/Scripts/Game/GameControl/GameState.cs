@@ -1,4 +1,4 @@
-﻿namespace StellarMass.Game.GameControl
+﻿namespace Summoner.Game.GameControl
 {
     public enum GameState
     {

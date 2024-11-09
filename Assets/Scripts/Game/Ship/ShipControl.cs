@@ -1,16 +1,16 @@
 using System.Collections;
-using StellarMass.Game.ScreenLoop;
-using StellarMass.Utilities.Attributes;
-using StellarMass.Utilities.Extensions;
+using Summoner.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.U2D;
 using Input = NPTP.InputSystemWrapper.Input;
 using Random = UnityEngine.Random;
-using StellarMass.Systems.Data.Persistent;
-using StellarMass.Systems.ReferenceTable;
+using Summoner.Game.ScreenLoop;
+using Summoner.Systems.Data.Persistent;
+using Summoner.Systems.ReferenceTable;
+using Summoner.Utilities.Attributes;
 
-namespace StellarMass.Game.Ship
+namespace Summoner.Game.Ship
 {
     public class ShipControl : MonoBehaviour
     {

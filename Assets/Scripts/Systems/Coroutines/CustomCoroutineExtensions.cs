@@ -1,4 +1,4 @@
-namespace StellarMass.Systems.Coroutines
+namespace Summoner.Systems.Coroutines
 {
     public static class CoroutineExtensions
     {

@@ -10,7 +10,7 @@ using UnityEditor.AddressableAssets.Settings;
 using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 #endif
 
-namespace StellarMass.Utilities
+namespace Summoner.Utilities
 {
     public static class AddressablesUtility
     {

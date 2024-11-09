@@ -1,6 +1,6 @@
 ﻿using UnityEngine.Rendering.PostProcessing;
 
-namespace StellarMass.Game.VFX.PostProcessing
+namespace Summoner.Game.VFX.PostProcessing
 {
     public abstract class EffectSettings { }
 

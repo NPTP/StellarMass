@@ -1,7 +1,7 @@
-using StellarMass.Systems.Data.Persistent;
+using Summoner.Systems.Data.Persistent;
 using UnityEngine;
 
-namespace StellarMass.Systems.Camera
+namespace Summoner.Systems.Camera
 {
     public class LocalBobbingUpdater : MonoBehaviour
     {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StellarMass.Systems.ReferenceTable
+namespace Summoner.Systems.ReferenceTable
 {
     public class ReferenceableMonoBehaviour : MonoBehaviour
     {

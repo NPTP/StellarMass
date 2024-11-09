@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StellarMass.Systems.Data.Persistent
+namespace Summoner.Systems.Data.Persistent
 {
     public sealed class CorePersistentData : PersistentDataContainer
     {

@@ -1,9 +1,13 @@
 using FMODUnity;
-using StellarMass.Systems.SceneManagement;
-using StellarMass.Utilities.FMODUtilities;
+using Summoner.Utilities.FMODUtilities;
+using Summoner.Game.SaveAndLoad;
+using Summoner.Systems.SaveAndLoad;
+using Summoner.Systems.SceneManagement;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Input = NPTP.InputSystemWrapper.Input;
 
-namespace StellarMass.Game.Splash
+namespace Summoner.Game.Splash
 {
     public class SplashScreen : MonoBehaviour
     {
@@ -15,13 +19,22 @@ namespace StellarMass.Game.Splash
     
         private void Awake()
         {
+            if (SaveLoad.Get<StellarMassSettings>().hasSeenSplashScreen)
+            {
+                Input.OnAnyButtonPress += HandleAnyButtonPress;
+            }
+            
             animationStateExitBehaviour = animator.GetBehaviour<AnimationStateExitBehaviour>();
             animationStateExitBehaviour.OnAnimationStateExit += HandleAnimationStateExit;
         }
 
-        private void HandleAnimationStateExit()
+        private void HandleAnyButtonPress(InputControl inputControl) => StopAnimationAndLoadNextScene();
+        private void HandleAnimationStateExit() => StopAnimationAndLoadNextScene();
+        private void StopAnimationAndLoadNextScene()
         {
+            Input.OnAnyButtonPress -= HandleAnyButtonPress;
             animationStateExitBehaviour.OnAnimationStateExit -= HandleAnimationStateExit;
+            SaveLoad.Get<StellarMassSettings>().hasSeenSplashScreen = true;
             SceneLoader.LoadScene(nextScene);
         }
 

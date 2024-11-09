@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using StellarMass.Game.ScreenLoop;
-using StellarMass.Systems.Camera;
-using StellarMass.Systems.Data;
-using StellarMass.Utilities;
-using StellarMass.Utilities.Extensions;
+using Summoner.Utilities;
+using Summoner.Utilities.Extensions;
+using Summoner.Game.ScreenLoop;
+using Summoner.Systems.Camera;
+using Summoner.Systems.Data;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
 
-namespace StellarMass.Editor
+namespace Summoner.Editor
 {
 	public class ShortcutsWindow : EditorWindow
 	{

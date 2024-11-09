@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace StellarMass.Game.Splash
+namespace Summoner.Game.Splash
 {
     public class AnimationStateExitBehaviour : StateMachineBehaviour
     {

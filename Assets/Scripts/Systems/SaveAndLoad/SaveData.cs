@@ -1,6 +1,6 @@
 using System;
 
-namespace StellarMass.Systems.SaveAndLoad
+namespace Summoner.Systems.SaveAndLoad
 {
     /// <summary>
     /// Overwrite to create custom save data for the specific game.

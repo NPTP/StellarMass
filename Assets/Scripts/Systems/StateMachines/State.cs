@@ -1,6 +1,6 @@
 using System;
 
-namespace StellarMass.Systems.StateMachines
+namespace Summoner.Systems.StateMachines
 {
     public abstract class State
     {

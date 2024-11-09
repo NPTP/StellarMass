@@ -1,8 +1,8 @@
 using FMOD.Studio;
 using FMODUnity;
-using StellarMass.Utilities.FMODUtilities;
+using Summoner.Utilities.FMODUtilities;
 
-namespace StellarMass.Systems.AudioSystem
+namespace Summoner.Systems.AudioSystem
 {
     public class PersistentAudio
     {

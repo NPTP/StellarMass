@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace StellarMass.Utilities.Attributes.Editor
+namespace Summoner.Utilities.Attributes.Editor
 {
     [CustomPropertyDrawer(typeof(ExpandableScriptable))]
     public class ExpandableScriptableAttributeDrawer : PropertyDrawer

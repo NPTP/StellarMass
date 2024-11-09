@@ -1,6 +1,6 @@
 using UnityEditor.Build;
 
-namespace StellarMass.Editor
+namespace Summoner.Editor
 {
     public class BuildPreprocessor: BuildPlayerProcessor
     {

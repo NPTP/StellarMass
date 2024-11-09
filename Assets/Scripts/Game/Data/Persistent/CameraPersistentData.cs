@@ -1,7 +1,7 @@
-using StellarMass.Systems.Data.Persistent;
+using Summoner.Systems.Data.Persistent;
 using UnityEngine;
 
-namespace StellarMass.Game.Data
+namespace Summoner.Game.Data
 {
     [CreateAssetMenu]
     public sealed class CameraPersistentData : PersistentDataContainer

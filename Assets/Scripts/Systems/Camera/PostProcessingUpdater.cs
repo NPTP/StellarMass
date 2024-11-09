@@ -1,9 +1,9 @@
-using StellarMass.Game.VFX.PostProcessing;
-using StellarMass.Systems.Data.Persistent;
+using Summoner.Game.VFX.PostProcessing;
+using Summoner.Systems.Data.Persistent;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-namespace StellarMass.Systems.Camera
+namespace Summoner.Systems.Camera
 {
     public class PostProcessingUpdater : MonoBehaviour
     {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace StellarMass.Systems.SceneManagement.Editor
+namespace Summoner.Systems.SceneManagement.Editor
 {
     [CustomPropertyDrawer(typeof(SceneReference))]
     public class SceneReferenceDrawer : PropertyDrawer

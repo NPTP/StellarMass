@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace StellarMass.Utilities
+namespace Summoner.Utilities
 {
     /// <summary>
     /// Serializable version of a Key Value Pair struct.

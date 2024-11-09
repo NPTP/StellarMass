@@ -1,10 +1,10 @@
 using FMODUnity;
-using StellarMass.Utilities;
-using StellarMass.Utilities.Singletons;
+using Summoner.Utilities;
+using Summoner.Utilities.Singletons;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-namespace StellarMass.Systems.Camera
+namespace Summoner.Systems.Camera
 {
     public class CameraController : ManualInitSingleton<CameraController>
     {
@@ -19,17 +19,14 @@ namespace StellarMass.Systems.Camera
         protected override void InitializeOverrideable()
         {
             postProcessingUpdater.Initialize(volume);
-            postProcessingUpdater.enabled = true;
-            
             localBobbingUpdater.Initialize(cameraTransform);
-            localBobbingUpdater.enabled = true;
             
-            SetListenerAttenuationObject();
+            postProcessingUpdater.enabled = true;
         }
 
-        public void SetListenerAttenuationObject()
+        public void SetListenerAttenuationObject(GameObject go)
         {
-            fmodStudioListener.SetField("attenuationObject", gameObject);
+            fmodStudioListener.SetField("attenuationObject", go);
         }
     }
 }

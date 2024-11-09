@@ -1,4 +1,4 @@
-namespace StellarMass.Editor
+namespace Summoner.Editor
 {
     public static class EditorToolNames
     {

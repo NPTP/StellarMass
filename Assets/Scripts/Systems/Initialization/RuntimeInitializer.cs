@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StellarMass.Systems.Initialization
+namespace Summoner.Systems.Initialization
 {
     public static class RuntimeInitializer
     {

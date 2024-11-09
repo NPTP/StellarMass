@@ -1,4 +1,4 @@
-namespace StellarMass.Utilities.Extensions
+namespace Summoner.Utilities.Extensions
 {
     public static class FloatExtensions
     {

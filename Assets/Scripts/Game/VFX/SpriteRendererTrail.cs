@@ -1,8 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
-using StellarMass.Systems.Data.Persistent;
+using Summoner.Systems.Data.Persistent;
 
-namespace StellarMass.Game.VFX
+namespace Summoner.Game.VFX
 {
     public class SpriteRendererTrail : MonoBehaviour
     {

@@ -4,7 +4,7 @@ using FMOD.Studio;
 using FMODUnity;
 using UnityEngine;
 
-namespace StellarMass.Utilities.FMODUtilities
+namespace Summoner.Utilities.FMODUtilities
 {
     public static class EventReferenceExtensions
     {

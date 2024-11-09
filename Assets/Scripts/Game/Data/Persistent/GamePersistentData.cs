@@ -1,6 +1,6 @@
-using StellarMass.Systems.Data.Persistent;
+using Summoner.Systems.Data.Persistent;
 
-namespace StellarMass.Game.Data.Persistent
+namespace Summoner.Game.Data.Persistent
 {
     public sealed class GamePersistentData : PersistentDataContainer
     {

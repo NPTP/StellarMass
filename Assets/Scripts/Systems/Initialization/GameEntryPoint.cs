@@ -1,10 +1,10 @@
 using System.Collections;
-using StellarMass.Systems.AudioSystem;
-using StellarMass.Systems.Camera;
-using StellarMass.Systems.Coroutines;
-using StellarMass.Systems.ReferenceTable;
-using StellarMass.Systems.SaveAndLoad;
-using StellarMass.Utilities.Attributes;
+using Summoner.Systems.AudioSystem;
+using Summoner.Systems.Camera;
+using Summoner.Systems.Coroutines;
+using Summoner.Systems.ReferenceTable;
+using Summoner.Systems.SaveAndLoad;
+using Summoner.Utilities.Attributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Input = NPTP.InputSystemWrapper.Input;
@@ -14,7 +14,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-namespace StellarMass.Systems.Initialization
+namespace Summoner.Systems.Initialization
 {
     public class GameEntryPoint : MonoBehaviour
     { 

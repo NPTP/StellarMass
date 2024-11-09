@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace StellarMass.Utilities
+namespace Summoner.Utilities
 {
     public static class XorScramblerUtility
     {

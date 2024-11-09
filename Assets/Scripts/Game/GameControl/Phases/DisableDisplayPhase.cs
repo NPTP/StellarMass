@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace StellarMass.Game.GameControl.Phases
+namespace Summoner.Game.GameControl.Phases
 {
     [CreateAssetMenu]
     public class DisableDisplayPhase : GamePhase

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StellarMass.Systems.StateMachines
+namespace Summoner.Systems.StateMachines
 {
     public class StateMachine : MonoBehaviour
     {

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Input = NPTP.InputSystemWrapper.Input;
 
-namespace StellarMass.Game.GameControl
+namespace Summoner.Game.GameControl
 {
     public class PauseMenu : MonoBehaviour
     {

@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using StellarMass.Utilities.Singletons;
+using Summoner.Utilities.Singletons;
 using UnityEngine;
 
-namespace StellarMass.Systems.Coroutines
+namespace Summoner.Systems.Coroutines
 {
     public class CoroutineOwner : ManualInitSingleton<CoroutineOwner>
     {

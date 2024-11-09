@@ -4,7 +4,7 @@ using System;
 using UnityEditor;
 #endif
 
-namespace StellarMass.Utilities
+namespace Summoner.Utilities
 {
     /// <summary>
     /// Contains methods with editor-only functionality that are safe to call at runtime.

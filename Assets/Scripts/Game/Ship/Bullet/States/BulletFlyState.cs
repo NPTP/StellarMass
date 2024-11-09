@@ -1,8 +1,8 @@
-using StellarMass.Systems.StateMachines;
 using UnityEngine;
-using StellarMass.Systems.Data.Persistent;
+using Summoner.Systems.Data.Persistent;
+using Summoner.Systems.StateMachines;
 
-namespace StellarMass.Game.Ship.Bullet.States
+namespace Summoner.Game.Ship.Bullet.States
 {
     public class BulletFlyState : State
     {

@@ -2,7 +2,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace StellarMass.Utilities.Attributes.Editor
+namespace Summoner.Utilities.Attributes.Editor
 {
     [CustomPropertyDrawer(typeof(RequiredAttribute))]
     public class RequiredAttributeDrawer : PropertyDrawer

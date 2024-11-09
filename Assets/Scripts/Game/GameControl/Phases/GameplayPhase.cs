@@ -3,7 +3,7 @@ using NPTP.InputSystemWrapper.Enums;
 using UnityEngine;
 using Input = NPTP.InputSystemWrapper.Input;
 
-namespace StellarMass.Game.GameControl.Phases
+namespace Summoner.Game.GameControl.Phases
 {
     [CreateAssetMenu]
     public class GameplayPhase : GamePhase

@@ -1,8 +1,8 @@
 using FMODUnity;
-using StellarMass.Systems.Data.Persistent;
+using Summoner.Systems.Data.Persistent;
 using UnityEngine;
 
-namespace StellarMass.Game.Data
+namespace Summoner.Game.Data
 {
     public sealed class AudioPersistentData : PersistentDataContainer
     {

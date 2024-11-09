@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using StellarMass.Utilities.Attributes;
+using Summoner.Utilities.Attributes;
 using UnityEngine;
 
-namespace StellarMass.Game.ScreenLoop
+namespace Summoner.Game.ScreenLoop
 {
     [RequireComponent(typeof(Collider2D))]
     public class LoopableCollider : MonoBehaviour

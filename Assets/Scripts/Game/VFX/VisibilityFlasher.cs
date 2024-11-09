@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StellarMass.Game.VFX
+namespace Summoner.Game.VFX
 {
     public class VisibilityFlasher : RendererController
     {

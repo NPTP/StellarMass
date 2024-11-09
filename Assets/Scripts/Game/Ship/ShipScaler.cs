@@ -1,8 +1,8 @@
-using StellarMass.Utilities.Attributes;
+using Summoner.Utilities.Attributes;
 using UnityEngine;
 using UnityEngine.U2D;
 
-namespace StellarMass.Game.Ship
+namespace Summoner.Game.Ship
 {
     [ExecuteAlways]
     public class ShipScaler : MonoBehaviour

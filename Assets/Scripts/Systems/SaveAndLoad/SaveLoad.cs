@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using StellarMass.Systems.Data.Persistent;
-using StellarMass.Utilities;
-using StellarMass.Utilities.Extensions;
+using Summoner.Utilities.Extensions;
+using Summoner.Systems.Data.Persistent;
+using Summoner.Utilities;
 using UnityEngine;
 
-namespace StellarMass.Systems.SaveAndLoad
+namespace Summoner.Systems.SaveAndLoad
 {
     /// <summary>
     /// Saves & loads any type of data using an ID identifier.
@@ -17,7 +17,7 @@ namespace StellarMass.Systems.SaveAndLoad
         private const string SAVE_PAD = "YjQaLfWUskRQHP4lO9eWbsKWJGzKwwoK";
         private const string SAVE_FILE_EXTENSION = "sum";
 
-        private static Dictionary<int, SaveData> activeSaveData;
+        private static Dictionary<Type, Dictionary<int, SaveData>> activeSaveData;
         private static bool initialized;
 
         public static void Initialize()
@@ -27,7 +27,7 @@ namespace StellarMass.Systems.SaveAndLoad
                 return;
             }
 
-            activeSaveData = new Dictionary<int, SaveData>();
+            activeSaveData = new Dictionary<Type, Dictionary<int, SaveData>>();
             RuntimeSafeEditorUtility.RegisterApplicationQuittingCallback(HandleApplicationQuitting);
             
             initialized = true;
@@ -36,10 +36,16 @@ namespace StellarMass.Systems.SaveAndLoad
         private static void HandleApplicationQuitting()
         {
             if (PersistentData.Core.SaveOnApplicationExit)
-                activeSaveData.Values.ForEach(saveData => saveData.Save(modifyActiveSaveData: false));
+                SaveAll();
         }
 
-        public static void Save(this SaveData saveData, bool modifyActiveSaveData = true)
+        public static void SaveAll()
+        {
+            activeSaveData.Values.ForEach(subDict =>
+                subDict.Values.ForEach(saveData => saveData.Save()));
+        }
+
+        public static void Save<T>(this T saveData) where T : SaveData
         {
             if (saveData == null)
             {
@@ -48,15 +54,12 @@ namespace StellarMass.Systems.SaveAndLoad
             
             try
             {
-                if (modifyActiveSaveData)
-                    activeSaveData.TryAdd(saveData.id, saveData);
-                
                 string json = JsonUtility.ToJson(saveData, prettyPrint: true);
                 
                 if (saveData.ScrambleData)
                     json = XorScramblerUtility.Scramble(json, SAVE_PAD);
 
-                File.WriteAllText(GetSaveDataPath(saveData.id), json);
+                File.WriteAllText(GetSaveDataPath<T>(saveData.id), json);
             }
             catch (Exception e)
             {
@@ -64,14 +67,18 @@ namespace StellarMass.Systems.SaveAndLoad
             }
         }
 
-        public static void Unload(this SaveData saveData)
+        public static void Unload<T>(this T saveData) where T : SaveData
         {
             if (saveData == null)
             {
                 return;
             }
+
+            if (activeSaveData.TryGetValue(typeof(T), out Dictionary<int, SaveData> subDict))
+            {
+                subDict.Remove(saveData.id);
+            }
             
-            activeSaveData.Remove(saveData.id);
             saveData.Reset();
         }
 
@@ -82,18 +89,20 @@ namespace StellarMass.Systems.SaveAndLoad
         /// </summary>
         public static T Get<T>(int id = 0) where T : SaveData
         {
-            if (activeSaveData.TryGetValue(id, out SaveData value))
+            if (activeSaveData.TryGetValue(typeof(T), out Dictionary<int, SaveData> subDict) &&
+                subDict.TryGetValue(id, out SaveData saveData))
             {
-                return value as T;
+                return saveData as T;
             }
 
-            if (!TryLoad(id, out T saveData))
+            if (!TryLoad(id, out saveData))
             {
                 saveData = Activator.CreateInstance<T>();
             }
-            
-            activeSaveData[id] = saveData;
-            return saveData;
+
+            subDict = new Dictionary<int, SaveData> { [id] = saveData };
+            activeSaveData[typeof(T)] = subDict;
+            return saveData as T;
         }
 
         /// <summary>
@@ -108,7 +117,7 @@ namespace StellarMass.Systems.SaveAndLoad
         {
             try
             {
-                string text = File.ReadAllText(GetSaveDataPath(id));
+                string text = File.ReadAllText(GetSaveDataPath<T>(id));
 
                 // Try to read Json from text as-is.
                 try
@@ -142,9 +151,9 @@ namespace StellarMass.Systems.SaveAndLoad
             return false;
         }
 
-        private static string GetSaveDataPath(int id)
+        private static string GetSaveDataPath<T>(int id) where T : SaveData
         {
-            return $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{nameof(SaveData)}_{id}.{SAVE_FILE_EXTENSION}";
+            return $"{Application.persistentDataPath}{Path.DirectorySeparatorChar}{typeof(T).Name}_{id}.{SAVE_FILE_EXTENSION}";
         }
     }
 }

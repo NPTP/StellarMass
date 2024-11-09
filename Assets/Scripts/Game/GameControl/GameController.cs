@@ -1,9 +1,9 @@
-using StellarMass.Game.GameControl.Phases;
-using StellarMass.Systems.AudioSystem;
 using UnityEngine;
-using StellarMass.Systems.Data.Persistent;
+using Summoner.Game.GameControl.Phases;
+using Summoner.Systems.AudioSystem;
+using Summoner.Systems.Data.Persistent;
 
-namespace StellarMass.Game.GameControl
+namespace Summoner.Game.GameControl
 {
     public class GameController : MonoBehaviour
     {

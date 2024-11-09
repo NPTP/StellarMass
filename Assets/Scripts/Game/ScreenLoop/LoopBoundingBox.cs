@@ -1,9 +1,9 @@
-using StellarMass.Systems.ReferenceTable;
-using StellarMass.Utilities.Attributes;
-using StellarMass.Utilities.Extensions;
+using Summoner.Utilities.Extensions;
+using Summoner.Systems.ReferenceTable;
+using Summoner.Utilities.Attributes;
 using UnityEngine;
 
-namespace StellarMass.Game.ScreenLoop
+namespace Summoner.Game.ScreenLoop
 {
     public class LoopBoundingBox : ReferenceableMonoBehaviour
     {

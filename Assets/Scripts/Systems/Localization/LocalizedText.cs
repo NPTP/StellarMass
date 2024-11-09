@@ -1,9 +1,9 @@
-using StellarMass.Utilities.Attributes;
+using Summoner.Utilities.Attributes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
 
-namespace StellarMass.Systems.Localization
+namespace Summoner.Systems.Localization
 {
     [RequireComponent(typeof(TextMeshPro))]
     public class LocalizedText : MonoBehaviour

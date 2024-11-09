@@ -1,8 +1,8 @@
 using System.Collections;
-using StellarMass.Utilities.Attributes;
+using Summoner.Utilities.Attributes;
 using UnityEngine;
 
-namespace StellarMass.Systems.Animation
+namespace Summoner.Systems.Animation
 {
     [RequireComponent(typeof(Animator))]
     public class AnimatorController : MonoBehaviour

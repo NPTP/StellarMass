@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using FMODUnity;
 
-namespace StellarMass.Systems.AudioSystem
+namespace Summoner.Systems.AudioSystem
 {
     public static class PersistentAudioPlayer
     {

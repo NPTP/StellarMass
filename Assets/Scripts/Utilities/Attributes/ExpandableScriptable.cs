@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace StellarMass.Utilities.Attributes
+namespace Summoner.Utilities.Attributes
 {
     /// <summary>
     /// Attribute for ScriptableObjects to let their contents be expanded, shown and edited in the inspector

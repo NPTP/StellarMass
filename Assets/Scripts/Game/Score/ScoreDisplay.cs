@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace StellarMass.Game.Score
+namespace Summoner.Game.Score
 {
     public class ScoreDisplay : MonoBehaviour
     {

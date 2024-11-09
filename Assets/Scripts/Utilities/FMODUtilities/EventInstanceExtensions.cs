@@ -4,7 +4,7 @@ using FMODUnity;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
-namespace StellarMass.Utilities.FMODUtilities
+namespace Summoner.Utilities.FMODUtilities
 {
     public static class EventInstanceExtensions
     {

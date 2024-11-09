@@ -1,8 +1,8 @@
-using StellarMass.Game.ScreenLoop;
-using StellarMass.Game.Ship;
+using Summoner.Game.ScreenLoop;
+using Summoner.Game.Ship;
 using UnityEngine;
 
-namespace StellarMass.Utilities.Extensions
+namespace Summoner.Utilities.Extensions
 {
     public static class Collider2DExtensions
     {

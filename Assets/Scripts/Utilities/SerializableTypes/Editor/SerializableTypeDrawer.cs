@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace StellarMass.Utilities.SerializableTypes.Editor
+namespace Summoner.Utilities.SerializableTypes.Editor
 {
     [CustomPropertyDrawer(typeof(SerializableType))]
     public class SerializableTypeDrawer : PropertyDrawer

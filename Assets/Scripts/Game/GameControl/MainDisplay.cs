@@ -1,7 +1,7 @@
-using StellarMass.Systems.Animation;
+using Summoner.Systems.Animation;
 using UnityEngine;
 
-namespace StellarMass.Game.GameControl
+namespace Summoner.Game.GameControl
 {
     public class MainDisplay : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace StellarMass.Utilities.Extensions
+namespace Summoner.Utilities.Extensions
 {
     public static class AssetReferenceExtensions
     {

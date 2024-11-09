@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StellarMass.Systems.Data
+namespace Summoner.Systems.Data
 {
     /// <summary>
     /// Base class for ALL new scriptable objects to enable shared functionality

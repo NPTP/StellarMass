@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace StellarMass.Utilities
+namespace Summoner.Utilities
 {
     public static class Curves
     {

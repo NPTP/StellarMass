@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using StellarMass.Systems.SceneManagement;
+using Summoner.Systems.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace StellarMass.Systems.ReferenceTable
+namespace Summoner.Systems.ReferenceTable
 {
     /// <summary>
     /// Static access to currently loaded MonoBehaviours with safe TryGet methods.

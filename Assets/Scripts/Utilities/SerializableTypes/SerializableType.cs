@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace StellarMass.Utilities.SerializableTypes
+namespace Summoner.Utilities.SerializableTypes
 {
     [Serializable]
     public class SerializableType

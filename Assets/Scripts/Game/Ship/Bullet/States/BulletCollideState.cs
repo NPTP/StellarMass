@@ -1,7 +1,7 @@
-using StellarMass.Systems.StateMachines;
+using Summoner.Systems.StateMachines;
 using UnityEngine;
 
-namespace StellarMass.Game.Ship.Bullet.States
+namespace Summoner.Game.Ship.Bullet.States
 {
     public class BulletCollideState : State
     {
