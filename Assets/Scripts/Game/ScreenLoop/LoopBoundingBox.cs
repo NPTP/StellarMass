@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Summoner.Game.ScreenLoop
 {
-    public class LoopBoundingBox : ReferenceableMonoBehaviour
+    public class LoopBoundingBox : ReferenceTableMonoBehaviour
     {
         private const float BUFFER_SPACING = 0f;
         private const int X_INDEX = 0;
