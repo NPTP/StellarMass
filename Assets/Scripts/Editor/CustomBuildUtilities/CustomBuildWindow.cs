@@ -10,13 +10,11 @@ namespace Summoner.Editor.CustomBuildUtilities
 {
     public partial class CustomBuildWindow : EditorWindow
     {
-        private const string WINDOW_HEADER = "<color=#FF3131><b>SUMMONER</b></color> Builder";
+        private const string GAME_TITLE_COLOR = "#FF3131";
         private const string BUILD_BUTTON_TEXT = "BUILD";
         private const string DEFAULT_BUILD_PATH = "Builds";
-        private const string PROJECT_OPTIONS_SUBHEADER = "Summoner Options";
-
-        private string[] DefaultScriptingDefines => Array.Empty<string>();
-
+        private const string GAME_TITLE = "SUMMONER";
+        
         private GUIStyle HeaderStyle => new GUIStyle(GUI.skin.label) { fontSize = 24, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, richText = true};
         private Color BuildButtonColor => new Color(0, 0.5f, 0);
         private string DefaultExecutableName => Application.version;
@@ -66,9 +64,11 @@ namespace Summoner.Editor.CustomBuildUtilities
 
         private void OnGUI()
         {
-            GUILayout.Label(WINDOW_HEADER, HeaderStyle);
-            
+            GUILayout.Label($"<color={GAME_TITLE_COLOR}><b>{GAME_TITLE}</b></color> Builder", HeaderStyle);
+
             EditorInspectorUtility.DrawHorizontalLine();
+            
+            PlayerSettings.bundleVersion = EditorGUILayout.TextField(new GUIContent("Version", "Changes the application version in the Player settings."), Application.version);
             
             EditorGUI.BeginDisabledGroup(Application.isPlaying);
             
@@ -149,8 +149,6 @@ namespace Summoner.Editor.CustomBuildUtilities
 
             EditorInspectorUtility.DrawHorizontalLine();
 
-            EditorGUILayout.LabelField("Build Options", EditorStyles.boldLabel);
-            PlayerSettings.bundleVersion = EditorGUILayout.TextField(new GUIContent("Version", "Changes the application version in the Player settings."), Application.version);
             StringField(ref buildPath, nameof(buildPath), defaultValue: DEFAULT_BUILD_PATH);
             if (buildPath.Length > 0 && buildPath[^1] == '/') buildPath.Substring(0, buildPath.Length - 1);
             StringField(ref executableName, nameof(executableName), DefaultExecutableName);
@@ -163,9 +161,8 @@ namespace Summoner.Editor.CustomBuildUtilities
             EditorGUI.EndDisabledGroup();
             EnumField(ref compressionMethod, nameof(compressionMethod));
             
-            EditorInspectorUtility.DrawHorizontalLine();
+            EditorGUILayout.Space(10);
             
-            EditorGUILayout.LabelField(PROJECT_OPTIONS_SUBHEADER, EditorStyles.boldLabel);
             EnumField(ref branch, nameof(branch));
             EnumField(ref store, nameof(store));
             BoolField(ref preprocessBuild, nameof(preprocessBuild), defaultValue: true);
