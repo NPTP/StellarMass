@@ -13,6 +13,7 @@ namespace Summoner.Editor.CustomBuildUtilities
         private const string WINDOW_HEADER = "<color=#FF3131><b>SUMMONER</b></color> Builder";
         private const string BUILD_BUTTON_TEXT = "BUILD";
         private const string DEFAULT_BUILD_PATH = "Builds";
+        private const string PROJECT_OPTIONS_SUBHEADER = "Summoner Options";
 
         private string[] DefaultScriptingDefines => Array.Empty<string>();
 
@@ -83,7 +84,6 @@ namespace Summoner.Editor.CustomBuildUtilities
                     {
                         CustomBuildPreset customBuildPreset = JsonUtility.FromJson<CustomBuildPreset>(fileText);
                         
-                        // TODO: each of these fields must be saved with editor prefs, here, to work properly 
                         buildPresetName = customBuildPreset.buildPresetName;
                         buildPath = customBuildPreset.buildPath;
                         executableName = customBuildPreset.executableName;
@@ -97,6 +97,20 @@ namespace Summoner.Editor.CustomBuildUtilities
                         store = customBuildPreset.store;
                         preprocessBuild = customBuildPreset.preprocessBuild;
                         scriptingDefines = customBuildPreset.scriptingDefines;
+                        
+                        SaveString(customBuildPreset.buildPresetName, nameof(buildPresetName));
+                        SaveString(customBuildPreset.buildPath, nameof(buildPath));
+                        SaveString(customBuildPreset.executableName, nameof(executableName));
+                        SaveEnum(customBuildPreset.platform, nameof(platform));
+                        SaveBool(customBuildPreset.developmentBuild, nameof(developmentBuild));
+                        SaveBool(customBuildPreset.autoconnectProfiler, nameof(autoconnectProfiler));
+                        SaveBool(customBuildPreset.deepProfilingSupport, nameof(deepProfilingSupport));
+                        SaveBool(customBuildPreset.scriptDebugging, nameof(scriptDebugging));
+                        SaveEnum(customBuildPreset.compressionMethod, nameof(compressionMethod));
+                        SaveEnum(customBuildPreset.branch, nameof(branch));
+                        SaveEnum(customBuildPreset.store, nameof(store));
+                        SaveBool(customBuildPreset.preprocessBuild, nameof(preprocessBuild));
+                        SaveList(customBuildPreset.scriptingDefines, nameof(scriptingDefines));
                     }
                     catch (Exception e)
                     {
@@ -137,7 +151,7 @@ namespace Summoner.Editor.CustomBuildUtilities
 
             EditorGUILayout.LabelField("Build Options", EditorStyles.boldLabel);
             PlayerSettings.bundleVersion = EditorGUILayout.TextField(new GUIContent("Version", "Changes the application version in the Player settings."), Application.version);
-            StringField(ref buildPath, nameof(buildPath), defaultValue: "Builds");
+            StringField(ref buildPath, nameof(buildPath), defaultValue: DEFAULT_BUILD_PATH);
             if (buildPath.Length > 0 && buildPath[^1] == '/') buildPath.Substring(0, buildPath.Length - 1);
             StringField(ref executableName, nameof(executableName), DefaultExecutableName);
             EnumField(ref platform, nameof(platform), defaultValue: (int)Platform.StandaloneWindows64);
@@ -151,7 +165,7 @@ namespace Summoner.Editor.CustomBuildUtilities
             
             EditorInspectorUtility.DrawHorizontalLine();
             
-            EditorGUILayout.LabelField("Summoner Options", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField(PROJECT_OPTIONS_SUBHEADER, EditorStyles.boldLabel);
             EnumField(ref branch, nameof(branch));
             EnumField(ref store, nameof(store));
             BoolField(ref preprocessBuild, nameof(preprocessBuild), defaultValue: true);
@@ -225,6 +239,36 @@ namespace Summoner.Editor.CustomBuildUtilities
                 result.SetPixels(pix);
                 result.Apply();
                 return result;
+            }
+        }
+
+        private void SaveString(string saveValue, string fieldName)
+        {
+            string editorPrefsKey = GetEditorPrefsKey(fieldName);
+            EditorPrefs.SetString(editorPrefsKey, saveValue);
+        }
+        
+        private void SaveBool(bool saveValue, string fieldName)
+        {
+            string editorPrefsKey = GetEditorPrefsKey(fieldName);
+            EditorPrefs.SetBool(editorPrefsKey, saveValue);
+        }
+
+        private void SaveEnum<TEnum>(TEnum saveValue, string fieldName) where TEnum : Enum
+        {
+            string editorPrefsKey = GetEditorPrefsKey(fieldName);
+            EditorPrefs.SetInt(editorPrefsKey, Convert.ToInt32(saveValue));
+        }
+
+        private void SaveList(List<string> saveValue, string fieldName)
+        {
+            string countKey = GetEditorPrefsKey($"{fieldName}.Count");
+            EditorPrefs.SetInt(countKey, saveValue.Count);
+
+            for (int i = 0; i < saveValue.Count; i++)
+            {
+                string listElementKey = GetEditorPrefsKey($"{fieldName}[{i}]");
+                EditorPrefs.SetString(listElementKey, saveValue[i]);
             }
         }
         
