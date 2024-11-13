@@ -223,17 +223,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02561691781cbef4ea649126bcdbb54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 837180639}
-  logoAppearEvent:
-    Guid:
-      Data1: -1008849142
-      Data2: 1305784457
-      Data3: -994503802
-      Data4: -1581562752
-    Path: event:/SFX/LogoAppear
+  titleText: 'SUMMONER '
   nextScene:
     guid: 2cda990e2423bbf4892e6590ba056729
     buildIndex: 2
+  animator: {fileID: 837180639}
+  tmpText: {fileID: 1367443420}
+  logoAppearEvent:
+    Guid:
+      Data1: 159650213
+      Data2: 1196855243
+      Data3: -554820701
+      Data4: -730979227
+    Path: event:/Music/GameDev_StellarMass_SummonerTitleCard
 --- !u!1 &1317261892
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +345,6 @@ GameObject:
   - component: {fileID: 1367443422}
   - component: {fileID: 1367443421}
   - component: {fileID: 1367443420}
-  - component: {fileID: 1367443419}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -351,31 +352,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1367443419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1367443418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b26e7b67bbec05e4ba0983b41c48ba11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tmpText: {fileID: 1367443420}
-  localizedString:
-    m_TableReference:
-      m_TableCollectionName: GUID:90adad9a3c17243469706b1d9255d792
-    m_TableEntryReference:
-      m_KeyId: 31186736734375936
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  references:
-    version: 2
-    RefIds: []
 --- !u!114 &1367443420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,7 +372,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SUMMONER
+  m_text: 'SUMMONER '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a282dcf8f2e533f4a8e6ceaa3b14803f, type: 2}
   m_sharedMaterial: {fileID: 5710647645577573601, guid: a282dcf8f2e533f4a8e6ceaa3b14803f, type: 2}
@@ -405,7 +381,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190311
+    rgba: 4278190144
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3

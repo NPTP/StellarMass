@@ -53,7 +53,7 @@ namespace Summoner.Editor
 		private LoopBoundingBox loopBoundingBox;
 		private bool loopBoundingBoxVisualizerEnabled;
 		
-		[MenuItem(EditorToolNames.SHORTCUTS_WINDOW)]
+		[MenuItem(EditorToolNames.SHORTCUTS_WINDOW, isValidateFunction: false, priority: 0)]
 		public static void ShowWindow()
 		{
 			GetWindow(typeof(ShortcutsWindow));

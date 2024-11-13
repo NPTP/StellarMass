@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Summoner.Utilities.Extensions
@@ -38,6 +39,41 @@ namespace Summoner.Utilities.Extensions
         public static string LeadingWhitespace(this string s)
         {
             return s == string.Empty ? string.Empty : s.Replace(s.TrimStart(), string.Empty);
+        }
+        
+        public static string SpaceBetweenCapitalizedWords(this string s)
+        {
+            StringBuilder sb = new();
+            
+            for (int i = 0; i < s.Length; i++)
+            {
+                char cur = s[i];
+                if (char.IsWhiteSpace(cur))
+                {
+                    continue;
+                }
+                
+                if (i > 0)
+                {
+                    char prev = s[i - 1];
+                    bool newWordCondition = char.IsLower(prev) && char.IsUpper(cur);
+                    bool numberStartCondition = char.IsLetter(prev) && char.IsNumber(cur);
+                    if (newWordCondition || numberStartCondition)
+                    {
+                        sb.Append(' ');
+                    }
+                }
+                sb.Append(cur);
+            }
+
+            return sb.ToString();
+        }
+
+        public static string RemoveFirstCharacterIfNumber(this string s)
+        {
+            if (string.IsNullOrEmpty(s)) return string.Empty;
+            if (!char.IsNumber(s[0])) return s;
+            return s.Length > 1 ? s[1..] : string.Empty;
         }
     }
 }

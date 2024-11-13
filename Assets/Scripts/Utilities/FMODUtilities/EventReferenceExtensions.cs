@@ -8,22 +8,30 @@ namespace Summoner.Utilities.FMODUtilities
 {
     public static class EventReferenceExtensions
     {
-        public static void PlayOneShot(this EventReference eventReference)
+        public static EventInstance PlayOneShot(this EventReference eventReference)
         {
-            RuntimeManager.PlayOneShot(eventReference);
+            EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
+            eventInstance.start();
+            eventInstance.release();
+            return eventInstance;
         }
         
-        public static void PlayOneShot(this EventReference eventReference, Vector3 position)
+        public static EventInstance PlayOneShot(this EventReference eventReference, Vector3 position)
         {
-            RuntimeManager.PlayOneShot(eventReference, position);
+            EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
+            eventInstance.set3DAttributes(position.To3DAttributes());
+            eventInstance.start();
+            eventInstance.release();
+            return eventInstance;
         }
 
-        public static void PlayOneShot(this EventReference eventReference, Transform transform)
+        public static EventInstance PlayOneShot(this EventReference eventReference, Transform transform)
         {
             EventInstance eventInstance = RuntimeManager.CreateInstance(eventReference);
             eventInstance.AttachToTransform(transform);
             eventInstance.start();
             eventInstance.release();
+            return eventInstance;
         }
         
         public static EventInstance CreateInstance(this EventReference eventReference)

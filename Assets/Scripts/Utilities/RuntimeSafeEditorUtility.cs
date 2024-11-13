@@ -1,7 +1,9 @@
-
 using System;
+
 #if UNITY_EDITOR
 using UnityEditor;
+#else
+using UnityEngine;
 #endif
 
 namespace Summoner.Utilities
