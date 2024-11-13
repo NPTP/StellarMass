@@ -21,7 +21,9 @@ namespace Summoner.Editor.CustomBuildUtilities
         private string DefaultExecutableName => Application.version;
 
         // Build Options Preset
-        private BuildOptionsPreset buildOptionsPreset;
+        private string customBuildPresetsPath;
+        private string buildPresetName;
+        private CustomBuildPreset currentPreset;
 
         // Build Options
         private string buildPath;
@@ -47,14 +49,89 @@ namespace Summoner.Editor.CustomBuildUtilities
                 customBuildWindow.titleContent = new GUIContent(ToInspectorFieldName(nameof(CustomBuildWindow)));
             }
         }
+
+        private void OnEnable()
+        {
+        }
+
+        private void OnDisable()
+        {
+        }
         
+        // Updates 5-10 times per second
+        public void OnInspectorUpdate()
+        {
+        }
+
         private void OnGUI()
         {
             GUILayout.Label(WINDOW_HEADER, HeaderStyle);
             
             EditorInspectorUtility.DrawHorizontalLine();
             
-            EnumField(ref buildOptionsPreset, nameof(buildOptionsPreset));
+            EditorGUI.BeginDisabledGroup(Application.isPlaying);
+            
+            StringField(ref customBuildPresetsPath, nameof(customBuildPresetsPath), "Assets");
+            StringField(ref buildPresetName, nameof(buildPresetName), string.Empty);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Load Preset"))
+            {
+                string loadPath = EditorUtility.OpenFilePanel("Load Preset", customBuildPresetsPath, "cbp");
+                if (!string.IsNullOrEmpty(loadPath) && FileReadWrite.TryRead(loadPath, out string fileText))
+                {
+                    try
+                    {
+                        CustomBuildPreset customBuildPreset = JsonUtility.FromJson<CustomBuildPreset>(fileText);
+                        
+                        // TODO: each of these fields must be saved with editor prefs, here, to work properly 
+                        buildPresetName = customBuildPreset.buildPresetName;
+                        buildPath = customBuildPreset.buildPath;
+                        executableName = customBuildPreset.executableName;
+                        platform = customBuildPreset.platform;
+                        developmentBuild = customBuildPreset.developmentBuild;
+                        autoconnectProfiler = customBuildPreset.autoconnectProfiler;
+                        deepProfilingSupport = customBuildPreset.deepProfilingSupport;
+                        scriptDebugging = customBuildPreset.scriptDebugging;
+                        compressionMethod = customBuildPreset.compressionMethod;
+                        branch = customBuildPreset.branch;
+                        store = customBuildPreset.store;
+                        preprocessBuild = customBuildPreset.preprocessBuild;
+                        scriptingDefines = customBuildPreset.scriptingDefines;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogError($"Couldn't read preset: {e.Message}");
+                    }
+                }
+            }
+
+            if (GUILayout.Button("Save Preset"))
+            {
+                string savePath = EditorUtility.SaveFilePanelInProject("Save Preset", $"{buildPresetName}.cbp", "cbp", "", customBuildPresetsPath);
+                if (!string.IsNullOrEmpty(savePath))
+                {
+                    CustomBuildPreset customBuildPreset = new CustomBuildPreset()
+                    {
+                        buildPresetName = buildPresetName,
+                        buildPath = buildPath,
+                        executableName = executableName,
+                        platform = platform,
+                        developmentBuild = developmentBuild,
+                        autoconnectProfiler = autoconnectProfiler,
+                        deepProfilingSupport = deepProfilingSupport,
+                        scriptDebugging = scriptDebugging,
+                        compressionMethod = compressionMethod,
+                        branch = branch,
+                        store = store,
+                        preprocessBuild = preprocessBuild,
+                        scriptingDefines = scriptingDefines,
+                    };
+
+                    string json = JsonUtility.ToJson(customBuildPreset, prettyPrint: true);
+                    FileReadWrite.Write(json, savePath, isAssetsPath: true);
+                }
+            }
+            GUILayout.EndHorizontal();
 
             EditorInspectorUtility.DrawHorizontalLine();
 
@@ -81,24 +158,41 @@ namespace Summoner.Editor.CustomBuildUtilities
             
             GUILayout.Space(10);
             EditorGUILayout.LabelField("Scripting Defines", EditorStyles.boldLabel);
-            EditorPrefs.GetInt(GetEditorPrefsKey($"{nameof(scriptingDefines)}.Count"), defaultValue: 1);
-            for (int i = 0; i < scriptingDefines.Count; i++)
+            
+            int scriptingDefinesCount = EditorPrefs.GetInt(GetEditorPrefsKey($"{nameof(scriptingDefines)}.Count"), defaultValue: 0);
+            if (scriptingDefinesCount == 0)
             {
-                string scriptingDefine = scriptingDefines[i];
-                ListStringField(ref scriptingDefine, $"{nameof(scriptingDefine)}[{i}]");
-                scriptingDefines[i] = scriptingDefine;
+                scriptingDefines.Clear();
+                string value = string.Empty;
+                scriptingDefines.Add(value);
+                ListStringField(ref value, $"{nameof(scriptingDefines)}[0]");
             }
-            EditorPrefs.SetInt(GetEditorPrefsKey($"{nameof(scriptingDefines)}.Count"), scriptingDefines.Count);
+            else
+            {
+                scriptingDefines.Clear();
+                for (int i = 0; i < scriptingDefinesCount; i++)
+                {
+                    scriptingDefines.Add(string.Empty);
+                    string value = string.Empty;
+                    ListStringField(ref value, $"{nameof(scriptingDefines)}[{i}]");
+                    scriptingDefines[i] = value;
+                }
+            }
+            
             GUILayout.BeginHorizontal();
             EditorGUI.BeginDisabledGroup(scriptingDefines.Count == 1);
             if (GUILayout.Button("-")) scriptingDefines.RemoveAt(scriptingDefines.Count - 1);
             EditorGUI.EndDisabledGroup();
             if (GUILayout.Button("+")) scriptingDefines.Add(string.Empty);
             GUILayout.EndHorizontal();
+            
+            EditorPrefs.SetInt(GetEditorPrefsKey($"{nameof(scriptingDefines)}.Count"), scriptingDefines.Count);
 
             EditorInspectorUtility.DrawHorizontalLine();
 
             ShowBuildButton();
+            
+            EditorGUI.EndDisabledGroup();
         }
 
         private void ShowBuildButton()
