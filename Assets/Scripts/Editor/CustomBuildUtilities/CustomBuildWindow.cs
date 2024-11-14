@@ -23,6 +23,7 @@ namespace Summoner.Editor.CustomBuildUtilities
         private string buildPresetsPath;
         private string buildPresetName;
         private CustomBuildPreset currentPreset;
+        private bool buildMultiplePresets;
 
         // Build Options
         private string buildPath;
@@ -57,10 +58,10 @@ namespace Summoner.Editor.CustomBuildUtilities
 
             EditorInspectorUtility.DrawHorizontalLine();
             
-            PlayerSettings.bundleVersion = EditorGUILayout.TextField(new GUIContent("Version", "Changes the application version in the Player settings."), Application.version);
-            
             EditorGUI.BeginDisabledGroup(Application.isPlaying);
             
+            PlayerSettings.bundleVersion = EditorGUILayout.TextField(new GUIContent("Version", "Changes the application version in the Player settings."), Application.version);
+
             StringField(ref buildPresetsPath, nameof(buildPresetsPath), string.Empty);
             StringField(ref buildPresetName, nameof(buildPresetName), string.Empty);
             GUILayout.BeginHorizontal();
@@ -73,65 +74,90 @@ namespace Summoner.Editor.CustomBuildUtilities
                 SavePreset();
             }
             GUILayout.EndHorizontal();
+            
+            // TODO: Make this work - build automation of multiple presets to different paths
+            BoolField(ref buildMultiplePresets, nameof(buildMultiplePresets));
+            if (buildMultiplePresets)
+            {
+                GUILayout.BeginHorizontal();
+                EditorGUILayout.TextField("Preset");
+                EditorGUILayout.TextField("Path");
+                GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("-"))
+                {
+                }
+                if (GUILayout.Button("+"))
+                {
+                }
+                GUILayout.EndHorizontal();
+            }
 
             EditorInspectorUtility.DrawHorizontalLine();
 
-            StringField(ref buildPath, nameof(buildPath), defaultValue: DEFAULT_BUILD_PATH);
-            if (buildPath.Length > 0 && buildPath[^1] == '/') buildPath.Substring(0, buildPath.Length - 1);
-            StringField(ref executableName, nameof(executableName), DefaultExecutableName);
-            EnumField(ref platform, nameof(platform), defaultValue: (int)Platform.StandaloneWindows64);
-            BoolField(ref developmentBuild, nameof(developmentBuild));
-            EditorGUI.BeginDisabledGroup(!developmentBuild);
-            BoolField(ref autoconnectProfiler, nameof(autoconnectProfiler));
-            BoolField(ref deepProfilingSupport, nameof(deepProfilingSupport));
-            BoolField(ref scriptDebugging, nameof(scriptDebugging));
-            EditorGUI.EndDisabledGroup();
-            EnumField(ref compressionMethod, nameof(compressionMethod));
-            
-            EditorGUILayout.Space(10);
-            
-            EnumField(ref branch, nameof(branch));
-            EnumField(ref store, nameof(store));
-
-            forcedScriptingDefines = ScriptingDefineHelper.GetPresetScriptingDefines(branch, store);
-
-            BoolField(ref preprocessBuild, nameof(preprocessBuild), defaultValue: true);
-            EnumField(ref afterBuild, nameof(afterBuild));
-            
-            GUILayout.Space(10);
-            
-            EditorGUILayout.LabelField("Scripting Defines", EditorStyles.boldLabel);
-            int scriptingDefinesCount = EditorPrefs.GetInt(GetEditorPrefsKey($"{nameof(extraScriptingDefines)}.Count"), defaultValue: 0);
-
-            // Non-interactable group of scripting defines set by enum value choices.
-            GUI.enabled = false;
-            for (int i = 0; i < forcedScriptingDefines.Length; i++)
-                EditorGUILayout.TextField(forcedScriptingDefines[i]);
-            GUI.enabled = true;
-            
-            extraScriptingDefines.Clear();
-            for (int i = 0; i < scriptingDefinesCount; i++)
+            if (!buildMultiplePresets)
             {
-                extraScriptingDefines.Add(string.Empty);
-                string value = string.Empty;
-                ListStringField(ref value, $"{nameof(extraScriptingDefines)}[{i}]");
-                extraScriptingDefines[i] = value;
-            }
-            GUILayout.BeginHorizontal();
-            EditorGUI.BeginDisabledGroup(extraScriptingDefines.Count == 0);
-            if (GUILayout.Button("-"))
-            {
-                extraScriptingDefines.RemoveAt(extraScriptingDefines.Count - 1);
-            }
-            EditorGUI.EndDisabledGroup();
-            if (GUILayout.Button("+"))
-            {
-                extraScriptingDefines.Add(string.Empty);
-            }
-            GUILayout.EndHorizontal();
-            EditorPrefs.SetInt(GetEditorPrefsKey($"{nameof(extraScriptingDefines)}.Count"), extraScriptingDefines.Count);
+                StringField(ref buildPath, nameof(buildPath), defaultValue: DEFAULT_BUILD_PATH);
+                if (buildPath.Length > 0 && buildPath[^1] == '/') buildPath.Substring(0, buildPath.Length - 1);
+                StringField(ref executableName, nameof(executableName), DefaultExecutableName);
+                EnumField(ref platform, nameof(platform), defaultValue: (int)Platform.StandaloneWindows64);
+                BoolField(ref developmentBuild, nameof(developmentBuild));
+                EditorGUI.BeginDisabledGroup(!developmentBuild);
+                BoolField(ref autoconnectProfiler, nameof(autoconnectProfiler));
+                BoolField(ref deepProfilingSupport, nameof(deepProfilingSupport));
+                BoolField(ref scriptDebugging, nameof(scriptDebugging));
+                EditorGUI.EndDisabledGroup();
+                EnumField(ref compressionMethod, nameof(compressionMethod));
 
-            EditorInspectorUtility.DrawHorizontalLine();
+                EditorGUILayout.Space(10);
+
+                EnumField(ref branch, nameof(branch));
+                EnumField(ref store, nameof(store));
+
+                forcedScriptingDefines = ScriptingDefineHelper.GetPresetScriptingDefines(branch, store);
+
+                BoolField(ref preprocessBuild, nameof(preprocessBuild), defaultValue: true);
+                EnumField(ref afterBuild, nameof(afterBuild));
+
+                GUILayout.Space(10);
+
+                EditorGUILayout.LabelField("Scripting Defines", EditorStyles.boldLabel);
+                int scriptingDefinesCount =
+                    EditorPrefs.GetInt(GetEditorPrefsKey($"{nameof(extraScriptingDefines)}.Count"), defaultValue: 0);
+
+                // Non-interactable group of scripting defines set by enum value choices.
+                GUI.enabled = false;
+                for (int i = 0; i < forcedScriptingDefines.Length; i++)
+                    EditorGUILayout.TextField(forcedScriptingDefines[i]);
+                GUI.enabled = true;
+
+                extraScriptingDefines.Clear();
+                for (int i = 0; i < scriptingDefinesCount; i++)
+                {
+                    extraScriptingDefines.Add(string.Empty);
+                    string value = string.Empty;
+                    ListStringField(ref value, $"{nameof(extraScriptingDefines)}[{i}]");
+                    extraScriptingDefines[i] = value;
+                }
+
+                GUILayout.BeginHorizontal();
+                EditorGUI.BeginDisabledGroup(extraScriptingDefines.Count == 0);
+                if (GUILayout.Button("-"))
+                {
+                    extraScriptingDefines.RemoveAt(extraScriptingDefines.Count - 1);
+                }
+
+                EditorGUI.EndDisabledGroup();
+                if (GUILayout.Button("+"))
+                {
+                    extraScriptingDefines.Add(string.Empty);
+                }
+
+                GUILayout.EndHorizontal();
+                EditorPrefs.SetInt(GetEditorPrefsKey($"{nameof(extraScriptingDefines)}.Count"), extraScriptingDefines.Count);
+
+                EditorInspectorUtility.DrawHorizontalLine();
+            }
 
             ShowBuildButton();
             
@@ -222,6 +248,8 @@ namespace Summoner.Editor.CustomBuildUtilities
 
         private void ShowBuildButton()
         {
+            EditorGUI.BeginDisabledGroup(Application.isPlaying);
+            
             float buttonWidth = 150f;
             float buttonHeight = 60f;
             GUIStyle buttonStyle = new GUIStyle(GUI.skin.button)
@@ -239,6 +267,8 @@ namespace Summoner.Editor.CustomBuildUtilities
             }
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+            
+            EditorGUI.EndDisabledGroup();
             
             Texture2D makeTexture2D(int width, int height, Color col)
             {
