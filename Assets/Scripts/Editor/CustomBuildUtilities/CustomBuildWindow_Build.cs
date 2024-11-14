@@ -39,7 +39,7 @@ namespace Summoner.Editor.CustomBuildUtilities
             }
 
             BuildOptions buildOptions = 0;
-
+            
             if (developmentBuild) buildOptions |= BuildOptions.Development;
             if (autoconnectProfiler) buildOptions |= BuildOptions.ConnectWithProfiler;
             if (deepProfilingSupport) buildOptions |= BuildOptions.EnableDeepProfilingSupport;
@@ -58,15 +58,37 @@ namespace Summoner.Editor.CustomBuildUtilities
                     throw new ArgumentOutOfRangeException();
             }
             
-            string[] enabledBuildScenes = (from scene in EditorBuildSettings.scenes where scene.enabled select scene.path).ToArray();
+            switch (afterBuild)
+            {
+                case AfterBuild.Nothing:
+                    break;
+                case AfterBuild.OpenFolder:
+                    buildOptions |= BuildOptions.ShowBuiltPlayer;
+                    break;
+                case AfterBuild.RunBuild:
+                    buildOptions |= BuildOptions.AutoRunPlayer;
+                    break;
+                case AfterBuild.OpenFolderAndRunBuild:
+                    buildOptions |= BuildOptions.ShowBuiltPlayer;
+                    buildOptions |= BuildOptions.AutoRunPlayer;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
-            BuildReport buildReport = BuildPipeline.BuildPlayer(enabledBuildScenes, fullBuildPath, buildTarget, buildOptions);
+            BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions()
+            {
+                scenes = (from scene in EditorBuildSettings.scenes where scene.enabled select scene.path).ToArray(),
+                locationPathName = fullBuildPath,
+                options = buildOptions,
+                target = buildTarget,
+                targetGroup = buildTargetGroup,
+                extraScriptingDefines = scriptingDefines.ToArray()
+            };
+            
+            BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
             
             Debug.Log($"Build completed: {fullBuildPath}, {DateTime.Now}");
-            if (buildReport.summary.result == BuildResult.Succeeded)
-            {
-                EditorUtility.OpenWithDefaultApp(buildDirectory);
-            }
         }
     }
 }

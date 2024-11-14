@@ -19,6 +19,7 @@ namespace Summoner.Editor.CustomBuildUtilities
         public Branch branch;
         public Store store;
         public bool preprocessBuild;
+        public AfterBuild afterBuild;
         public List<string> scriptingDefines;
     }
 }

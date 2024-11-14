@@ -1,0 +1,19 @@
+{
+    "buildPresetName": "Default",
+    "buildPath": "Builds",
+    "executableName": "Stellar Mass",
+    "platform": 19,
+    "developmentBuild": false,
+    "autoconnectProfiler": false,
+    "deepProfilingSupport": false,
+    "scriptDebugging": false,
+    "compressionMethod": 0,
+    "branch": 0,
+    "store": 0,
+    "preprocessBuild": true,
+    "afterBuild": 1,
+    "scriptingDefines": [
+        "UNITY_POST_PROCESSING_STACK_V2",
+        "DOTWEEN"
+    ]
+}
