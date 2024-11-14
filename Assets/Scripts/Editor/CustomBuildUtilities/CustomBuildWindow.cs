@@ -14,10 +14,10 @@ namespace Summoner.Editor.CustomBuildUtilities
         private const string BUILD_BUTTON_TEXT = "BUILD";
         private const string DEFAULT_BUILD_PATH = "Builds";
         private const string GAME_TITLE = "SUMMONER";
-        
+
         private GUIStyle HeaderStyle => new GUIStyle(GUI.skin.label) { fontSize = 24, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, richText = true};
         private Color BuildButtonColor => new Color(0, 0.5f, 0);
-        private string DefaultExecutableName => Application.version;
+        private string DefaultExecutableName => Application.productName;
 
         // Build Options Preset
         private string buildPresetsPath;
@@ -39,7 +39,8 @@ namespace Summoner.Editor.CustomBuildUtilities
         private Store store;
         private bool preprocessBuild;
         private AfterBuild afterBuild;
-        private List<string> scriptingDefines = new();
+        private string[] forcedScriptingDefines = Array.Empty<string>();
+        private List<string> extraScriptingDefines = new();
 
         [MenuItem(EditorToolNames.CUSTOM_BUILD_WINDOW, isValidateFunction: false, priority: 9999)]
         public static void ShowWindow()
@@ -91,34 +92,44 @@ namespace Summoner.Editor.CustomBuildUtilities
             
             EnumField(ref branch, nameof(branch));
             EnumField(ref store, nameof(store));
+
+            forcedScriptingDefines = ScriptingDefineHelper.GetPresetScriptingDefines(branch, store);
+
             BoolField(ref preprocessBuild, nameof(preprocessBuild), defaultValue: true);
             EnumField(ref afterBuild, nameof(afterBuild));
             
             GUILayout.Space(10);
             
             EditorGUILayout.LabelField("Scripting Defines", EditorStyles.boldLabel);
-            int scriptingDefinesCount = EditorPrefs.GetInt(GetEditorPrefsKey($"{nameof(scriptingDefines)}.Count"), defaultValue: 0);
-            scriptingDefines.Clear();
+            int scriptingDefinesCount = EditorPrefs.GetInt(GetEditorPrefsKey($"{nameof(extraScriptingDefines)}.Count"), defaultValue: 0);
+
+            // Non-interactable group of scripting defines set by enum value choices.
+            GUI.enabled = false;
+            for (int i = 0; i < forcedScriptingDefines.Length; i++)
+                EditorGUILayout.TextField(forcedScriptingDefines[i]);
+            GUI.enabled = true;
+            
+            extraScriptingDefines.Clear();
             for (int i = 0; i < scriptingDefinesCount; i++)
             {
-                scriptingDefines.Add(string.Empty);
+                extraScriptingDefines.Add(string.Empty);
                 string value = string.Empty;
-                ListStringField(ref value, $"{nameof(scriptingDefines)}[{i}]");
-                scriptingDefines[i] = value;
+                ListStringField(ref value, $"{nameof(extraScriptingDefines)}[{i}]");
+                extraScriptingDefines[i] = value;
             }
             GUILayout.BeginHorizontal();
-            EditorGUI.BeginDisabledGroup(scriptingDefines.Count == 0);
+            EditorGUI.BeginDisabledGroup(extraScriptingDefines.Count == 0);
             if (GUILayout.Button("-"))
             {
-                scriptingDefines.RemoveAt(scriptingDefines.Count - 1);
+                extraScriptingDefines.RemoveAt(extraScriptingDefines.Count - 1);
             }
             EditorGUI.EndDisabledGroup();
             if (GUILayout.Button("+"))
             {
-                scriptingDefines.Add(string.Empty);
+                extraScriptingDefines.Add(string.Empty);
             }
             GUILayout.EndHorizontal();
-            EditorPrefs.SetInt(GetEditorPrefsKey($"{nameof(scriptingDefines)}.Count"), scriptingDefines.Count);
+            EditorPrefs.SetInt(GetEditorPrefsKey($"{nameof(extraScriptingDefines)}.Count"), extraScriptingDefines.Count);
 
             EditorInspectorUtility.DrawHorizontalLine();
 
@@ -154,7 +165,7 @@ namespace Summoner.Editor.CustomBuildUtilities
                     store = store,
                     preprocessBuild = preprocessBuild,
                     afterBuild = afterBuild,
-                    scriptingDefines = scriptingDefines,
+                    extraScriptingDefines = extraScriptingDefines,
                 };
 
                 string json = JsonUtility.ToJson(customBuildPreset, prettyPrint: true);
@@ -185,7 +196,7 @@ namespace Summoner.Editor.CustomBuildUtilities
                     store = customBuildPreset.store;
                     preprocessBuild = customBuildPreset.preprocessBuild;
                     afterBuild = customBuildPreset.afterBuild;
-                    scriptingDefines = customBuildPreset.scriptingDefines;
+                    extraScriptingDefines = customBuildPreset.extraScriptingDefines;
 
                     SaveString(customBuildPreset.buildPresetName, nameof(buildPresetName));
                     SaveString(customBuildPreset.buildPath, nameof(buildPath));
@@ -200,7 +211,7 @@ namespace Summoner.Editor.CustomBuildUtilities
                     SaveEnum(customBuildPreset.store, nameof(store));
                     SaveBool(customBuildPreset.preprocessBuild, nameof(preprocessBuild));
                     SaveEnum(customBuildPreset.afterBuild, nameof(afterBuild));
-                    SaveList(customBuildPreset.scriptingDefines, nameof(scriptingDefines));
+                    SaveList(customBuildPreset.extraScriptingDefines, nameof(extraScriptingDefines));
                 }
                 catch (Exception e)
                 {

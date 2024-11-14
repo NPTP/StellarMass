@@ -1,6 +1,6 @@
 {
     "buildPresetName": "Default",
-    "buildPath": "Builds",
+    "buildPath": "Builds/11-14",
     "executableName": "Stellar Mass",
     "platform": 19,
     "developmentBuild": false,
@@ -12,8 +12,5 @@
     "store": 0,
     "preprocessBuild": true,
     "afterBuild": 1,
-    "scriptingDefines": [
-        "UNITY_POST_PROCESSING_STACK_V2",
-        "DOTWEEN"
-    ]
+    "extraScriptingDefines": []
 }

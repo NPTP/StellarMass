@@ -2,7 +2,8 @@
 {
     internal enum Store
     {
-        Steam = 0,
+        None = 0,
+        Steam,
         GOG,
         Epic
     }

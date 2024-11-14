@@ -23,8 +23,6 @@ namespace Summoner.Editor.CustomBuildUtilities
             string fullBuildPath = Path.GetFullPath(targetPath);
             string buildDirectory = Path.GetDirectoryName(fullBuildPath);
 
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(buildTargetGroup, scriptingDefines.ToArray());
-
             if (!Directory.Exists(buildDirectory))
             {
                 Directory.CreateDirectory(buildDirectory);
@@ -76,6 +74,12 @@ namespace Summoner.Editor.CustomBuildUtilities
                     throw new ArgumentOutOfRangeException();
             }
 
+            string[] combinedScriptingDefines = new string[extraScriptingDefines.Count + forcedScriptingDefines.Length];
+            for (int i = 0; i < forcedScriptingDefines.Length; i++)
+                combinedScriptingDefines[i] = forcedScriptingDefines[i];
+            for (int i = 0; i < extraScriptingDefines.Count; i++)
+                combinedScriptingDefines[i + forcedScriptingDefines.Length] = extraScriptingDefines[i];
+
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions()
             {
                 scenes = (from scene in EditorBuildSettings.scenes where scene.enabled select scene.path).ToArray(),
@@ -83,7 +87,7 @@ namespace Summoner.Editor.CustomBuildUtilities
                 options = buildOptions,
                 target = buildTarget,
                 targetGroup = buildTargetGroup,
-                extraScriptingDefines = scriptingDefines.ToArray()
+                extraScriptingDefines = combinedScriptingDefines
             };
             
             BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
