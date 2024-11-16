@@ -3,18 +3,20 @@ using Summoner.Systems.Data.Persistent;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
-namespace Summoner.Systems.Camera
+namespace Summoner.Systems.Camera.CustomUpdaters
 {
-    public class PostProcessingUpdater : MonoBehaviour
+    public class PostProcessingUpdater : CustomUpdater
     {
+        [SerializeField] private PostProcessVolume volume;
+        
         private BloomSettings bloomSettings;
 
-        public void Initialize(PostProcessVolume volume)
+        public override void Initialize()
         {
             bloomSettings = new BloomSettings(volume.profile);
         }
         
-        private void Update()
+        protected override void Update()
         {
             BloomUpdate();
         }

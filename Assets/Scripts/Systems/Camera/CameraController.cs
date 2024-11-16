@@ -1,32 +1,44 @@
+using System;
 using FMODUnity;
+using Summoner.Systems.Camera.CustomUpdaters;
 using Summoner.Utilities;
 using Summoner.Utilities.Singletons;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 
 namespace Summoner.Systems.Camera
 {
     public class CameraController : ManualInitSingleton<CameraController>
     {
-        [SerializeField] private Transform cameraTransform;
-        [SerializeField] private PostProcessVolume volume;
         [SerializeField] private StudioListener fmodStudioListener;
-        
-        [Header("Enableable/Disableable")]
-        [SerializeField] private LocalBobbingUpdater localBobbingUpdater;
-        [SerializeField] private PostProcessingUpdater postProcessingUpdater;
+        [SerializeField] private CustomUpdater[] customUpdaters = Array.Empty<CustomUpdater>();
+
+        private void OnValidate()
+        {
+            customUpdaters = GetComponentsInChildren<CustomUpdater>();
+        }
 
         protected override void InitializeOverrideable()
         {
-            postProcessingUpdater.Initialize(volume);
-            localBobbingUpdater.Initialize(cameraTransform);
-            
-            postProcessingUpdater.enabled = true;
+            Enable<PostProcessingUpdater>(true);
         }
 
         public void SetListenerAttenuationObject(GameObject go)
         {
             fmodStudioListener.SetField("attenuationObject", go);
+        }
+
+        public void Enable<TCustomUpdater>(bool enable) where TCustomUpdater : CustomUpdater
+        {
+            foreach (CustomUpdater customUpdater in customUpdaters)
+            {
+                if (customUpdater.GetType() == typeof(TCustomUpdater))
+                {
+                    customUpdater.enabled = enable;
+                    return;
+                }
+            }
+
+            Debug.Log($"No {nameof(CustomUpdater)} of type {typeof(TCustomUpdater).Name} found on {nameof(CameraController)}.");
         }
     }
 }
