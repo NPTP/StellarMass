@@ -80,14 +80,12 @@ namespace Summoner.Systems.Initialization
             
 #if UNITY_EDITOR
             // Disallow recursive loading of the bootstrapper from the bootstrapper itself.
-            int buildIndex = Mathf.Max(1, EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex));
+            int firstSceneBuildIndex = Mathf.Max(1, EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex));
 #else
-            int buildIndex = initializationOptions.FirstScene.BuildIndex;
+            int firstSceneBuildIndex = initializationOptions.FirstScene.BuildIndex;
 #endif
             
-            // Only place in the game code a Scene should be loaded by calling Unity SceneManager API directly.
-            // Elsewhere, always use SceneLoader.
-            SceneLoader.LoadScene(buildIndex, instant: true);
+            SceneLoader.LoadScene(firstSceneBuildIndex, instant: true);
             
             Destroy(gameObject);
             Resources.UnloadUnusedAssets();

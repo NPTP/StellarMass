@@ -10,19 +10,39 @@ namespace Summoner.Editor.CustomBuildUtilities
 {
     public partial class CustomBuildWindow
     {
-        private void Build()
+        private void BatchBuild()
         {
-            if (preprocessBuild)
+            CustomBuildOptions[] presets = LoadAllPresets();
+            foreach (CustomBuildOptions preset in presets)
+            {
+                if (!GetIncludeInBatchValueFromEditorPrefs(preset.name))
+                {
+                    continue;
+                }
+                
+                CustomBuildOptions buildPreset = preset;
+                buildPreset.buildPath = GetPresetBuildPathValueFromEditorPrefs(preset.name);
+                Build(buildPreset);
+            }
+            
+            Debug.Log($"Batch build operation completed: {DateTime.Now}");
+        }
+        
+        private void Build(CustomBuildOptions options)
+        {
+            Debug.Log($"Building preset {options.name}...");
+            
+            if (options.preprocessBuild)
             {
                 PreProcess();
             }
 
-            BuildTarget buildTarget = (BuildTarget)platform;
+            BuildTarget buildTarget = (BuildTarget)options.platform;
             BuildTargetGroup buildTargetGroup = BuildTargetGroup.Standalone;
-            string targetPath = Path.Combine(Application.dataPath, "../") + $"/{buildPath}/{executableName}.exe";
+            string targetPath = Path.Combine(Application.dataPath, "../") + $"/{options.buildPath}/{options.executableName}.exe";
             string fullBuildPath = Path.GetFullPath(targetPath);
             string buildDirectory = Path.GetDirectoryName(fullBuildPath);
-
+        
             if (!Directory.Exists(buildDirectory))
             {
                 Directory.CreateDirectory(buildDirectory);
@@ -35,14 +55,14 @@ namespace Summoner.Editor.CustomBuildUtilities
                 foreach (DirectoryInfo dir in directoryInfo.GetDirectories())
                     dir.Delete(true);
             }
-
+        
             BuildOptions buildOptions = 0;
             
-            if (developmentBuild) buildOptions |= BuildOptions.Development;
-            if (autoconnectProfiler) buildOptions |= BuildOptions.ConnectWithProfiler;
-            if (deepProfilingSupport) buildOptions |= BuildOptions.EnableDeepProfilingSupport;
-            if (scriptDebugging) buildOptions |= BuildOptions.AllowDebugging;
-            switch (compressionMethod)
+            if (options.developmentBuild) buildOptions |= BuildOptions.Development;
+            if (options.autoconnectProfiler) buildOptions |= BuildOptions.ConnectWithProfiler;
+            if (options.deepProfilingSupport) buildOptions |= BuildOptions.EnableDeepProfilingSupport;
+            if (options.scriptDebugging) buildOptions |= BuildOptions.AllowDebugging;
+            switch (options.compressionMethod)
             {
                 case CompressionMethod.Default:
                     break;
@@ -56,7 +76,7 @@ namespace Summoner.Editor.CustomBuildUtilities
                     throw new ArgumentOutOfRangeException();
             }
             
-            switch (afterBuild)
+            switch (options.afterBuild)
             {
                 case AfterBuild.Nothing:
                     break;
@@ -73,13 +93,13 @@ namespace Summoner.Editor.CustomBuildUtilities
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            string[] combinedScriptingDefines = new string[extraScriptingDefines.Count + forcedScriptingDefines.Length];
-            for (int i = 0; i < forcedScriptingDefines.Length; i++)
-                combinedScriptingDefines[i] = forcedScriptingDefines[i];
-            for (int i = 0; i < extraScriptingDefines.Count; i++)
-                combinedScriptingDefines[i + forcedScriptingDefines.Length] = extraScriptingDefines[i];
-
+        
+            string[] combinedScriptingDefines = new string[options.extraScriptingDefines.Count + options.ForcedScriptingDefines.Length];
+            for (int i = 0; i < options.ForcedScriptingDefines.Length; i++)
+                combinedScriptingDefines[i] = options.ForcedScriptingDefines[i];
+            for (int i = 0; i < options.extraScriptingDefines.Count; i++)
+                combinedScriptingDefines[i + options.ForcedScriptingDefines.Length] = options.extraScriptingDefines[i];
+        
             BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions()
             {
                 scenes = (from scene in EditorBuildSettings.scenes where scene.enabled select scene.path).ToArray(),
@@ -92,7 +112,7 @@ namespace Summoner.Editor.CustomBuildUtilities
             
             BuildReport buildReport = BuildPipeline.BuildPlayer(buildPlayerOptions);
             
-            Debug.Log($"Build completed: {fullBuildPath}, {DateTime.Now}");
+            Debug.Log($"Build completed: {buildReport.summary.result}, {fullBuildPath}, {DateTime.Now}");
         }
     }
 }

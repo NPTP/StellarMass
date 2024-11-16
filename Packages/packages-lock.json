@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "f814171e01e4f0ab3975c1b7cae137e012df454c"
+      "hash": "260ea933833ca09021fb41fc1eea3ed17b265226"
     },
     "com.unity.2d.animation": {
       "version": "9.1.0",
@@ -123,13 +123,6 @@
         "com.unity.mathematics": "1.2.1",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.collab-proxy": {
-      "version": "2.3.1",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.collections": {

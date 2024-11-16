@@ -1,7 +1,7 @@
 {
-    "buildPresetName": "Default",
-    "buildPath": "Builds/11-14",
-    "executableName": "Stellar Mass",
+    "name": "Default",
+    "buildPath": "Builds/Default",
+    "executableName": "StellarMass",
     "platform": 19,
     "developmentBuild": false,
     "autoconnectProfiler": false,

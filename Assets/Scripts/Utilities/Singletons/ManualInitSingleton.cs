@@ -19,7 +19,7 @@ namespace Summoner.Utilities.Singletons
     {
         protected static T Instance { get; private set; }
 
-        // There are not to be overridden.
+        // There are not to be overridden, so as to maintain the expected order of operations (no logic before Initialize).
         private void Awake() { }
         private void OnEnable() { }
 

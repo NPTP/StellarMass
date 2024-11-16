@@ -44,7 +44,7 @@ namespace Summoner.Game.GameControl
             GameController.GameState = GameState.PauseMenu;
             menuParent.SetActive(true);
             
-            // NP TODO: create existing pause menu functionality
+            // TODO: create existing pause menu functionality
         }
 
         private void HandleNavigate(InputAction.CallbackContext callbackContext)

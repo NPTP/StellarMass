@@ -3,9 +3,11 @@ using Summoner.Editor.CustomBuildUtilities.Enums;
 
 namespace Summoner.Editor.CustomBuildUtilities
 {
-    internal struct CustomBuildPreset
+    internal struct CustomBuildOptions
     {
-        public string buildPresetName;
+        public const string FILE_EXTENSION = "cbp";
+
+        public string name;
         
         public string buildPath;
         public string executableName;
@@ -21,5 +23,7 @@ namespace Summoner.Editor.CustomBuildUtilities
         public bool preprocessBuild;
         public AfterBuild afterBuild;
         public List<string> extraScriptingDefines;
+
+        public string[] ForcedScriptingDefines => ScriptingDefineHelper.GetPresetScriptingDefines(branch, store);
     }
 }
