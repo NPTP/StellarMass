@@ -2,7 +2,7 @@ using Summoner.Systems.Data;
 using Summoner.Systems.SceneManagement;
 using UnityEngine;
 
-namespace Summoner.Systems.Initialization
+namespace Summoner.Systems.EntryExit
 {
     public class InitializationOptions : DataScriptable
     {

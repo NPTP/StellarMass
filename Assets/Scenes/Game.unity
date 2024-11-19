@@ -2242,13 +2242,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 362978075}
   mainDisplay: {fileID: 979386066}
-  playMusicOnStart: 1
   playAmbienceOnStart: 1
   gamePhases:
   - {fileID: 11400000, guid: 7b56578603bf670499e4679b5770bd97, type: 2}
-  - {fileID: 11400000, guid: 9c10ae35999462346841e9d8084ec577, type: 2}
   - {fileID: 11400000, guid: 022d88553c90fc841bccec406ac92148, type: 2}
   - {fileID: 11400000, guid: 54251a270805ee24ba234589def5f9eb, type: 2}
+  - {fileID: 11400000, guid: 9c10ae35999462346841e9d8084ec577, type: 2}
   startingPhaseIndex: 0
   executeGamePhases: 1
 --- !u!4 &1088639124

@@ -320,7 +320,6 @@ namespace NPTP.InputSystemWrapper
                 if (action == Menu.Navigate.InputAction) return Menu.Navigate;
                 if (action == Menu.Submit.InputAction) return Menu.Submit;
                 if (action == Menu.Cancel.InputAction) return Menu.Cancel;
-                if (action == Menu.Unpause.InputAction) return Menu.Unpause;
             }
             // MARKER.FindActionWrapperIfElse.End
 

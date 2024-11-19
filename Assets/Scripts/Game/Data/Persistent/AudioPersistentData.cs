@@ -6,20 +6,14 @@ namespace Summoner.Game.Data
 {
     public sealed class AudioPersistentData : PersistentDataContainer
     {
-        [Header("Parameters")]
-        
-        [SerializeField] [ParamRef]
-        private string paramReference;
-        public string ParamReference => paramReference;
-
-        [Header("Music")]
-        
-        [SerializeField] private EventReference music;
-        public EventReference Music => music;
-
         [Header("SFX")]
         
         [SerializeField] private EventReference ambience;
         public EventReference Ambience => ambience;
+        
+        [Header("SFX/Menu")]
+
+        [SerializeField] private EventReference select;
+        public EventReference Select => select;
     }
 }

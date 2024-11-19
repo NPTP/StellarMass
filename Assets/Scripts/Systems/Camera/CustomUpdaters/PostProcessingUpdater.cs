@@ -5,13 +5,13 @@ using UnityEngine.Rendering.PostProcessing;
 
 namespace Summoner.Systems.Camera.CustomUpdaters
 {
-    public class PostProcessingUpdater : CustomUpdater
+    public sealed class PostProcessingUpdater : CustomUpdater
     {
         [SerializeField] private PostProcessVolume volume;
         
         private BloomSettings bloomSettings;
 
-        public override void Initialize()
+        protected sealed override void Initialize()
         {
             bloomSettings = new BloomSettings(volume.profile);
         }

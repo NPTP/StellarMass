@@ -1,70 +1,121 @@
 using NPTP.InputSystemWrapper.Enums;
+using Summoner.Systems.Data.Persistent;
+using Summoner.Systems.EntryExit;
+using Summoner.Systems.TimeControl;
+using Summoner.Utilities;
+using Summoner.Utilities.Extensions;
+using Summoner.Utilities.FMODUtilities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Input = NPTP.InputSystemWrapper.Input;
 
 namespace Summoner.Game.GameControl
 {
-    public class PauseMenu : MonoBehaviour
+    public class PauseMenu : MonoBehaviour, ITimescaleChanger
     {
         [SerializeField] private GameObject menuParent;
         [SerializeField] private Transform arrowTransform;
-        [SerializeField] private Transform resumeTransform;
-        [SerializeField] private Transform exitTransform;
+        [SerializeField] private PauseMenuItem resume;
+        [SerializeField] private PauseMenuItem exit;
+
+        private PauseMenuItem currentSelected;
         
-        private void Start()
+        private void Awake()
         {
-            Input.Gameplay.Pause.OnEvent += HandlePause;
-            Input.Menu.Navigate.OnEvent += HandleNavigate;
-            Input.Menu.Submit.OnEvent += HandleSubmit;
-            Input.Menu.Unpause.OnEvent += HandleUnpause;
+            currentSelected = resume;
+            
+            Input.Gameplay.Pause.OnEvent += HandlePauseAction;
+            Input.Menu.Navigate.OnEvent += HandleNavigateAction;
+            Input.Menu.Submit.OnEvent += HandleSubmitAction;
+            Input.Menu.Cancel.OnEvent += HandleCancelAction;
         }
         
         private void OnDestroy()
         {
-            Input.Gameplay.Pause.OnEvent -= HandlePause;
-            Input.Menu.Navigate.OnEvent -= HandleNavigate;
-            Input.Menu.Submit.OnEvent -= HandleSubmit;
-            Input.Menu.Unpause.OnEvent -= HandleUnpause;
+            Input.Gameplay.Pause.OnEvent -= HandlePauseAction;
+            Input.Menu.Navigate.OnEvent -= HandleNavigateAction;
+            Input.Menu.Submit.OnEvent -= HandleSubmitAction;
+            Input.Menu.Cancel.OnEvent -= HandleCancelAction;
         }
 
-        private void HandlePause(InputAction.CallbackContext callbackContext)
+        private void OpenPauseMenu()
         {
-            if (!callbackContext.started)
-            {
-                return;
-            }
-            
-            if (GameController.GameState != GameState.Gameplay && GameController.GameState != GameState.Cutscene)
-            {
-                return;
-            }
-
+            TimeScaleController.RequestTimeScaleChange(this, 0);
+            GameState.InPause = true;
             Input.Context = InputContext.Menu;
-            GameController.GameState = GameState.PauseMenu;
             menuParent.SetActive(true);
-            
-            // TODO: create existing pause menu functionality
+            Select(resume);
         }
 
-        private void HandleNavigate(InputAction.CallbackContext callbackContext)
+        private void ClosePauseMenu()
         {
+            TimeScaleController.ResetTimeScaleChanger(this);
+            menuParent.SetActive(false);
+            GameState.InPause = false;
         }
 
-        private void HandleSubmit(InputAction.CallbackContext callbackContext)
+        private void HandlePauseAction(InputAction.CallbackContext callbackContext)
         {
+            if (callbackContext.started && GameState.CanPause)
+            {
+                OpenPauseMenu();
+            }
         }
 
-        private void HandleUnpause(InputAction.CallbackContext callbackContext)
+        private void HandleNavigateAction(InputAction.CallbackContext callbackContext)
         {
-            if (!callbackContext.started || GameController.GameState != GameState.PauseMenu)
+            if (!callbackContext.started || currentSelected == null)
             {
                 return;
             }
 
-            // Input.CurrentContext = InputContext.Gameplay;
-            GameController.ReturnToPreviousGameState();
-            menuParent.SetActive(false);
+            Vector2 direction = callbackContext.ReadValue<Vector2>();
+            switch (direction.ToDigitalDirection())
+            {
+                case Direction.Up:
+                    Select(currentSelected.Up);
+                    break;
+                case Direction.Down:
+                    Select(currentSelected.Down);
+                    break;
+            }
+        }
+
+        private void HandleSubmitAction(InputAction.CallbackContext callbackContext)
+        {
+            if (!GameState.InPause || currentSelected == null)
+            {
+                return;
+            }
+
+            if (currentSelected == resume)
+            {
+                ClosePauseMenu();
+            }
+            else if (currentSelected == exit)
+            {
+                Exit.QuitApplication();
+            }
+        }
+
+        private void HandleCancelAction(InputAction.CallbackContext callbackContext)
+        {
+            if (callbackContext.started && GameState.CanUnpause)
+            {
+                ClosePauseMenu();
+            }
+        }
+
+        private void Select(PauseMenuItem pauseMenuItem)
+        {
+            if (pauseMenuItem == null)
+            {
+                return;
+            }
+            
+            currentSelected = pauseMenuItem;
+            arrowTransform.position = pauseMenuItem.ArrowPositionTransform.position;
+            PD.Audio.Select.PlayOneShot();
         }
     }
 }

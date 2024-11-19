@@ -2,7 +2,7 @@ using System.Collections;
 using Summoner.Systems.AudioSystem;
 using Summoner.Systems.Camera;
 using Summoner.Systems.Coroutines;
-using Summoner.Systems.ReferenceTable;
+using Summoner.Systems.MonoReferences;
 using Summoner.Systems.SaveAndLoad;
 using Summoner.Systems.SceneManagement;
 using Summoner.Utilities.Attributes;
@@ -15,7 +15,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-namespace Summoner.Systems.Initialization
+namespace Summoner.Systems.EntryExit
 {
     public class GameEntryPoint : MonoBehaviour
     { 

@@ -10,12 +10,21 @@ namespace Summoner.Game.GameControl.Phases
     {
         protected override IEnumerator Execution(GameController gameController)
         {
+            GameState.OnGameStateChanged += HandleGameStateChanged;
+            GameState.InGameplay = true;
             Input.Context = InputContext.Gameplay;
             
             while (true)
             {
                 yield return null;
             }
+            
+            GameState.OnGameStateChanged -= HandleGameStateChanged;
+        }
+
+        private void HandleGameStateChanged()
+        {
+            if (GameState.InGameplay) Input.Context = InputContext.Gameplay;
         }
     }
 }

@@ -1,11 +1,11 @@
 using Summoner.Utilities.Extensions;
-using Summoner.Systems.ReferenceTable;
+using Summoner.Systems.MonoReferences;
 using Summoner.Utilities.Attributes;
 using UnityEngine;
 
 namespace Summoner.Game.ScreenLoop
 {
-    public class LoopBoundingBox : ReferenceTableMonoBehaviour
+    public class LoopBoundingBox : ReferenceTableMonoBehaviour<LoopBoundingBox>
     {
         private const float BUFFER_SPACING = 0f;
         private const int X_INDEX = 0;

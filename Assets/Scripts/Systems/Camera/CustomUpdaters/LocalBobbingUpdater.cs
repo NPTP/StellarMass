@@ -14,7 +14,7 @@ namespace Summoner.Systems.Camera.CustomUpdaters
 
         protected override void Update()
         {
-            float time = Time.time;
+            float time = Time.unscaledTime;
             cameraTransform.localPosition = new Vector3(
                 PersistentData.Camera.HorSinAmp * Mathf.Sin(PersistentData.Camera.HorSinFreq * time),
                 PersistentData.Camera.VertSinAmp * Mathf.Sin(PersistentData.Camera.VertSinFreq * time), 0);

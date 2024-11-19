@@ -16,7 +16,6 @@ namespace NPTP.InputSystemWrapper.Generated.Actions
         public ValueActionWrapper<Vector2> Navigate { get; }
         public ActionWrapper Submit { get; }
         public ActionWrapper Cancel { get; }
-        public ActionWrapper Unpause { get; }
         
         private bool enabled;
         
@@ -27,7 +26,6 @@ namespace NPTP.InputSystemWrapper.Generated.Actions
             Navigate = new (ActionMap.FindAction("Navigate", throwIfNotFound: true));
             Submit = new (ActionMap.FindAction("Submit", throwIfNotFound: true));
             Cancel = new (ActionMap.FindAction("Cancel", throwIfNotFound: true));
-            Unpause = new (ActionMap.FindAction("Unpause", throwIfNotFound: true));
         }
         
         internal void EnableAndRegisterCallbacks()
@@ -43,7 +41,6 @@ namespace NPTP.InputSystemWrapper.Generated.Actions
             Navigate.RegisterCallbacks();
             Submit.RegisterCallbacks();
             Cancel.RegisterCallbacks();
-            Unpause.RegisterCallbacks();
         }
         
         internal void DisableAndUnregisterCallbacks()
@@ -59,7 +56,6 @@ namespace NPTP.InputSystemWrapper.Generated.Actions
             Navigate.UnregisterCallbacks();
             Submit.UnregisterCallbacks();
             Cancel.UnregisterCallbacks();
-            Unpause.UnregisterCallbacks();
         }
     }
 }

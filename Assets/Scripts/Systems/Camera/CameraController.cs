@@ -27,7 +27,10 @@ namespace Summoner.Systems.Camera
             fmodStudioListener.SetField("attenuationObject", go);
         }
 
-        public void Enable<TCustomUpdater>(bool enable) where TCustomUpdater : CustomUpdater
+        public static void Enable<TCustomUpdater>(bool enable) where TCustomUpdater : CustomUpdater =>
+            Instance.EnablePrivate<TCustomUpdater>(enable);
+
+        private void EnablePrivate<TCustomUpdater>(bool enable) where TCustomUpdater : CustomUpdater
         {
             foreach (CustomUpdater customUpdater in customUpdaters)
             {

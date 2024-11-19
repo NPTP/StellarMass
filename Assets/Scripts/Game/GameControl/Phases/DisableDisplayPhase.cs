@@ -8,7 +8,7 @@ namespace Summoner.Game.GameControl.Phases
     {
         protected override IEnumerator Execution(GameController gameController)
         {
-            GameController.GameState = GameState.Cutscene;
+            GameState.InCutscene = true;
             gameController.MainDisplay.TurnOff();
             yield break;
         }

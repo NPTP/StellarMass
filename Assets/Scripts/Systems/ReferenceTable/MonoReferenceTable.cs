@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Summoner.Systems.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace Summoner.Systems.ReferenceTable
+namespace Summoner.Systems.MonoReferences
 {
     /// <summary>
     /// Static access to currently loaded MonoBehaviours with safe TryGet methods.

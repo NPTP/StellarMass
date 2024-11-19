@@ -7,7 +7,7 @@ using Input = NPTP.InputSystemWrapper.Input;
 using Random = UnityEngine.Random;
 using Summoner.Game.ScreenLoop;
 using Summoner.Systems.Data.Persistent;
-using Summoner.Systems.ReferenceTable;
+using Summoner.Systems.MonoReferences;
 using Summoner.Utilities.Attributes;
 
 namespace Summoner.Game.Ship
@@ -90,6 +90,7 @@ namespace Summoner.Game.Ship
 
             if (Time.time - lastShotTime >= PersistentData.Player.ShootCooldown)
             {
+                // TODO: Have a bullet parent
                 Instantiate(bulletPrefab, transform.position, transform.rotation);
                 lastShotTime = Time.time;
             }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Summoner.Systems.Initialization
+namespace Summoner.Systems.EntryExit
 {
     public static class RuntimeInitializer
     {

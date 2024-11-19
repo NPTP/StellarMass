@@ -1,5 +1,7 @@
 using System.Collections;
 using Summoner.Systems.Animation;
+using Summoner.Systems.Camera;
+using Summoner.Systems.Camera.CustomUpdaters;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Input = NPTP.InputSystemWrapper.Input;
@@ -17,6 +19,8 @@ namespace Summoner.Game.GameControl.Phases
             AnimatorController animatorController = gameController.MainDisplay.AnimatorController;
             animatorController.OnAnimationCompleted += handleAnimationCompleted;
             animatorController.Play(startupAnimation);
+            
+            CameraController.Enable<LocalBobbingUpdater>(true);
 
             bool inputReceived = false;
             yield return new WaitUntil(() => inputReceived);

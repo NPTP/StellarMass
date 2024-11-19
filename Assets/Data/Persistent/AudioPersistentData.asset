@@ -15,15 +15,22 @@ MonoBehaviour:
   paramReference: 
   music:
     Guid:
-      Data1: -1708793475
-      Data2: 1313996326
-      Data3: -518177902
-      Data4: 1931282281
-    Path: event:/Music/TheDeep
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
   ambience:
     Guid:
       Data1: -1585532244
       Data2: 1207429159
       Data3: -1598382939
       Data4: 217927903
-    Path: event:/SFX/RoomTone01
+    Path: event:/SFX/Ambience/Room Tone
+  select:
+    Guid:
+      Data1: 1947707978
+      Data2: 1192645631
+      Data3: 859813033
+      Data4: 59545710
+    Path: event:/SFX/Menu/Select

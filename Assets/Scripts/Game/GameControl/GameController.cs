@@ -1,11 +1,13 @@
+using System;
 using UnityEngine;
 using Summoner.Game.GameControl.Phases;
 using Summoner.Systems.AudioSystem;
 using Summoner.Systems.Data.Persistent;
+using Summoner.Systems.MonoReferences;
 
 namespace Summoner.Game.GameControl
 {
-    public class GameController : MonoBehaviour
+    public class GameController : ReferenceTableMonoBehaviour<GameController>
     {
         [SerializeField] private GameObject player;
         public GameObject Player => player;
@@ -13,7 +15,6 @@ namespace Summoner.Game.GameControl
         public MainDisplay MainDisplay => mainDisplay;
 
         [Space]
-        [SerializeField] private bool playMusicOnStart;
         [SerializeField] private bool playAmbienceOnStart;
 
         [Space]
@@ -23,22 +24,9 @@ namespace Summoner.Game.GameControl
 
         private static PersistentAudio music;
         private static PersistentAudio ambience;
-        
-        private static GameState previousGameState = GameState.Undefined;
-        private static GameState gameState = GameState.Undefined;
-        public static GameState GameState
-        {
-            get => gameState;
-            set
-            {
-                previousGameState = gameState;
-                gameState = value;
-            }
-        }
 
         private void Start()
         {
-            if (playMusicOnStart) music = PersistentAudioPlayer.PlayPersistentAudio(PersistentData.Audio.Music);
             if (playAmbienceOnStart) ambience = PersistentAudioPlayer.PlayPersistentAudio(PersistentData.Audio.Ambience);
             
             ExecuteGamePhases(startingPhaseIndex);
@@ -60,11 +48,6 @@ namespace Summoner.Game.GameControl
                 phase.OnCompleted -= handlePhaseCompleted;
                 ExecuteGamePhases(index + 1);
             }
-        }
-
-        public static void ReturnToPreviousGameState()
-        {
-            GameState = previousGameState;
         }
     }
 }

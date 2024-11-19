@@ -302,12 +302,12 @@
             "actions": [
                 {
                     "name": "Navigate",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "33d7d08d-c733-4d29-8a19-3414d8312c5f",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Submit",
@@ -322,15 +322,6 @@
                     "name": "Cancel",
                     "type": "Button",
                     "id": "7593878a-c79e-4e90-b212-30bf9ac46ddb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Unpause",
-                    "type": "Button",
-                    "id": "b9ae8a12-3105-47d7-9139-14342842b877",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -566,28 +557,6 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Submit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "ef7a01a0-3620-4c67-8237-b0570b2ae681",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "Unpause",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "0c152160-016b-4129-b6c1-7671a00cb3db",
-                    "path": "<Gamepad>/start",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Unpause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
