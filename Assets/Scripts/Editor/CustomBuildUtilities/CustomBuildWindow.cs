@@ -11,6 +11,7 @@ namespace Summoner.Editor.CustomBuildUtilities
 {
     public partial class CustomBuildWindow : EditorWindow
     {
+        private const string KEYBOARD_SHORTCUT = "%&B";
         private const string GAME_TITLE_COLOR = "#FF3131";
         private const string BUILD_BUTTON_TEXT = "BUILD";
         private const string BATCH_BUILD_BUTTON_TEXT = "Batch BUILD";
@@ -28,7 +29,7 @@ namespace Summoner.Editor.CustomBuildUtilities
         private bool batchBuildPresets;
         private CustomBuildOptions currentOptions;
 
-        [MenuItem(EditorToolNames.CUSTOM_BUILD_WINDOW, isValidateFunction: false, priority: 9999)]
+        [MenuItem(EditorToolNames.CUSTOM_BUILD_WINDOW + " " + KEYBOARD_SHORTCUT, isValidateFunction: false, priority: 9999)]
         public static void ShowWindow()
         { 
             if (GetWindow(typeof(CustomBuildWindow)) is CustomBuildWindow customBuildWindow)
@@ -464,7 +465,7 @@ namespace Summoner.Editor.CustomBuildUtilities
             EditorPrefs.SetString(GetBatchDetailsEditorPrefsKey(presetName, "presetBuildPath"), presetBuildPath);
         }
         
-        private string GetEditorPrefsKey(string fieldName) => $"{nameof(CustomBuildWindow)}_{fieldName}";
+        private string GetEditorPrefsKey(string fieldName) => $"{Application.productName}_{nameof(CustomBuildWindow)}_{fieldName}";
         
         private static string ToInspectorFieldName(string s) => s.SpaceBetweenCapitalizedWords().CapitalizeFirst();
     }

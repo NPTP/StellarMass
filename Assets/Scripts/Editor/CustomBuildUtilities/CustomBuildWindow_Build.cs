@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Summoner.Editor.CustomBuildUtilities.Enums;
@@ -12,6 +13,7 @@ namespace Summoner.Editor.CustomBuildUtilities
     {
         private void BatchBuild()
         {
+            List<CustomBuildOptions> toBuild = new();
             CustomBuildOptions[] presets = LoadAllPresets();
             foreach (CustomBuildOptions preset in presets)
             {
@@ -22,7 +24,20 @@ namespace Summoner.Editor.CustomBuildUtilities
                 
                 CustomBuildOptions buildPreset = preset;
                 buildPreset.buildPath = GetPresetBuildPathValueFromEditorPrefs(preset.name);
-                Build(buildPreset);
+                toBuild.Add(buildPreset);
+            }
+
+            if (toBuild.Count == 0)
+            {
+                Debug.Log("Cannot batch build: no presets selected.");
+                return;
+            }
+
+            Debug.Log("Batch build starting...");
+
+            foreach (CustomBuildOptions customBuildOptions in toBuild)
+            {
+                Build(customBuildOptions);
             }
             
             Debug.Log($"Batch build operation completed: {DateTime.Now}");
