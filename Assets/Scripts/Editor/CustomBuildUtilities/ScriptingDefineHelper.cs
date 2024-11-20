@@ -16,7 +16,7 @@ namespace Summoner.Editor.CustomBuildUtilities
         private static string[] PlaytestScriptingDefines => new[] { "SUMMONER_PLAYTEST" };
         private static string[] ReleaseScriptingDefines => new[] { "SUMMONER_RELEASE" };
         
-        private static string[] SteamScriptingDefines => new[] { "STEAMWORKS" };
+        private static string[] SteamScriptingDefines => new[] { "STEAM" };
         private static string[] GOGScriptingDefines => new[] { "GOG" };
         private static string[] EpicScriptingDefines => new[] { "EPIC" };
         
