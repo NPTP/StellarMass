@@ -2,8 +2,6 @@ using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
-#else
-using UnityEngine;
 #endif
 
 namespace Summoner.Utilities
@@ -45,8 +43,8 @@ namespace Summoner.Utilities
                 }
             }
 #else
-            Application.quitting -= callback;
-            Application.quitting += callback;
+            UnityEngine.Application.quitting -= callback;
+            UnityEngine.Application.quitting += callback;
 #endif
         }
     }
