@@ -5,6 +5,7 @@ using Summoner.Systems.Coroutines;
 using Summoner.Systems.MonoReferences;
 using Summoner.Systems.SaveAndLoad;
 using Summoner.Systems.SceneManagement;
+using Summoner.Systems.TimeControl;
 using Summoner.Utilities.Attributes;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -39,6 +40,7 @@ namespace Summoner.Systems.EntryExit
             Audio.Initialize(initializationOptions);
             Input.Initialize();
             MonoReferenceTable.Initialize();
+            TimeScale.Initialize();
             
             cameraController.Initialize();
             coroutineOwner.Initialize();

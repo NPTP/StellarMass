@@ -40,7 +40,7 @@ namespace Summoner.Game.GameControl
 
         private void OpenPauseMenu()
         {
-            TimeScaleController.RequestTimeScaleChange(this, 0);
+            TimeScale.Change(this, 0);
             GameState.InPause = true;
             Input.Context = InputContext.Menu;
             menuParent.SetActive(true);
@@ -49,7 +49,7 @@ namespace Summoner.Game.GameControl
 
         private void ClosePauseMenu()
         {
-            TimeScaleController.ResetTimeScaleChanger(this);
+            TimeScale.Reset(this);
             menuParent.SetActive(false);
             GameState.InPause = false;
         }
