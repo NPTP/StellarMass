@@ -19,7 +19,7 @@ using UnityEditor.SceneManagement;
 
 namespace Summoner.Systems.EntryExit
 {
-    public class GameEntryPoint : MonoBehaviour
+    public class Entry : MonoBehaviour
     { 
         private const int BOOTSTRAP_SCENE_BUILD_INDEX = 0;
         
