@@ -3,6 +3,7 @@ using Summoner.Systems.AudioSystem;
 using Summoner.Systems.Camera;
 using Summoner.Systems.Coroutines;
 using Summoner.Systems.MonoReferences;
+using Summoner.Systems.PlayerLoop;
 using Summoner.Systems.SaveAndLoad;
 using Summoner.Systems.SceneManagement;
 using Summoner.Systems.TimeControl;
@@ -20,6 +21,8 @@ namespace Summoner.Systems.EntryExit
 {
     public class GameEntryPoint : MonoBehaviour
     { 
+        private const int BOOTSTRAP_SCENE_BUILD_INDEX = 0;
+        
         [ExpandableScriptable][SerializeField]
         private InitializationOptions initializationOptions;
 
@@ -29,7 +32,8 @@ namespace Summoner.Systems.EntryExit
         
         /// <summary>
         /// This method executes as the entry point of the entire game (so long as no scripts have their own Awake
-        /// implementation in the bootstrap scene). This will run before ANY other developer code for this game.
+        /// implementation in the bootstrap scene). This will run before ANY other developer code for this game, except
+        /// perhaps for some static constructors initializing members.
         /// Afterwards the first scene specified in the persistent game data will be loaded.
         /// </summary>
         private void ExecuteOnAwake()
@@ -41,6 +45,7 @@ namespace Summoner.Systems.EntryExit
             Input.Initialize();
             MonoReferenceTable.Initialize();
             TimeScale.Initialize();
+            PlayerLoopUtility.Initialize();
             
             cameraController.Initialize();
             coroutineOwner.Initialize();
@@ -50,7 +55,6 @@ namespace Summoner.Systems.EntryExit
         
 #if UNITY_EDITOR
         private const string EDITOR_OPEN_SCENE_KEY = "EditorOpenScene";
-        private const int BOOTSTRAP_SCENE_BUILD_INDEX = 0;
         private const string BOOTSTRAP_SCENE_ASSET_PATH = "Assets/Scenes/Bootstrap.unity";
         
         [InitializeOnLoadMethod]

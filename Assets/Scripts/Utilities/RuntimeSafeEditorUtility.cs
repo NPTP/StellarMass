@@ -38,7 +38,11 @@ namespace Summoner.Utilities
             EditorApplication.playModeStateChanged += handlePlayModeStateChanged;
             void handlePlayModeStateChanged(PlayModeStateChange playModeStateChange)
             {
-                if (playModeStateChange is PlayModeStateChange.ExitingPlayMode) callback();
+                if (playModeStateChange is PlayModeStateChange.ExitingPlayMode)
+                {
+                    EditorApplication.playModeStateChanged -= handlePlayModeStateChanged;
+                    callback?.Invoke();
+                }
             }
 #else
             Application.quitting -= callback;
