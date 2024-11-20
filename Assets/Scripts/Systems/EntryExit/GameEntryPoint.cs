@@ -48,6 +48,7 @@ namespace Summoner.Systems.EntryExit
         
 #if UNITY_EDITOR
         private const string EDITOR_OPEN_SCENE_KEY = "EditorOpenScene";
+        private const int BOOTSTRAP_SCENE_BUILD_INDEX = 0;
         private const string BOOTSTRAP_SCENE_ASSET_PATH = "Assets/Scenes/Bootstrap.unity";
         
         [InitializeOnLoadMethod]
@@ -60,9 +61,20 @@ namespace Summoner.Systems.EntryExit
             {
                 if (playModeStateChange != PlayModeStateChange.ExitingEditMode)
                     return;
+
+                // Get first loaded non-bootstrap scene.
+                int openSceneBuildIndex = BOOTSTRAP_SCENE_BUILD_INDEX + 1;
+                for (int i = 0; i < SceneManager.sceneCount; i++)
+                {
+                    Scene scene = SceneManager.GetSceneAt(i);
+                    if (scene.buildIndex != BOOTSTRAP_SCENE_BUILD_INDEX && scene.isLoaded)
+                    {
+                        openSceneBuildIndex = scene.buildIndex;
+                        break;
+                    }
+                }
                 
-                int openSceneBuildIndex = SceneManager.GetActiveScene().buildIndex;
-                EditorPrefs.SetInt(EDITOR_OPEN_SCENE_KEY, openSceneBuildIndex == 0 ? 1 : openSceneBuildIndex);
+                EditorPrefs.SetInt(EDITOR_OPEN_SCENE_KEY, openSceneBuildIndex);
                 EditorSceneManager.playModeStartScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(BOOTSTRAP_SCENE_ASSET_PATH);
             }
         }
@@ -79,12 +91,14 @@ namespace Summoner.Systems.EntryExit
             yield return null;
             
 #if UNITY_EDITOR
-            // Disallow recursive loading of the bootstrapper from the bootstrapper itself.
-            int firstSceneBuildIndex = Mathf.Max(1, EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex));
+            int firstSceneBuildIndex = EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex);
 #else
             int firstSceneBuildIndex = initializationOptions.FirstScene.BuildIndex;
 #endif
             
+            // Disallow recursive loading of the bootstrapper from the bootstrapper itself.
+            if (firstSceneBuildIndex == BOOTSTRAP_SCENE_BUILD_INDEX) firstSceneBuildIndex++;
+
             SceneLoader.LoadScene(firstSceneBuildIndex, instant: true);
             
             Destroy(gameObject);
