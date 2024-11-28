@@ -155,6 +155,7 @@ MonoBehaviour:
   initializationOptions: {fileID: 11400000, guid: 935a2c4fc3d6b714eb4030459e7207e1, type: 2}
   cameraController: {fileID: 462582622}
   coroutineOwner: {fileID: 1620426077}
+  loadFirstScene: 1
 --- !u!4 &212491324
 Transform:
   m_ObjectHideFlags: 0

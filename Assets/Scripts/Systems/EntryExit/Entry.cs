@@ -29,6 +29,9 @@ namespace Summoner.Systems.EntryExit
         [Header("Manual Initializations")]
         [SerializeField] private CameraController cameraController;
         [SerializeField] private CoroutineOwner coroutineOwner;
+
+        [Header("Debug")]
+        [SerializeField] private bool loadFirstScene = true;
         
         /// <summary>
         /// This method executes as the entry point of the entire game (so long as no scripts have their own Awake
@@ -95,18 +98,20 @@ namespace Summoner.Systems.EntryExit
         {
             // Wait 1 frame for systems that require a frame to update/set up.
             yield return null;
-            
-#if UNITY_EDITOR
-            int firstSceneBuildIndex = EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex);
-#else
-            int firstSceneBuildIndex = initializationOptions.FirstScene.BuildIndex;
-#endif
-            
-            // Disallow recursive loading of the bootstrapper from the bootstrapper itself.
-            if (firstSceneBuildIndex == BOOTSTRAP_SCENE_BUILD_INDEX) firstSceneBuildIndex++;
 
-            SceneLoader.LoadScene(firstSceneBuildIndex, instant: true);
-            
+            if (loadFirstScene)
+            {
+#if UNITY_EDITOR
+                int firstSceneBuildIndex = EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex);
+#else
+                int firstSceneBuildIndex = initializationOptions.FirstScene.BuildIndex;
+#endif
+                // Disallow recursive loading of the bootstrapper from the bootstrapper itself.
+                if (firstSceneBuildIndex == BOOTSTRAP_SCENE_BUILD_INDEX) firstSceneBuildIndex++;
+
+                SceneLoader.LoadScene(firstSceneBuildIndex, instant: true);
+            }
+
             Destroy(gameObject);
             Resources.UnloadUnusedAssets();
         }
