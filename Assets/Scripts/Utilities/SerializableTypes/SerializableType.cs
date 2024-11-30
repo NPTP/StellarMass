@@ -13,5 +13,5 @@ namespace Summoner.Utilities.SerializableTypes
     }
     
     [Serializable]
-    public class SerializableType<T> : SerializableType { }
+    public class SerializableType<TBaseType> : SerializableType { }
 }
