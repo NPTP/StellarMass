@@ -6,10 +6,46 @@ namespace Summoner.Utilities
 {
     public static class ReflectionUtility
     {
+        public static Type GetGenericArgumentForType(object obj)
+        {
+            if (obj == null)
+            {
+                return null;
+            }
+
+            return GetGenericArgument(obj.GetType());
+        }
+        
+        private static Type GetGenericArgument(Type type)
+        {
+            while (type != null)
+            {
+                if (type.IsGenericType)
+                {
+                    Type[] genericArguments = type.GetGenericArguments();
+                    if (genericArguments.Length > 0)
+                    {
+                        return genericArguments[0];
+                    }
+                }
+                
+                type = type.BaseType;
+            }
+            
+            return null;
+        }
+        
         public static T GetField<T>(this object obj, string fieldName, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
-            if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                throw new ArgumentNullException(nameof(fieldName));
+            }
 
             Type type = obj.GetType();
             FieldInfo fieldInfo = type.GetField(fieldName, bindingFlags);
@@ -35,8 +71,15 @@ namespace Summoner.Utilities
         
         public static bool SetField<T>(this object obj, string fieldName, T value, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
         {
-            if (obj == null) throw new ArgumentNullException(nameof(obj));
-            if (string.IsNullOrEmpty(fieldName)) throw new ArgumentNullException(nameof(fieldName));
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
+
+            if (string.IsNullOrEmpty(fieldName))
+            {
+                throw new ArgumentNullException(nameof(fieldName));
+            }
 
             Type type = obj.GetType();
             FieldInfo fieldInfo = type.GetField(fieldName, bindingFlags);

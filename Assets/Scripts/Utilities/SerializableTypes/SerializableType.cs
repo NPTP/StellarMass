@@ -4,12 +4,14 @@ using UnityEngine;
 namespace Summoner.Utilities.SerializableTypes
 {
     [Serializable]
-    public class SerializableType
+    public abstract class SerializableType
     {
-        [SerializeField] private string typeName;
+        [SerializeField] private string assemblyQualifiedName;
 
         private Type runtimeType;
-        
-        public Type Value => runtimeType ??= Type.GetType(typeName);
+        public Type Value => runtimeType ??= Type.GetType(assemblyQualifiedName);
     }
+    
+    [Serializable]
+    public class SerializableType<T> : SerializableType { }
 }
