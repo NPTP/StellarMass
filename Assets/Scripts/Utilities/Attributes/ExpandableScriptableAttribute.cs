@@ -7,7 +7,7 @@ namespace Summoner.Utilities.Attributes
     /// of another object.
     /// </summary>
     [System.AttributeUsage(System.AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-    public class ExpandableScriptable : PropertyAttribute
+    public class ExpandableScriptableAttribute : PropertyAttribute
     {
     }
 }

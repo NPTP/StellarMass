@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace Summoner.Utilities.Attributes.Editor
 {
-    [CustomPropertyDrawer(typeof(ExpandableScriptable))]
+    [CustomPropertyDrawer(typeof(ExpandableScriptableAttribute))]
     public class ExpandableScriptableAttributeDrawer : PropertyDrawer
     {
         private static readonly Color backgroundColor = new Color(0.235f, 0.247f, 0.255f);

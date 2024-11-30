@@ -13,13 +13,14 @@ namespace Summoner.Systems.Data.Persistent
         private static string Address => nameof(PersistentData);
 
         private static bool isLoaded;
+        private static bool isDisabled;
 
         private static PersistentData instance;
         private static PersistentData Instance
         {
             get
             {
-                if (!isLoaded)
+                if (!isLoaded && !isDisabled)
                 {
                     instance = Resources.Load<PersistentData>(Address);
                     isLoaded = true;
@@ -62,6 +63,8 @@ namespace Summoner.Systems.Data.Persistent
             }
             
             instance = null;
+            isLoaded = false;
+            isDisabled = true;
         }
     }
 }

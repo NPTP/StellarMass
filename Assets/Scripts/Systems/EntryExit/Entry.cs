@@ -30,9 +30,6 @@ namespace Summoner.Systems.EntryExit
         [SerializeField] private CameraController cameraController;
         [SerializeField] private CoroutineOwner coroutineOwner;
 
-        [Header("Debug")]
-        [SerializeField] private bool loadFirstScene = true;
-        
         /// <summary>
         /// This method executes as the entry point of the entire game (so long as no scripts have their own Awake
         /// implementation in the bootstrap scene). This will run before ANY other developer code for this game, except
@@ -44,7 +41,7 @@ namespace Summoner.Systems.EntryExit
             Cursor.visible = !initializationOptions.HideCursor;
             
             SaveLoad.Initialize();
-            Audio.Initialize(initializationOptions);
+            Audio.Initialize();
             Input.Initialize();
             MonoReferenceTable.Initialize();
             TimeScale.Initialize();
@@ -99,7 +96,7 @@ namespace Summoner.Systems.EntryExit
             // Wait 1 frame for systems that require a frame to update/set up.
             yield return null;
 
-            if (loadFirstScene)
+            if (initializationOptions.AutoLoadFirstScene)
             {
 #if UNITY_EDITOR
                 int firstSceneBuildIndex = EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex);

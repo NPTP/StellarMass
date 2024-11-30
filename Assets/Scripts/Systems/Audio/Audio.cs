@@ -1,7 +1,7 @@
 using System;
 using FMOD.Studio;
 using Summoner.Game.SaveAndLoad;
-using Summoner.Systems.EntryExit;
+using Summoner.Systems.Data.Persistent;
 using Summoner.Systems.SaveAndLoad;
 using UnityEngine;
 
@@ -15,14 +15,14 @@ namespace Summoner.Systems.AudioSystem
         
         private static bool initialized;
 
-        public static void Initialize(InitializationOptions initializationOptions)
+        public static void Initialize()
         {
             if (initialized)
             {
                 return;
             }
 
-            InitializeFmodBuses(initializationOptions.MasterBusPath, initializationOptions.MusicBusPath, initializationOptions.SfxBusPath);
+            InitializeFmodBuses(PD.Audio.MasterBusPath, PD.Audio.MusicBusPath, PD.Audio.SfxBusPath);
 
             initialized = true;
         }

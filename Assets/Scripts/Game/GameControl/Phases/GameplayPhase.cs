@@ -18,8 +18,6 @@ namespace Summoner.Game.GameControl.Phases
             {
                 yield return null;
             }
-            
-            GameState.OnGameStateChanged -= HandleGameStateChanged;
         }
 
         private void HandleGameStateChanged()

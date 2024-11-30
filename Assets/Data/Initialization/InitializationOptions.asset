@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068b58abaa4f3814ca22377dfcaf7078, type: 3}
   m_Name: InitializationOptions
   m_EditorClassIdentifier: 
-  hideCursor: 1
+  hideCursor: 0
+  autoLoadFirstScene: 1
   firstScene:
     guid: 980eb1e7a9c1b5f49b9fe0d7c2225711
     buildIndex: 1

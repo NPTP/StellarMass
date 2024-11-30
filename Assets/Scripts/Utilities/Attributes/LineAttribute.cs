@@ -9,6 +9,5 @@ namespace Summoner.Utilities.Attributes
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
     public class LineAttribute : PropertyAttribute
     {
-        public LineAttribute() { }
     }
 }
