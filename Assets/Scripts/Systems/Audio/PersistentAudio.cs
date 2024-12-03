@@ -1,6 +1,7 @@
 using FMOD.Studio;
 using FMODUnity;
 using Summoner.Utilities.FMODUtilities;
+using Summoner.Utilities.FMODUtilities.Enums;
 
 namespace Summoner.Systems.AudioSystem
 {
@@ -16,7 +17,7 @@ namespace Summoner.Systems.AudioSystem
                 return;
             }
 
-            currentEventInstance.StopFadeOut(release: true);
+            currentEventInstance.StopFadeOut(ReleaseOption.Release);
 
             currentEventReference = newEventReference;
             currentEventInstance = newEventReference.CreateInstance();
@@ -35,7 +36,7 @@ namespace Summoner.Systems.AudioSystem
 
         public void Stop()
         {
-            currentEventInstance.StopFadeOut(release: true);
+            currentEventInstance.StopFadeOut(ReleaseOption.Release);
         }
     }
 }

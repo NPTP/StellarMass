@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using FMOD.Studio;
 using FMODUnity;
 using Summoner.Utilities.FMODUtilities;
@@ -6,6 +6,7 @@ using Summoner.Game.SaveAndLoad;
 using Summoner.Systems.SaveAndLoad;
 using Summoner.Systems.SceneManagement;
 using Summoner.Utilities.Attributes;
+using Summoner.Utilities.FMODUtilities.Enums;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -23,9 +24,9 @@ namespace Summoner.Game.Splash
         [Line]
         [SerializeField] private Animator animator;
         [SerializeField] private TextMeshPro tmpText;
-        [SerializeField] private EventReference logoAppearEvent;
+        [SerializeField] private EventReference splashScreenFmodEventRef;
 
-        private EventInstance eventInstance;
+        private EventInstance splashScreenFmodEventInstance;
         private AnimationStateExitBehaviour animationStateExitBehaviour;
 
         private void OnValidate()
@@ -33,18 +34,28 @@ namespace Summoner.Game.Splash
             tmpText.text = titleText;
         }
 
-        private void Awake()
+        private IEnumerator Start()
         {
-            if (SaveLoad.Get<GameSettings>().hasSeenSplashScreen)
+            // Ensure splash screen audio is loaded ahead of time so it syncs to animation.
+            splashScreenFmodEventRef.LoadSampleData();
+            while (!splashScreenFmodEventRef.IsLoaded())
             {
-                Input.OnAnyButtonPress += HandleAnyButtonPress;
+                yield return null;
             }
             
+            // Let player skip with any button press if they've seen the splash screen animation once before.
+            GameSettings gameSettings = SaveLoad.Get<GameSettings>();
+            if (gameSettings.hasSeenSplashScreen)
+                Input.OnAnyButtonPress += HandleAnyButtonPress;
+            else
+                gameSettings.hasSeenSplashScreen = true;
+
             animationStateExitBehaviour = animator.GetBehaviour<AnimationStateExitBehaviour>();
             animationStateExitBehaviour.OnAnimationStateExit += HandleAnimationStateExit;
 
             tmpText.text = titleText;
-            
+
+            splashScreenFmodEventInstance = splashScreenFmodEventRef.PlayOneShot();
             animator.Play(splashScreenAnimation);
         }
 
@@ -52,16 +63,13 @@ namespace Summoner.Game.Splash
         private void HandleAnimationStateExit() => StopAnimationAndLoadNextScene();
         private void StopAnimationAndLoadNextScene()
         {
-            eventInstance.StopImmediate();
+            splashScreenFmodEventInstance.StopImmediate(ReleaseOption.ReleaseAndClearHandle);
+            splashScreenFmodEventRef.UnloadSampleData();
+            
             Input.OnAnyButtonPress -= HandleAnyButtonPress;
             animationStateExitBehaviour.OnAnimationStateExit -= HandleAnimationStateExit;
-            SaveLoad.Get<GameSettings>().hasSeenSplashScreen = true;
+            
             SceneLoader.LoadScene(nextScene);
-        }
-
-        public void PlayLogoAppearSound()
-        {
-            eventInstance = logoAppearEvent.PlayOneShot();
         }
     }
 }

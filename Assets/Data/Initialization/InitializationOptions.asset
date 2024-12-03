@@ -13,10 +13,14 @@ MonoBehaviour:
   m_Name: InitializationOptions
   m_EditorClassIdentifier: 
   hideCursor: 0
+  splashScreenFmodEvent:
+    Guid:
+      Data1: -170758721
+      Data2: 1335026707
+      Data3: -239042118
+      Data4: -2139217581
+    Path: event:/Splash/SummonerSplash
   autoLoadFirstScene: 1
   firstScene:
     guid: 980eb1e7a9c1b5f49b9fe0d7c2225711
     buildIndex: 1
-  masterBusPath: bus:/
-  musicBusPath: bus:/Music
-  sfxBusPath: bus:/SFX

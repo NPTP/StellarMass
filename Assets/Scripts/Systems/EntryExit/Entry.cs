@@ -31,7 +31,7 @@ namespace Summoner.Systems.EntryExit
         [SerializeField] private CoroutineOwner coroutineOwner;
 
         /// <summary>
-        /// This method executes as the entry point of the entire game (so long as no scripts have their own Awake
+        /// This coroutine executes as the entry point of the entire game (so long as no scripts have their own Awake
         /// implementation in the bootstrap scene). This will run before ANY other developer code for this game, except
         /// perhaps for some static constructors initializing members.
         /// Afterwards the first scene specified in the persistent game data will be loaded.
@@ -86,28 +86,26 @@ namespace Summoner.Systems.EntryExit
         }
 #endif
 
-        private void Awake()
+        private void Awake() => StartCoroutine(AwakeRoutine());
+        private IEnumerator AwakeRoutine()
         {
             ExecuteOnAwake();
-        }
-
-        private IEnumerator Start()
-        {
+            
             // Wait 1 frame for systems that require a frame to update/set up.
             yield return null;
-
-            if (initializationOptions.AutoLoadFirstScene)
-            {
+            
 #if UNITY_EDITOR
-                int firstSceneBuildIndex = EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex);
+            int firstSceneBuildIndex = EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex);
 #else
-                int firstSceneBuildIndex = initializationOptions.FirstScene.BuildIndex;
+            int firstSceneBuildIndex = initializationOptions.FirstScene.BuildIndex;
 #endif
-                // Disallow recursive loading of the bootstrapper from the bootstrapper itself.
-                if (firstSceneBuildIndex == BOOTSTRAP_SCENE_BUILD_INDEX) firstSceneBuildIndex++;
+            // Disallow recursive loading of the bootstrapper from the bootstrapper itself.
+            if (firstSceneBuildIndex == BOOTSTRAP_SCENE_BUILD_INDEX) firstSceneBuildIndex++;
 
+#if UNITY_EDITOR
+            if (initializationOptions.LoadFirstSceneInEditor)
+#endif
                 SceneLoader.LoadScene(firstSceneBuildIndex, instant: true);
-            }
 
             Destroy(gameObject);
             Resources.UnloadUnusedAssets();

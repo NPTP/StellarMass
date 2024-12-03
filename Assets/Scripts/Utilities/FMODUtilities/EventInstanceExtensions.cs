@@ -1,6 +1,8 @@
-﻿using FMOD;
+﻿using System;
+using FMOD;
 using FMOD.Studio;
 using FMODUnity;
+using Summoner.Utilities.FMODUtilities.Enums;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
 
@@ -35,16 +37,34 @@ namespace Summoner.Utilities.FMODUtilities
             return eventInstanceGuid == eventReference.Guid;
         }
 
-        public static void StopFadeOut(this EventInstance eventInstance, bool release = false)
+        public static void StopFadeOut(this EventInstance eventInstance, ReleaseOption releaseOption = ReleaseOption.None)
         {
             eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
-            if (release) eventInstance.release();
+            HandleReleaseOption(ref eventInstance, releaseOption);
         }
         
-        public static void StopImmediate(this EventInstance eventInstance, bool release = false)
+        public static void StopImmediate(this EventInstance eventInstance, ReleaseOption releaseOption = ReleaseOption.None)
         {
             eventInstance.stop(STOP_MODE.IMMEDIATE);
-            if (release) eventInstance.release();
+            HandleReleaseOption(ref eventInstance, releaseOption);
+        }
+
+        private static void HandleReleaseOption(ref EventInstance eventInstance, ReleaseOption releaseOption)
+        {
+            switch (releaseOption)
+            {
+                case ReleaseOption.None:
+                    break;
+                case ReleaseOption.Release:
+                    eventInstance.release();
+                    break;
+                case ReleaseOption.ReleaseAndClearHandle:
+                    eventInstance.release();
+                    eventInstance.clearHandle();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(releaseOption), releaseOption, null);
+            }
         }
     }
 }

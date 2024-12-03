@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Summoner.Editor.CustomBuildUtilities.Enums;
-using Summoner.Utilities.Editor;
+using Summoner.Editor.Utilities;
 using Summoner.Utilities.Extensions;
 using UnityEditor;
 using UnityEngine;

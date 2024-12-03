@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{691fa076-199d-48f3-8041-4e98a6476d3e}">
+		<property name="assetPath">
+			<value>GameDev_Summoner_SplashScreen.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>18</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{0c152a16-982c-4b49-92ca-d44844a72583}</destination>
+		</relationship>
+	</object>
+</objects>

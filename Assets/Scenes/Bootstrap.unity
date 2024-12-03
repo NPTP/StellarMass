@@ -155,7 +155,6 @@ MonoBehaviour:
   initializationOptions: {fileID: 11400000, guid: 935a2c4fc3d6b714eb4030459e7207e1, type: 2}
   cameraController: {fileID: 462582622}
   coroutineOwner: {fileID: 1620426077}
-  loadFirstScene: 1
 --- !u!4 &212491324
 Transform:
   m_ObjectHideFlags: 0
@@ -326,6 +325,10 @@ PrefabInstance:
     - target: {fileID: 6404313533899364213, guid: 36aff3ef7ca5b98498a1bd7c67825919, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -36
+      objectReference: {fileID: 0}
+    - target: {fileID: 7963499290916973366, guid: 36aff3ef7ca5b98498a1bd7c67825919, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

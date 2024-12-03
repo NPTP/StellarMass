@@ -48,22 +48,6 @@ namespace Summoner.Utilities.FMODUtilities
             return isOneShot;
         }
         
-        /// <summary>
-        /// This wrapper prevents exceptions from being thrown. We prefer audio code to fail silently! (Pun intended)
-        /// </summary>
-        private static EventDescription GetEventDescription(this EventReference eventReference)
-        {
-            try
-            {
-                return RuntimeManager.GetEventDescription(eventReference.Guid);
-            }
-            catch (Exception e)
-            {
-                UnityEngine.Debug.LogError(e);
-                return new EventDescription();
-            }
-        }
-        
         public static bool IsSameEvent(this EventReference eventReference, EventInstance eventInstance)
         {
             if (!eventInstance.isValid() || eventReference.IsNull) return false;
@@ -78,6 +62,46 @@ namespace Summoner.Utilities.FMODUtilities
         {
             if (otherReference.IsNull || eventReference.IsNull) return false;
             return otherReference.Guid == eventReference.Guid;
+        }
+
+        public static void LoadSampleData(this EventReference eventReference)
+        {
+            EventDescription eventDescription = GetEventDescription(eventReference);
+            eventDescription.loadSampleData();
+        }
+
+        public static void UnloadSampleData(this EventReference eventReference)
+        {
+            EventDescription eventDescription = GetEventDescription(eventReference);
+            eventDescription.unloadSampleData();
+        }
+
+        public static bool IsLoaded(this EventReference eventReference)
+        {
+            if (eventReference.IsNull)
+            {
+                return false;
+            }
+            
+            EventDescription eventDescription = GetEventDescription(eventReference);
+            eventDescription.getSampleLoadingState(out LOADING_STATE loadingState);
+            return loadingState == LOADING_STATE.LOADED;
+        }
+        
+        /// <summary>
+        /// This wrapper prevents exceptions from being thrown. We prefer audio code to fail silently! (Pun intended)
+        /// </summary>
+        private static EventDescription GetEventDescription(this EventReference eventReference)
+        {
+            try
+            {
+                return RuntimeManager.GetEventDescription(eventReference.Guid);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.LogError(e);
+                return new EventDescription();
+            }
         }
     }
 }
