@@ -238,9 +238,6 @@ MonoBehaviour:
       Data3: -239042118
       Data4: -2139217581
     Path: event:/Splash/SummonerSplash
-  x: 0
-  y: 0
-  z: 0
 --- !u!82 &837180641
 AudioSource:
   m_ObjectHideFlags: 0
@@ -463,8 +460,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1367443422}
-  - component: {fileID: 1367443421}
   - component: {fileID: 1367443420}
+  - component: {fileID: 1367443421}
   m_Layer: 0
   m_Name: Title
   m_TagString: Untagged
@@ -501,8 +498,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190335
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
