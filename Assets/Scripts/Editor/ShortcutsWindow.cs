@@ -39,6 +39,7 @@ namespace Summoner.Editor
 		private readonly WindowItem[] assetAndFolderShortcuts = new WindowItem[]
 		{
 			new FolderShortcut("Scripts", "Assets/Scripts"),
+			new FolderShortcut("Animation", "Assets/Animation"),
 			new FolderShortcut("Scenes", "Assets/Scenes"),
 			new FolderShortcut("Prefabs", "Assets/Prefabs"),
 			new FolderShortcut("Data", "Assets/Data"),
