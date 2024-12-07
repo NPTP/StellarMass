@@ -1,35 +1,52 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Summoner.Systems.StateMachines
 {
     public class StateMachine : MonoBehaviour
     {
-        public State CurrentState { get; private set; }
+        [SerializeField] private StateBehaviour[] stateBehaviours;
 
-        private bool updating;
+        private StateBehaviour currentStateBehaviour;
 
-        public void QueueState(State state)
+        private readonly Dictionary<Type, StateBehaviour> stateInstanceTypeToStateBehaviour = new();
+        public Dictionary<Type, StateBehaviour> StateInstanceTypeToStateBehaviour
         {
-            if (CurrentState != null)
+            get
             {
-                CurrentState.End();
+                Initialize();
+                return stateInstanceTypeToStateBehaviour;
             }
-            
-            state.Begin();
-            CurrentState = state;
         }
 
-        public void Update()
+        private bool initialized;
+
+        private void Awake()
         {
-            if (CurrentState == null)
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            if (initialized)
             {
                 return;
             }
+
+            initialized = true;
             
-            State state = CurrentState.Update();
-            if (state != null)
+            foreach (StateBehaviour stateBehaviour in stateBehaviours)
             {
-                QueueState(state);
+                stateInstanceTypeToStateBehaviour.Add(stateBehaviour.StateInstanceType, stateBehaviour);
+            }
+        }
+
+        public void Queue(StateInstance stateInstance)
+        {
+            if (!StateInstanceTypeToStateBehaviour.TryGetValue(stateInstance.GetType(), out StateBehaviour stateBehaviour))
+            {
+                return;
             }
         }
     }

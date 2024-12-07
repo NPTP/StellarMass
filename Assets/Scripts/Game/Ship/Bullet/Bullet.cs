@@ -23,12 +23,12 @@ namespace Summoner.Game.Ship.Bullet
 
         private void Start()
         {
-            stateMachine.QueueState(new BulletFlyState(bulletTrailPrefab, transform, spriteRenderers, col2D));
+            stateMachine.Queue(new BulletFlyState(bulletTrailPrefab, transform, spriteRenderers, col2D));
         }
 
         private void OnCollisionEnter2D(Collision2D collision2D)
         {
-            stateMachine.QueueState(new BulletCollideState(gameObject, collision2D));
+            stateMachine.Queue(new BulletCollideState(gameObject));
         }
     }
 }

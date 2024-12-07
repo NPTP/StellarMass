@@ -3,22 +3,13 @@ using UnityEngine;
 
 namespace Summoner.Game.Ship.Bullet.States
 {
-    public class BulletCollideState : State
+    public class BulletCollideState : StateInstance
     {
-        private readonly GameObject bulletGameObject;
-        private readonly Collision2D collision2D;
+        public readonly GameObject bulletGameObject;
         
-        public BulletCollideState(GameObject bulletGameObject, Collision2D collision2D)
+        public BulletCollideState(GameObject bulletGameObject)
         {
             this.bulletGameObject = bulletGameObject;
-            this.collision2D = collision2D;
-        }
-
-        public override void Begin()
-        {
-            base.Begin();
-            
-            Object.Destroy(bulletGameObject);
         }
     }
 }
