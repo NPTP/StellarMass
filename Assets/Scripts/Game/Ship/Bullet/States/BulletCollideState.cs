@@ -3,13 +3,18 @@ using UnityEngine;
 
 namespace Summoner.Game.Ship.Bullet.States
 {
-    public class BulletCollideState : StateInstance
+    public class BulletCollideState : State
     {
-        public readonly GameObject bulletGameObject;
+        private readonly GameObject bulletGameObject;
         
         public BulletCollideState(GameObject bulletGameObject)
         {
             this.bulletGameObject = bulletGameObject;
+        }
+        
+        public override void BeginState()
+        {
+            Object.Destroy(bulletGameObject);
         }
     }
 }

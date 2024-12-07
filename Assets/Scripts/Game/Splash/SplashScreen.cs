@@ -17,6 +17,7 @@ namespace Summoner.Game.Splash
     public class SplashScreen : MonoBehaviour
     {
         private static readonly int splashScreenAnimation = Animator.StringToHash("SplashScreenAnimation");
+        private static readonly int splashScreenFromUMotion = Animator.StringToHash("SplashScreenFromUMotion");
         
         [SerializeField] private string titleText = "SUMMONER";
         [Line]
@@ -36,6 +37,8 @@ namespace Summoner.Game.Splash
 
         private IEnumerator Start()
         {
+            tmpText.color = Color.black;
+            
             // Ensure splash screen audio is loaded ahead of time so it syncs to animation.
             splashScreenFmodEventRef.LoadSampleData();
             while (!splashScreenFmodEventRef.IsLoaded())
@@ -56,7 +59,7 @@ namespace Summoner.Game.Splash
             tmpText.text = titleText;
 
             splashScreenFmodEventInstance = splashScreenFmodEventRef.PlayOneShot();
-            animator.Play(splashScreenAnimation);
+            animator.Play(splashScreenFromUMotion);
         }
 
         private void HandleAnyButtonPress(InputControl inputControl) => StopAnimationAndLoadNextScene();

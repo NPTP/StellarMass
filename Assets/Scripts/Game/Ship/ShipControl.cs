@@ -1,4 +1,5 @@
 using System.Collections;
+using Summoner.Game.GameControl;
 using Summoner.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -90,9 +91,12 @@ namespace Summoner.Game.Ship
 
             if (Time.time - lastShotTime >= PersistentData.Player.ShootCooldown)
             {
-                // TODO: Have a bullet parent
-                Instantiate(bulletPrefab, transform.position, transform.rotation);
                 lastShotTime = Time.time;
+                GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+                if (MonoReferenceTable.TryGet(out GameController gameController))
+                {
+                    bullet.transform.SetParent(gameController.SpawnedObjectsParent);
+                }
             }
         }
         
