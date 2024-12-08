@@ -1,9 +1,8 @@
 using Summoner.Systems.ObjectPooling;
-using Summoner.Utilities;
 using Summoner.Utilities.Extensions;
 using UnityEngine;
 
-namespace Summoner.Game.VFX
+namespace Summoner.Utilities.VFX
 {
     public class SpriteRendererFadeOut : MonoBehaviour
     {

@@ -1,8 +1,7 @@
-using Summoner.Utilities.VFX;
 using UnityEditor;
 using UnityEngine;
 
-namespace Summoner.Utilities.Editor
+namespace Summoner.Utilities.VFX.Editor
 {
     [CustomEditor(typeof(SpriteRendererFadeGroup))]
     public class SpriteRendererFadeGroupEditor : UnityEditor.Editor
