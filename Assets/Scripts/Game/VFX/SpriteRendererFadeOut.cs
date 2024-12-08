@@ -1,4 +1,3 @@
-using System;
 using Summoner.Systems.ObjectPooling;
 using Summoner.Utilities;
 using Summoner.Utilities.Extensions;
