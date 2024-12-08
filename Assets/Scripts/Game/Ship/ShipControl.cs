@@ -33,6 +33,8 @@ namespace Summoner.Game.Ship
         {
             playerCollider2DReference = playerCollider2D;
             sqrMaxVelocityMagnitude = PersistentData.Player.MaxVelocityMagnitude.Squared();
+            ObjectPooler.PrePopulatePool(bulletPrefab, 10);
+            // TODO: Bullet trail prefab prepopulate too
         }
 
         private void Start()

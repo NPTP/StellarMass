@@ -226,11 +226,14 @@ namespace Summoner.Systems.ObjectPooling
             {
                 return;
             }
+
+            Object[] instances = new Object[count];
             
             for (int i = 0; i < count; i++)
-            {
-                Pool(Instantiate(prefab));
-            }
+                instances[i] = Instantiate(prefab);
+            
+            for (int i = 0; i < count; i++)
+                Pool(instances[i]);
         }
 
         #endregion
