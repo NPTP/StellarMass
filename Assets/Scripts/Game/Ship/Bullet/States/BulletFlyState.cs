@@ -1,6 +1,10 @@
+using Summoner.Game.VFX;
 using Summoner.Systems.Data.Persistent;
-using UnityEngine;
+using Summoner.Systems.ObjectPooling;
 using Summoner.Systems.StateMachines;
+using Summoner.Utilities;
+using Summoner.Utilities.Extensions;
+using UnityEngine;
 
 namespace Summoner.Game.Ship.Bullet.States
 {
@@ -21,13 +25,19 @@ namespace Summoner.Game.Ship.Bullet.States
             this.spriteRenderers = spriteRenderers;
             this.collider = collider;
         }
-        
+
+        public override void BeginState()
+        {
+            spriteRenderers.For(sr => sr.color = sr.color.SetValues(a: 1));
+        }
+
         public override bool UpdateState(out State next)
         {
             if (elapsedTimeSinceLastTrail >= PersistentData.Player.TrailFrequency)
             {
                 elapsedTimeSinceLastTrail = 0;
-                Object.Instantiate(bulletTrailPrefab, bulletTransform.position, bulletTransform.rotation);
+                ObjectPooler.Instantiate(bulletTrailPrefab, bulletTransform.position, bulletTransform.rotation)
+                    .FadeOut(0.75f, PD.Player.TrailFadeTime, Curve.Type.EaseOutExp);
             }
 
             bulletTransform.position += bulletTransform.up * (PersistentData.Player.BulletSpeed * Time.deltaTime);

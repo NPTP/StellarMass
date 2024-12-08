@@ -1,3 +1,4 @@
+using Summoner.Systems.ObjectPooling;
 using Summoner.Systems.StateMachines;
 using UnityEngine;
 
@@ -11,10 +12,11 @@ namespace Summoner.Game.Ship.Bullet.States
         {
             this.bulletGameObject = bulletGameObject;
         }
-        
+
         public override void BeginState()
         {
-            Object.Destroy(bulletGameObject);
+            ObjectPooler.Pool(bulletGameObject);
+            End();
         }
     }
 }

@@ -1,5 +1,6 @@
 using DG.Tweening;
 using Summoner.Systems.Data.Persistent;
+using Summoner.Systems.ObjectPooling;
 using UnityEngine;
 using Summoner.Systems.StateMachines;
 
@@ -32,7 +33,7 @@ namespace Summoner.Game.Ship.Bullet.States
         
         protected override void EndState()
         {
-            Object.Destroy(collider.gameObject);
+            ObjectPooler.Pool(collider.gameObject);
         }
     }
 }

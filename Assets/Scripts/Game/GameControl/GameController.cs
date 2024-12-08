@@ -12,9 +12,7 @@ namespace Summoner.Game.GameControl
         public GameObject Player => player;
         [SerializeField] private MainDisplay mainDisplay;
         public MainDisplay MainDisplay => mainDisplay;
-        [SerializeField] private Transform spawnedObjectsParent;
-        public Transform SpawnedObjectsParent => spawnedObjectsParent;
-
+        
         [Space]
         [SerializeField] private bool playAmbienceOnStart;
 

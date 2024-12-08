@@ -21,7 +21,7 @@ namespace Summoner.Game.Ship.Bullet
             spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         }
 
-        private void Start()
+        private void OnEnable()
         {
             stateMachine.Queue(new BulletFlyState(bulletTrailPrefab, transform, spriteRenderers, col2D));
         }

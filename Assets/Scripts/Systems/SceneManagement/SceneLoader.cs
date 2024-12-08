@@ -9,9 +9,10 @@ namespace Summoner.Systems.SceneManagement
     public static class SceneLoader
     {
         private const float LOADING_PROGRESS_SCENE_ACTIVATION_MAGIC_NUMBER = 0.9f;
-        public static event Action OnStartedLoading;
-        public static event Action<Scene> OnSceneUnloadCompleted;
+        public static event Action OnSceneLoadBegun;
         public static event Action<Scene> OnSceneLoadCompleted;
+        public static event Action<Scene> OnSceneUnloadBegun;
+        public static event Action<Scene> OnSceneUnloadCompleted;
 
         public static Scene CurrentScene { get; private set; }
         public static float LoadingProgress => isLoading && loadSceneOperation != null ? loadSceneOperation.progress : 0;
@@ -38,7 +39,7 @@ namespace Summoner.Systems.SceneManagement
             }
             
             isLoading = true;
-            OnStartedLoading?.Invoke();
+            OnSceneLoadBegun?.Invoke();
             
             if (!CurrentScene.isLoaded)
             {
@@ -48,6 +49,7 @@ namespace Summoner.Systems.SceneManagement
 
             Scene unloadingScene = CurrentScene;
             AsyncOperation unloadSceneOperation = SceneManager.UnloadSceneAsync(unloadingScene);
+            OnSceneUnloadBegun?.Invoke(unloadingScene);
             unloadSceneOperation.completed += op =>
             {
                 OnSceneUnloadCompleted?.Invoke(unloadingScene);

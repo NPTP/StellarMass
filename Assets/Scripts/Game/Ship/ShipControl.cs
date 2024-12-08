@@ -1,5 +1,4 @@
 using System.Collections;
-using Summoner.Game.GameControl;
 using Summoner.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,6 +8,7 @@ using Random = UnityEngine.Random;
 using Summoner.Game.ScreenLoop;
 using Summoner.Systems.Data.Persistent;
 using Summoner.Systems.MonoReferences;
+using Summoner.Systems.ObjectPooling;
 using Summoner.Utilities.Attributes;
 
 namespace Summoner.Game.Ship
@@ -70,10 +70,10 @@ namespace Summoner.Game.Ship
 
         private void FixedUpdate()
         {
-            ClampRBVelocity();
+            ClampRbVelocity();
         }
 
-        private void ClampRBVelocity()
+        private void ClampRbVelocity()
         {
             Vector2 shipVelocity = shipRb.velocity;
             if (shipVelocity.sqrMagnitude > sqrMaxVelocityMagnitude)
@@ -92,11 +92,7 @@ namespace Summoner.Game.Ship
             if (Time.time - lastShotTime >= PersistentData.Player.ShootCooldown)
             {
                 lastShotTime = Time.time;
-                GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
-                if (MonoReferenceTable.TryGet(out GameController gameController))
-                {
-                    bullet.transform.SetParent(gameController.SpawnedObjectsParent);
-                }
+                ObjectPooler.Instantiate(bulletPrefab, transform.position, transform.rotation);
             }
         }
         
