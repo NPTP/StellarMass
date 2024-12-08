@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f82df10897214014d84ed3234bea3e77, type: 3}
   m_Name: PlayerPersistentData
   m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 7658113245964081943, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
   thrustFlickerTime: 0.04
   forwardForce: 200
   maxVelocityMagnitude: 10

@@ -3670,9 +3670,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4807523691656989946, guid: e6ff82217671270419adc444d3dfe2e4, type: 3}
-      propertyPath: playerCollider2D
+      propertyPath: test
       value: 
-      objectReference: {fileID: 1768554546670033165}
+      objectReference: {fileID: 6917297623208188954}
+    - target: {fileID: 4807523691656989946, guid: e6ff82217671270419adc444d3dfe2e4, type: 3}
+      propertyPath: testx
+      value: 
+      objectReference: {fileID: 6917297623208188955}
+    - target: {fileID: 4807523691656989946, guid: e6ff82217671270419adc444d3dfe2e4, type: 3}
+      propertyPath: stateMachine
+      value: 
+      objectReference: {fileID: 1768554546670033166}
     - target: {fileID: 4807523691656989946, guid: e6ff82217671270419adc444d3dfe2e4, type: 3}
       propertyPath: rendererController
       value: 
@@ -3760,13 +3768,23 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5648328996439604196, guid: e6ff82217671270419adc444d3dfe2e4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1768554546670033166}
   m_SourcePrefab: {fileID: 100100000, guid: e6ff82217671270419adc444d3dfe2e4, type: 3}
---- !u!60 &1768554546670033165 stripped
-PolygonCollider2D:
-  m_CorrespondingSourceObject: {fileID: 9077876321351803262, guid: e6ff82217671270419adc444d3dfe2e4, type: 3}
-  m_PrefabInstance: {fileID: 1768554546670033164}
+--- !u!114 &1768554546670033166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362978075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47dbe732da673b447ba5369d26765404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5890537267416319792
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3905,6 +3923,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32026495bd921a6489d87d6284a0fcea, type: 3}
+--- !u!1 &6917297623208188954 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1287389865211863996, guid: 32026495bd921a6489d87d6284a0fcea, type: 3}
+  m_PrefabInstance: {fileID: 6917297623208188953}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6917297623208188955 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4346447418071675285, guid: 32026495bd921a6489d87d6284a0fcea, type: 3}
+  m_PrefabInstance: {fileID: 6917297623208188953}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

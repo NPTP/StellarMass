@@ -223,16 +223,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba148eaed69d17645b2823052c5e252a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipRb: {fileID: 4371728597910158860}
+  shipRigidbody: {fileID: 4371728597910158860}
   playerCollider2D: {fileID: 9077876321351803262}
-  visibilityFlasher: {fileID: 5321846409717724625}
+  stateMachine: {fileID: 0}
   jetsRenderer: {fileID: 1217147705123301576}
   bulletPrefab: {fileID: 7658113245964081943, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
-  flickerTime: 0.04
-  forwardForce: 200
-  maxVelocityMagnitude: 10
-  turnSpeed: 25
-  hyperspaceTime: 0.5
 --- !u!114 &1456834877611217912
 MonoBehaviour:
   m_ObjectHideFlags: 0

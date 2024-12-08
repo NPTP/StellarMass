@@ -22,7 +22,7 @@ namespace Summoner.Game.Ship.Bullet.States
             this.collider = collider;
         }
         
-        public override bool UpdateState(out State next)
+        public override void UpdateState()
         {
             if (elapsedTimeSinceLastTrail >= PersistentData.Player.TrailFrequency)
             {
@@ -41,12 +41,8 @@ namespace Summoner.Game.Ship.Bullet.States
             elapsedTimeAlive += Time.deltaTime;
             if (elapsedTimeAlive >= PersistentData.Player.BulletLifetime)
             {
-                next = new BulletExpireState(spriteRenderers, collider);
-                return true;
+                Queue(new BulletExpireState(spriteRenderers, collider));
             }
-
-            next = null;
-            return false;
         }
     }
 }

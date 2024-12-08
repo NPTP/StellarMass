@@ -4,8 +4,7 @@ using Summoner.Game.Data.Persistent;
 namespace Summoner.Systems.Data.Persistent
 {
     /// <summary>
-    /// Convenient alias for PersistentData static fields.
-    /// e.g. if (PD.Core.SaveOnApplicationExit)
+    /// Convenient alias for PersistentData static class.
     /// </summary>
     public static class PD
     {

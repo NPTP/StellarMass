@@ -5,6 +5,9 @@ namespace Summoner.Game.Data.Persistent
 {
     public sealed class PlayerPersistentData : PersistentDataContainer
     {
+        [SerializeField] private GameObject bulletPrefab;
+        public GameObject BulletPrefab => bulletPrefab;
+
         [Header("Player Ship")]
         
         [SerializeField] private float thrustFlickerTime = 0.04f;
