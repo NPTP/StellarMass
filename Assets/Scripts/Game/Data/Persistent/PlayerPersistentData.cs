@@ -7,6 +7,9 @@ namespace Summoner.Game.Data.Persistent
     {
         [SerializeField] private GameObject bulletPrefab;
         public GameObject BulletPrefab => bulletPrefab;
+        
+        [SerializeField] private GameObject bulletTrailPrefab;
+        public GameObject BulletTrailPrefab => bulletTrailPrefab;
 
         [Header("Player Ship")]
         

@@ -1,4 +1,5 @@
 using Summoner.Game.Ship.Bullet.States;
+using Summoner.Systems.Data.Persistent;
 using Summoner.Systems.StateMachines;
 using Summoner.Utilities.Attributes;
 using UnityEngine;
@@ -10,7 +11,6 @@ namespace Summoner.Game.Ship.Bullet
     {
         [SerializeField] [Required] private StateMachine stateMachine;
         [SerializeField] [Required] private Collider2D col2D;
-        [SerializeField] private GameObject bulletTrailPrefab;
         [SerializeField] private SpriteRenderer[] spriteRenderers;
         
         private float elapsedTimeAlive;
@@ -23,7 +23,7 @@ namespace Summoner.Game.Ship.Bullet
 
         private void Start()
         {
-            stateMachine.Queue(new BulletFlyState(bulletTrailPrefab, transform, spriteRenderers, col2D));
+            stateMachine.Queue(new BulletFlyState(PD.Player.BulletTrailPrefab, transform, spriteRenderers, col2D));
         }
 
         private void OnCollisionEnter2D(Collision2D collision2D)
