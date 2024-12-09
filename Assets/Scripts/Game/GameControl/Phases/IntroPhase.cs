@@ -38,7 +38,6 @@ namespace Summoner.Game.GameControl.Phases
                 gameController.MainDisplay.Title.SetActive(false);
                 gameController.MainDisplay.Prompt.SetActive(false);
                 gameController.MainDisplay.Stars.SetActive(false);
-                gameController.MainDisplay.Score.SetActive(true);
                 gameController.Player.SetActive(true);
             }
         }
