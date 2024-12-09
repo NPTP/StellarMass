@@ -1,6 +1,10 @@
+using DG.Tweening;
 using Summoner.Systems.Data.Persistent;
-using UnityEngine;
+using Summoner.Systems.ObjectPooling;
 using Summoner.Systems.StateMachines;
+using Summoner.Utilities.Extensions;
+using Summoner.Utilities.VFX;
+using UnityEngine;
 
 namespace Summoner.Game.Ship.Bullet.States
 {
@@ -8,18 +12,23 @@ namespace Summoner.Game.Ship.Bullet.States
     {
         private readonly GameObject bulletTrailPrefab;
         private readonly Transform bulletTransform;
-        private readonly SpriteRenderer[] spriteRenderers;
+        private readonly SpriteRendererFadeGroup spriteRendererFadeGroup;
         private readonly Collider2D collider;
         
         private float elapsedTimeAlive;
         private float elapsedTimeSinceLastTrail;
 
-        public BulletFlyState(GameObject bulletTrailPrefab, Transform bulletTransform, SpriteRenderer[] spriteRenderers, Collider2D collider)
+        public BulletFlyState(GameObject bulletTrailPrefab, Transform bulletTransform, SpriteRendererFadeGroup spriteRendererFadeGroup, Collider2D collider)
         {
             this.bulletTrailPrefab = bulletTrailPrefab;
             this.bulletTransform = bulletTransform;
-            this.spriteRenderers = spriteRenderers;
+            this.spriteRendererFadeGroup = spriteRendererFadeGroup;
             this.collider = collider;
+        }
+        public override void BeginState()
+        {
+            spriteRendererFadeGroup.ResetToInitialAlpha();
+            bulletTransform.ApplyToChildren(child => child.rotation = Quaternion.identity);
         }
         
         public override void UpdateState()
@@ -27,21 +36,19 @@ namespace Summoner.Game.Ship.Bullet.States
             if (elapsedTimeSinceLastTrail >= PersistentData.Player.TrailFrequency)
             {
                 elapsedTimeSinceLastTrail = 0;
-                Object.Instantiate(bulletTrailPrefab, bulletTransform.position, bulletTransform.rotation);
+                GameObject bulletTrail = ObjectPooler.Instantiate(bulletTrailPrefab, bulletTransform.position, bulletTransform.rotation);
+                SpriteRendererFadeGroup fadeGroup = bulletTrail.GetComponent<SpriteRendererFadeGroup>();
+                fadeGroup.ResetToInitialAlpha();
+                fadeGroup.Fade(0, PD.Player.TrailFadeTime, Ease.OutExpo, () => ObjectPooler.Pool(bulletTrail));
             }
 
             bulletTransform.position += bulletTransform.up * (PersistentData.Player.BulletSpeed * Time.deltaTime);
             elapsedTimeSinceLastTrail += Time.deltaTime;
-
-            foreach (SpriteRenderer spriteRenderer in spriteRenderers)
-            {
-                spriteRenderer.transform.rotation = Quaternion.identity;
-            }
-
+            
             elapsedTimeAlive += Time.deltaTime;
             if (elapsedTimeAlive >= PersistentData.Player.BulletLifetime)
             {
-                Queue(new BulletExpireState(spriteRenderers, collider));
+                Queue(new BulletExpireState(spriteRendererFadeGroup, collider));
             }
         }
     }

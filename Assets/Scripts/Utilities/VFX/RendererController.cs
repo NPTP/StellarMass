@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Summoner.Game.VFX
+namespace Summoner.Utilities.VFX
 {
     public class RendererController : MonoBehaviour
     {

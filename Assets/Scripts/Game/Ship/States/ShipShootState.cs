@@ -1,6 +1,4 @@
-﻿using Summoner.Game.GameControl;
-using Summoner.Systems.Data.Persistent;
-using Summoner.Systems.MonoReferences;
+﻿using Summoner.Systems.Data.Persistent;
 using UnityEngine;
 
 namespace Summoner.Game.Ship.States
@@ -14,11 +12,7 @@ namespace Summoner.Game.Ship.States
             if (Time.time - ship.LastShotTime >= PersistentData.Player.ShootCooldown)
             {
                 ship.LastShotTime = Time.time;
-                GameObject bullet = Object.Instantiate(PD.Player.BulletPrefab, ship.Transform.position, ship.Transform.rotation);
-                if (MonoReferenceTable.TryGet(out GameController gameController))
-                {
-                    bullet.transform.SetParent(gameController.SpawnedObjectsParent);
-                }
+                Object.Instantiate(PD.Player.BulletPrefab, ship.Transform.position, ship.Transform.rotation);
             }
          
             Queue(new ShipFlyState(ship));

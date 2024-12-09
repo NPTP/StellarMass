@@ -7,6 +7,7 @@ using Input = NPTP.InputSystemWrapper.Input;
 using Summoner.Systems.Data.Persistent;
 using Summoner.Systems.StateMachines;
 using Summoner.Utilities;
+using Summoner.Systems.ObjectPooling;
 using Summoner.Utilities.Attributes;
 
 namespace Summoner.Game.Ship
@@ -40,6 +41,8 @@ namespace Summoner.Game.Ship
             Transform = transform;
             PlayerCollider2DReference = playerCollider2D;
             SqrMaxVelocityMagnitude = PersistentData.Player.MaxVelocityMagnitude.Squared();
+            ObjectPooler.PrePopulatePool(PD.Player.BulletPrefab, 10);
+            ObjectPooler.PrePopulatePool(PD.Player.BulletTrailPrefab, 100);
         }
 
         private void Start()
@@ -74,12 +77,14 @@ namespace Summoner.Game.Ship
         {
             Thrusting = context.started || context.performed;
         }
-        
+
+
         private void OnShoot(InputAction.CallbackContext context)
         {
             if (context.started)
             {
                 stateMachine.Queue(new ShipShootState(this));
+                return;
             }
         }
         
