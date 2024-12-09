@@ -91,7 +91,7 @@ namespace Summoner.Game.Ship
 
         private void OnHyperspace(InputAction.CallbackContext context)
         {
-            if (context.started)
+            if (context.started && !stateMachine.CurrentStateIs<ShipHyperspaceState>())
             {
                 stateMachine.Queue(new ShipHyperspaceState(this));
             }

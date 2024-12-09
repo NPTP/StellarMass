@@ -17,6 +17,11 @@ namespace Summoner.Systems.StateMachines
             currentState?.FixedUpdateState();
         }
 
+        public bool CurrentStateIs<T>() where T : State
+        {
+            return currentState != null && currentState.GetType() == typeof(T);
+        }
+
         public void Queue(State state)
         {
             currentState?.End();
