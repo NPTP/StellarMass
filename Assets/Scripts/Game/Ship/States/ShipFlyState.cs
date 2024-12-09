@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace Summoner.Game.Ship.States
 {
-    public class ShipIdleState : ShipState
+    public class ShipFlyState : ShipState
     {
-        public ShipIdleState(ShipControl ship) : base(ship) { }
+        public ShipFlyState(ShipControl ship) : base(ship) { }
 
         public override void UpdateState()
         {

@@ -44,7 +44,7 @@ namespace Summoner.Game.Ship
 
         private void Start()
         {
-            stateMachine.Queue(new ShipIdleState(this));
+            stateMachine.Queue(new ShipFlyState(this));
             jetsRenderer.enabled = false;
             AddInputListeners();
         }

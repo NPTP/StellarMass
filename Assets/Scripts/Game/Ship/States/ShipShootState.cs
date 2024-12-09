@@ -21,7 +21,7 @@ namespace Summoner.Game.Ship.States
                 }
             }
          
-            Queue(new ShipIdleState(ship));
+            Queue(new ShipFlyState(ship));
         }
     }
 }

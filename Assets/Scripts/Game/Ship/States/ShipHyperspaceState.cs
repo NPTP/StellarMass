@@ -31,7 +31,7 @@ namespace Summoner.Game.Ship.States
                 
             ship.ShipRigidBody.isKinematic = false;
             
-            Queue(new ShipIdleState(ship));
+            Queue(new ShipFlyState(ship));
         }
     }
 }
