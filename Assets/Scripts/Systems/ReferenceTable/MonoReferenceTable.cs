@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Summoner.Systems.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Summoner.Systems.MonoReferences
@@ -43,7 +44,7 @@ namespace Summoner.Systems.MonoReferences
         public static bool TryAdd<T>(T reference) where T : ReferenceTableMonoBehaviour
         {
             if (!initialized) Initialize();
-            return references.TryAdd(typeof(T), reference);
+            return references.TryAdd(reference.GetType(), reference);
         }
 
         public static bool Remove<T>(T reference) where T : ReferenceTableMonoBehaviour

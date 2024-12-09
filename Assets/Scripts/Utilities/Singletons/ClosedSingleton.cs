@@ -4,21 +4,22 @@ namespace Summoner.Utilities.Singletons
 {
     public class ClosedSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        public static bool InstanceExists { get; private set; }
+        // Micro-optimization instead of checking if the instance is null
+        public static bool Exists { get; private set; }
 
         private static T instance;
         protected static T Instance
         {
             get
             {
-                if (!InstanceExists)
+                if (!Exists)
                     PopulateInstance();
                 return instance;
             }
             private set
             {
                 instance = value;
-                InstanceExists = instance != null;
+                Exists = instance != null;
             }
         }
         
@@ -56,7 +57,7 @@ namespace Summoner.Utilities.Singletons
         private static void PopulateInstance()
         {
             Instance = FindObjectOfType<T>();
-            if (!InstanceExists)
+            if (!Exists)
                 Instance = new GameObject(typeof(T).Name).AddComponent<T>();
         }
     }

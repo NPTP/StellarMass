@@ -3,6 +3,7 @@ using Summoner.Systems.AudioSystem;
 using Summoner.Systems.Camera;
 using Summoner.Systems.Coroutines;
 using Summoner.Systems.MonoReferences;
+using Summoner.Systems.ObjectPooling;
 using Summoner.Systems.PlayerLoop;
 using Summoner.Systems.SaveAndLoad;
 using Summoner.Systems.SceneManagement;
@@ -29,6 +30,7 @@ namespace Summoner.Systems.EntryExit
         [Header("Manual Initializations")]
         [SerializeField] private CameraController cameraController;
         [SerializeField] private CoroutineOwner coroutineOwner;
+        [SerializeField] private ObjectPooler objectPooler;
 
         /// <summary>
         /// This coroutine executes as the entry point of the entire game (so long as no scripts have their own Awake
@@ -49,6 +51,7 @@ namespace Summoner.Systems.EntryExit
             
             cameraController.Initialize();
             coroutineOwner.Initialize();
+            objectPooler.Initialize();
         }
 
         #region Implementation

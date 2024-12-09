@@ -1,35 +1,50 @@
+using System;
 using UnityEngine;
 
 namespace Summoner.Systems.StateMachines
 {
     public class StateMachine : MonoBehaviour
     {
-        public State CurrentState { get; private set; }
-
-        private bool updating;
-
-        public void QueueState(State state)
+        private State currentState;
+        
+        private void Update()
         {
-            if (CurrentState != null)
-            {
-                CurrentState.End();
-            }
-            
-            state.Begin();
-            CurrentState = state;
+            currentState?.UpdateState();
         }
 
-        public void Update()
+        private void FixedUpdate()
         {
-            if (CurrentState == null)
+            currentState?.FixedUpdateState();
+        }
+
+        public bool CurrentStateIs<T>() where T : State
+        {
+            return currentState != null && currentState.GetType() == typeof(T);
+        }
+
+        public void Queue(State state)
+        {
+            currentState?.End();
+
+            currentState = state;
+            currentState.OnRequestedQueueState += HandleRequestedQueueState;
+            currentState.OnEnded += HandleStateEnded;
+            currentState.BeginState();
+        }
+
+        private void HandleRequestedQueueState(State queueState)
+        {
+            currentState.OnRequestedQueueState -= HandleRequestedQueueState;
+            Queue(queueState);
+        }
+
+        private void HandleStateEnded(State state)
+        {
+            currentState.OnRequestedQueueState -= HandleRequestedQueueState;
+            state.OnEnded -= HandleStateEnded;
+            if (state == currentState)
             {
-                return;
-            }
-            
-            State state = CurrentState.Update();
-            if (state != null)
-            {
-                QueueState(state);
+                currentState = null;
             }
         }
     }

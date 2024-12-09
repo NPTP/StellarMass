@@ -187,6 +187,7 @@ GameObject:
   - component: {fileID: 9077876321351803262}
   - component: {fileID: 1020468995643132274}
   - component: {fileID: 3496688744544337372}
+  - component: {fileID: 7247068764621092049}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -223,16 +224,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba148eaed69d17645b2823052c5e252a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shipRb: {fileID: 4371728597910158860}
+  shipRigidbody: {fileID: 4371728597910158860}
   playerCollider2D: {fileID: 9077876321351803262}
-  visibilityFlasher: {fileID: 5321846409717724625}
+  stateMachine: {fileID: 7247068764621092049}
   jetsRenderer: {fileID: 1217147705123301576}
-  bulletPrefab: {fileID: 7658113245964081943, guid: 123bc2661163d9d48a6bf64c066e3552, type: 3}
-  flickerTime: 0.04
-  forwardForce: 200
-  maxVelocityMagnitude: 10
-  turnSpeed: 25
-  hyperspaceTime: 0.5
 --- !u!114 &1456834877611217912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -501,6 +496,18 @@ MonoBehaviour:
   - {x: 1.9125977, y: -2.203125}
   - {x: 0.8598794, y: -1.4203343}
   - {x: -0.8609342, y: -1.4448001}
+--- !u!114 &7247068764621092049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5648328996439604196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47dbe732da673b447ba5369d26765404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8647349775581425297
 GameObject:
   m_ObjectHideFlags: 0

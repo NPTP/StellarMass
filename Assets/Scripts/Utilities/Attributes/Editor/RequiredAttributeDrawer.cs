@@ -23,9 +23,10 @@ namespace Summoner.Utilities.Attributes.Editor
 
             if (property.serializedObject.targetObject is Component componentField)
             {
+                // TODO: This doesn't work properly for serialized arrays yet
                 if (property.isArray)
                 {
-                    Component[] components = componentField.GetComponents(fieldInfo.FieldType);
+                    Component[] components = componentField.GetComponentsInChildren(fieldInfo.FieldType);
                     property.arraySize = components.Length;
                     for (int i = 0; i < components.Length; i++)
                     {

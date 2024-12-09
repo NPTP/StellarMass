@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Summoner.Game.GameControl.Phases;
 using Summoner.Systems.AudioSystem;
@@ -13,7 +12,7 @@ namespace Summoner.Game.GameControl
         public GameObject Player => player;
         [SerializeField] private MainDisplay mainDisplay;
         public MainDisplay MainDisplay => mainDisplay;
-
+        
         [Space]
         [SerializeField] private bool playAmbienceOnStart;
 
