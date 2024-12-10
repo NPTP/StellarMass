@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Summoner.Utilities.VFX.Editor
 {
-    [CustomEditor(typeof(SpriteRendererFadeGroup))]
+    [CustomEditor(typeof(SpriteRendererGroup))]
     public class SpriteRendererFadeGroupEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -11,7 +11,7 @@ namespace Summoner.Utilities.VFX.Editor
             DrawDefaultInspector();
             if (GUILayout.Button("Get Components In Children"))
             {
-                ((SpriteRendererFadeGroup)target).EDITOR_GetComponentsInChildren();
+                ((SpriteRendererGroup)target).EDITOR_GetComponentsInChildren();
             }
         }
     }

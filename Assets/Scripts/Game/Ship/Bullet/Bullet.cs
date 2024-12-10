@@ -12,14 +12,14 @@ namespace Summoner.Game.Ship.Bullet
         [SerializeField] [Required] private StateMachine stateMachine;
         [SerializeField] [Required] private Collider2D col2D;
         [SerializeField] private GameObject bulletTrailPrefab;
-        [SerializeField] private SpriteRendererFadeGroup spriteRendererFadeGroup;
+        [SerializeField] private SpriteRendererGroup spriteRendererGroup;
 
         private float elapsedTimeAlive;
         private float elapsedTimeSinceLastTrail;
 
         private void OnEnable()
         {
-            stateMachine.Queue(new BulletFlyState(bulletTrailPrefab, transform, spriteRendererFadeGroup, col2D));
+            stateMachine.Queue(new BulletFlyState(bulletTrailPrefab, transform, spriteRendererGroup, col2D));
         }
 
         private void OnCollisionEnter2D(Collision2D collision2D)

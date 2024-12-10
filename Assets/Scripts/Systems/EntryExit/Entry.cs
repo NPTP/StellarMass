@@ -40,7 +40,11 @@ namespace Summoner.Systems.EntryExit
         /// </summary>
         private void ExecuteOnAwake()
         {
-            Cursor.visible = !initializationOptions.HideCursor;
+#if UNITY_EDITOR
+            Cursor.visible = !initializationOptions.HideCursorInEditor;
+#else
+            Cursor.visible = !initializationOptions.HideCursorInPlayer;
+#endif
             
             SaveLoad.Initialize();
             Audio.Initialize();
@@ -57,9 +61,10 @@ namespace Summoner.Systems.EntryExit
         #region Implementation
         
 #if UNITY_EDITOR
-        private const string EDITOR_OPEN_SCENE_KEY = "EditorOpenScene";
+        private const string EDITOR_OPEN_SCENE_BUILD_INDEX = "EditorOpenSceneBuildIndex";
+        private const string EDITOR_OPEN_SCENE_PATH = "EditorOpenScenePath";
         private const string BOOTSTRAP_SCENE_ASSET_PATH = "Assets/Scenes/Bootstrap.unity";
-        
+
         [InitializeOnLoadMethod]
         private static void LoadCorrectScene()
         {
@@ -68,23 +73,37 @@ namespace Summoner.Systems.EntryExit
 
             void handlePlayModeStateChanged(PlayModeStateChange playModeStateChange)
             {
-                if (playModeStateChange != PlayModeStateChange.ExitingEditMode)
-                    return;
-
-                // Get first loaded non-bootstrap scene.
-                int openSceneBuildIndex = BOOTSTRAP_SCENE_BUILD_INDEX + 1;
-                for (int i = 0; i < SceneManager.sceneCount; i++)
+                if (playModeStateChange == PlayModeStateChange.ExitingEditMode)
                 {
-                    Scene scene = SceneManager.GetSceneAt(i);
-                    if (scene.buildIndex != BOOTSTRAP_SCENE_BUILD_INDEX && scene.isLoaded)
+                    int openSceneBuildIndex = -1;
+                    string openScenePath = string.Empty;
+                    
+                    // Get first loaded non-bootstrap scene.
+                    for (int i = 0; i < SceneManager.sceneCount; i++)
                     {
-                        openSceneBuildIndex = scene.buildIndex;
-                        break;
+                        Scene scene = SceneManager.GetSceneAt(i);
+                        if (scene.buildIndex != BOOTSTRAP_SCENE_BUILD_INDEX && scene.isLoaded)
+                        {
+                            openSceneBuildIndex = scene.buildIndex;
+                            openScenePath = scene.path;
+                            EditorPrefs.SetString(EDITOR_OPEN_SCENE_PATH, scene.path);
+                            EditorSceneManager.CloseScene(scene, removeScene: false);
+                            break;
+                        }
+                    }
+
+                    EditorPrefs.SetInt(EDITOR_OPEN_SCENE_BUILD_INDEX, Mathf.Max(BOOTSTRAP_SCENE_BUILD_INDEX + 1, openSceneBuildIndex));
+                    EditorPrefs.SetString(EDITOR_OPEN_SCENE_PATH, openScenePath);
+                    EditorSceneManager.playModeStartScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(BOOTSTRAP_SCENE_ASSET_PATH);
+                }
+                else if (playModeStateChange == PlayModeStateChange.EnteredEditMode)
+                {
+                    string openScenePath = EditorPrefs.GetString(EDITOR_OPEN_SCENE_PATH, string.Empty);
+                    if (!string.IsNullOrEmpty(openScenePath))
+                    {
+                        EditorSceneManager.OpenScene(openScenePath, OpenSceneMode.Additive);
                     }
                 }
-                
-                EditorPrefs.SetInt(EDITOR_OPEN_SCENE_KEY, openSceneBuildIndex);
-                EditorSceneManager.playModeStartScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(BOOTSTRAP_SCENE_ASSET_PATH);
             }
         }
 #endif
@@ -98,7 +117,7 @@ namespace Summoner.Systems.EntryExit
             yield return null;
             
 #if UNITY_EDITOR
-            int firstSceneBuildIndex = EditorPrefs.GetInt(EDITOR_OPEN_SCENE_KEY, initializationOptions.FirstScene.BuildIndex);
+            int firstSceneBuildIndex = EditorPrefs.GetInt(EDITOR_OPEN_SCENE_BUILD_INDEX, initializationOptions.FirstScene.BuildIndex);
 #else
             int firstSceneBuildIndex = initializationOptions.FirstScene.BuildIndex;
 #endif

@@ -5,7 +5,7 @@ namespace Summoner.Game.Score
 {
     public class ScoreDisplay : MonoBehaviour
     {
-        [SerializeField] private TextMeshPro textMeshPro;
+        [SerializeField] private TextMeshProUGUI textMeshPro;
 
         public void SetScore(int score)
         {

@@ -138,7 +138,7 @@ MonoBehaviour:
   stateMachine: {fileID: 7839339142529797943}
   col2D: {fileID: 6988643101506213492}
   bulletTrailPrefab: {fileID: 8040479116215429442, guid: 559c957404fbac2438b368edad13cbb8, type: 3}
-  spriteRendererFadeGroup: {fileID: 746036595099516645}
+  spriteRendererGroup: {fileID: 746036595099516645}
 --- !u!114 &7839339142529797943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,6 +179,7 @@ MonoBehaviour:
   spriteRenderers:
   - {fileID: 3185813125399848346}
   - {fileID: 4197923410728868360}
+  alpha: 1
 --- !u!58 &6988643101506213492
 CircleCollider2D:
   m_ObjectHideFlags: 0

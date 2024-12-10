@@ -20,13 +20,13 @@ namespace Summoner.Game.Ship
         public Rigidbody2D ShipRigidBody => shipRigidbody;
         
         [SerializeField][Required] private Collider2D playerCollider2D;
-        public Collider2D PlayerCollider2D => playerCollider2D;
-        
         [SerializeField][Required] private StateMachine stateMachine;
+        
         [Space]
+
         [SerializeField] private SpriteShapeRenderer jetsRenderer;
         public SpriteShapeRenderer JetsRenderer => jetsRenderer;
-        
+
         public float LastShotTime { get; set; }
         public float FlickerElapsed { get; set; }
         
@@ -35,6 +35,8 @@ namespace Summoner.Game.Ship
         public bool Thrusting { get; private set; }
         public Transform Transform { get; private set; }
         public float Direction { get; private set; }
+
+        private ShipState CurrentShipState => (ShipState)stateMachine.CurrentState;
 
         private void Awake()
         {
@@ -77,14 +79,12 @@ namespace Summoner.Game.Ship
         {
             Thrusting = context.started || context.performed;
         }
-
-
+        
         private void OnShoot(InputAction.CallbackContext context)
         {
-            if (context.started)
+            if (context.started && !CurrentShipState.IsTransitionDisallowed<ShipShootState>())
             {
                 stateMachine.Queue(new ShipShootState(this));
-                return;
             }
         }
         
@@ -96,7 +96,7 @@ namespace Summoner.Game.Ship
 
         private void OnHyperspace(InputAction.CallbackContext context)
         {
-            if (context.started && !stateMachine.CurrentStateIs<ShipHyperspaceState>())
+            if (context.started && !CurrentShipState.IsTransitionDisallowed<ShipHyperspaceState>())
             {
                 stateMachine.Queue(new ShipHyperspaceState(this));
             }

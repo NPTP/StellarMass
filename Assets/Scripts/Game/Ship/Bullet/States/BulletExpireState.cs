@@ -8,19 +8,19 @@ namespace Summoner.Game.Ship.Bullet.States
 {
     public class BulletExpireState : State
     {
-        private readonly SpriteRendererFadeGroup spriteRendererFadeGroup;
+        private readonly SpriteRendererGroup spriteRendererGroup;
         private readonly Collider2D collider;
 
-        public BulletExpireState(SpriteRendererFadeGroup spriteRendererFadeGroup, Collider2D collider)
+        public BulletExpireState(SpriteRendererGroup spriteRendererGroup, Collider2D collider)
         {
             this.collider = collider;
-            this.spriteRendererFadeGroup = spriteRendererFadeGroup;
+            this.spriteRendererGroup = spriteRendererGroup;
         }
         
         public override void BeginState()
         {
             collider.enabled = false;
-            spriteRendererFadeGroup.Fade(0, PD.Player.BulletExpirationFadeTime, End);
+            spriteRendererGroup.Fade(0, PD.Player.BulletExpirationFadeTime, End);
         }
         
         protected override void EndState()

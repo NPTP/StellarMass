@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068b58abaa4f3814ca22377dfcaf7078, type: 3}
   m_Name: InitializationOptions
   m_EditorClassIdentifier: 
-  hideCursor: 1
+  hideCursorInPlayer: 1
+  hideCursorInEditor: 0
   splashScreenFmodEvent:
     Guid:
       Data1: -170758721
