@@ -179,6 +179,7 @@ MonoBehaviour:
   spriteRenderers:
   - {fileID: 3185813125399848346}
   - {fileID: 4197923410728868360}
+  alpha: 1
 --- !u!58 &6988643101506213492
 CircleCollider2D:
   m_ObjectHideFlags: 0

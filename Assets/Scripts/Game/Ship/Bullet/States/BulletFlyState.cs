@@ -1,7 +1,8 @@
-using DG.Tweening;
 using Summoner.Systems.Data.Persistent;
 using Summoner.Systems.ObjectPooling;
 using Summoner.Systems.StateMachines;
+using Summoner.Utilities;
+using Summoner.Utilities.CurveUtilities;
 using Summoner.Utilities.Extensions;
 using Summoner.Utilities.VFX;
 using UnityEngine;
@@ -27,7 +28,7 @@ namespace Summoner.Game.Ship.Bullet.States
         }
         public override void BeginState()
         {
-            spriteRendererFadeGroup.ResetToInitialAlpha();
+            spriteRendererFadeGroup.Alpha = 1;
             bulletTransform.ApplyToChildren(child => child.rotation = Quaternion.identity);
         }
         
@@ -38,8 +39,9 @@ namespace Summoner.Game.Ship.Bullet.States
                 elapsedTimeSinceLastTrail = 0;
                 GameObject bulletTrail = ObjectPooler.Instantiate(bulletTrailPrefab, bulletTransform.position, bulletTransform.rotation);
                 SpriteRendererFadeGroup fadeGroup = bulletTrail.GetComponent<SpriteRendererFadeGroup>();
-                fadeGroup.ResetToInitialAlpha();
-                fadeGroup.Fade(0, PD.Player.TrailFadeTime, Ease.OutExpo, () => ObjectPooler.Pool(bulletTrail));
+                fadeGroup.Alpha = 1;
+                fadeGroup.Fade(0, PD.Player.TrailFadeTime, () => ObjectPooler.Pool(bulletTrail))
+                    .SetCurve(CurveType.EaseOutExp);
             }
 
             bulletTransform.position += bulletTransform.up * (PersistentData.Player.BulletSpeed * Time.deltaTime);
