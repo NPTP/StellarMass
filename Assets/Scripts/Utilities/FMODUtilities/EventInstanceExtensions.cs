@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Runtime.CompilerServices;
 using FMOD;
 using FMOD.Studio;
 using FMODUnity;
@@ -37,34 +37,18 @@ namespace Summoner.Utilities.FMODUtilities
             return eventInstanceGuid == eventReference.Guid;
         }
 
-        public static void StopFadeOut(this EventInstance eventInstance, ReleaseOption releaseOption = ReleaseOption.None)
+        public static void Stop(this EventInstance eventInstance, StopFlags stopFlags = 0)
         {
-            eventInstance.stop(STOP_MODE.ALLOWFADEOUT);
-            HandleReleaseOption(ref eventInstance, releaseOption);
-        }
-        
-        public static void StopImmediate(this EventInstance eventInstance, ReleaseOption releaseOption = ReleaseOption.None)
-        {
-            eventInstance.stop(STOP_MODE.IMMEDIATE);
-            HandleReleaseOption(ref eventInstance, releaseOption);
-        }
+            eventInstance.stop(hasFlag(StopFlags.Immediate) ? STOP_MODE.IMMEDIATE : STOP_MODE.ALLOWFADEOUT);
 
-        private static void HandleReleaseOption(ref EventInstance eventInstance, ReleaseOption releaseOption)
-        {
-            switch (releaseOption)
-            {
-                case ReleaseOption.None:
-                    break;
-                case ReleaseOption.Release:
-                    eventInstance.release();
-                    break;
-                case ReleaseOption.ReleaseAndClearHandle:
-                    eventInstance.release();
-                    eventInstance.clearHandle();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(releaseOption), releaseOption, null);
-            }
+            if (hasFlag(StopFlags.Release))
+                eventInstance.release();
+
+            if (hasFlag(StopFlags.ClearHandle))
+                eventInstance.clearHandle();
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            bool hasFlag(StopFlags other) => (stopFlags & other) != 0;
         }
     }
 }
