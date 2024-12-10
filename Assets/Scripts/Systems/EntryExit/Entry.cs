@@ -40,7 +40,11 @@ namespace Summoner.Systems.EntryExit
         /// </summary>
         private void ExecuteOnAwake()
         {
-            Cursor.visible = !initializationOptions.HideCursor;
+#if UNITY_EDITOR
+            Cursor.visible = !initializationOptions.HideCursorInEditor;
+#else
+            Cursor.visible = !initializationOptions.HideCursorInPlayer;
+#endif
             
             SaveLoad.Initialize();
             Audio.Initialize();

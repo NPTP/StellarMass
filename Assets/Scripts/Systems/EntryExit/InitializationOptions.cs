@@ -7,9 +7,14 @@ namespace Summoner.Systems.EntryExit
 {
     public class InitializationOptions : DataScriptable
     {
-        [SerializeField] private bool hideCursor = true;
-        public bool HideCursor => hideCursor;
-
+        [SerializeField] private bool hideCursorInPlayer = true;
+        public bool HideCursorInPlayer => hideCursorInPlayer;
+        
+#if UNITY_EDITOR
+        [SerializeField] private bool hideCursorInEditor = false;
+        public bool HideCursorInEditor => hideCursorInEditor;
+#endif
+        
         [SerializeField] private EventReference splashScreenFmodEvent;
         public EventReference SplashScreenFmodEvent => splashScreenFmodEvent;
 
