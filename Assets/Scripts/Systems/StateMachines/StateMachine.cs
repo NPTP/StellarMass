@@ -21,6 +21,16 @@ namespace Summoner.Systems.StateMachines
         {
             return currentState != null && currentState.GetType() == typeof(T);
         }
+        
+        public bool CurrentStateIsNot<T>() where T : State
+        {
+            return !CurrentStateIs<T>();
+        }
+
+        public bool CurrentStateIsNot<T1, T2>() where T1 : State where T2 : State
+        {
+            return !CurrentStateIs<T1>() && !CurrentStateIs<T2>();
+        }
 
         public void Queue(State state)
         {
