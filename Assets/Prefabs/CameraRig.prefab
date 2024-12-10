@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fmodStudioListener: {fileID: 7609401886956575532}
+  postProcessVolume: {fileID: 5996263545220805937}
   customUpdaters:
   - {fileID: 2027303226792608543}
   - {fileID: 9135721029880938203}
@@ -235,7 +236,7 @@ GameObject:
   - component: {fileID: 8978867986947866659}
   - component: {fileID: 5996263545220805937}
   m_Layer: 6
-  m_Name: PostProcessVolume(Global)
+  m_Name: PostProcessVolume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

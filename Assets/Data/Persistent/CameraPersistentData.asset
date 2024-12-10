@@ -16,3 +16,7 @@ MonoBehaviour:
   vertSinFreq: 1
   horSinAmp: 0.02
   horSinFreq: 1.5
+  diffusionRange: 0.1
+  diffusionSpeed: 64
+  splashProfile: {fileID: 11400000, guid: 676301d135e1e0846853442f6489ec3a, type: 2}
+  gameProfile: {fileID: 11400000, guid: 307cfbf1db8e69c4487553d3f5538b75, type: 2}

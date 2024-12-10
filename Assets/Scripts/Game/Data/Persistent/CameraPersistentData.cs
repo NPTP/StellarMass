@@ -1,5 +1,6 @@
 using Summoner.Systems.Data.Persistent;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace Summoner.Game.Data
 {
@@ -25,5 +26,12 @@ namespace Summoner.Game.Data
         
         [SerializeField] private float diffusionSpeed = 64f;
         public float DiffusionSpeed => diffusionSpeed;
+
+        [Header("Postprocessing")]
+        [SerializeField] private PostProcessProfile splashProfile;
+        public PostProcessProfile SplashProfile => splashProfile;
+
+        [SerializeField] private PostProcessProfile gameProfile;
+        public PostProcessProfile GameProfile => gameProfile;
     }
 }

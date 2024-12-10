@@ -1,6 +1,7 @@
 using UnityEngine;
 using Summoner.Game.GameControl.Phases;
 using Summoner.Systems.AudioSystem;
+using Summoner.Systems.Camera;
 using Summoner.Systems.Data.Persistent;
 using Summoner.Systems.MonoReferences;
 
@@ -26,6 +27,8 @@ namespace Summoner.Game.GameControl
 
         private void Start()
         {
+            CameraController.PostProcessProfile = PD.Camera.GameProfile;
+            
             if (playAmbienceOnStart) ambience = PersistentAudioPlayer.PlayPersistentAudio(PersistentData.Audio.Ambience);
             
             ExecuteGamePhases(startingPhaseIndex);

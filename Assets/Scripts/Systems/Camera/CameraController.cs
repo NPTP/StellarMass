@@ -4,14 +4,19 @@ using Summoner.Systems.Camera.CustomUpdaters;
 using Summoner.Utilities;
 using Summoner.Utilities.Singletons;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace Summoner.Systems.Camera
 {
     public class CameraController : ManualInitSingleton<CameraController>
     {
         [SerializeField] private StudioListener fmodStudioListener;
+        [SerializeField] private PostProcessVolume postProcessVolume;
         [SerializeField] private CustomUpdater[] customUpdaters = Array.Empty<CustomUpdater>();
 
+        public static PostProcessProfile PostProcessProfile { set => Instance.postProcessVolume.profile = value; }
+        public static GameObject ListenerAttenuationObject { set => Instance.fmodStudioListener.SetField("attenuationObject", value); }
+        
         private void OnValidate()
         {
             customUpdaters = GetComponentsInChildren<CustomUpdater>();
@@ -21,12 +26,7 @@ namespace Summoner.Systems.Camera
         {
             Enable<PostProcessingUpdater>(true);
         }
-
-        public void SetListenerAttenuationObject(GameObject go)
-        {
-            fmodStudioListener.SetField("attenuationObject", go);
-        }
-
+        
         public static void Enable<TCustomUpdater>(bool enable) where TCustomUpdater : CustomUpdater =>
             Instance.EnablePrivate<TCustomUpdater>(enable);
 

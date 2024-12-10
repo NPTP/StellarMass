@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Summoner.Utilities.VFX.Editor
 {
     [CustomEditor(typeof(SpriteRendererGroup))]
-    public class SpriteRendererFadeGroupEditor : UnityEditor.Editor
+    public class SpriteRendererGroupEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
