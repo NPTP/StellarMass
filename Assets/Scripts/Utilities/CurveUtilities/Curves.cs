@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Summoner.Utilities.CurveUtilities
 {
@@ -22,6 +23,11 @@ namespace Summoner.Utilities.CurveUtilities
         public static float EaseOutExp(float x)
         {
             return x >= 1 ? 1 : 1 - Mathf.Pow(2, -10 * x);
+        }
+
+        public static float EaseInExp(float x)
+        {
+            return x <= 0 ? 0 : Mathf.Pow(2, 10 * x - 10);
         }
 
         private static float OutQuad(float x)

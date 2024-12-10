@@ -6,7 +6,11 @@ using UnityEngine;
 
 namespace Summoner.Utilities.VFX
 {
-    public class SpriteRendererFadeGroup : MonoBehaviour
+    /// <summary>
+    /// Group various functionality for VFX, such as turning all SpriteRenderers on/off,
+    /// proportionally modifying their alpha like a CanvasGroup does for UI, etc.
+    /// </summary>
+    public class SpriteRendererGroup : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer[] spriteRenderers;
         [SerializeField] private float alpha = 1;
@@ -16,6 +20,7 @@ namespace Summoner.Utilities.VFX
             get => alpha;
             set
             {
+                SetInitialAlphaValuesIfNotAlreadySet();
                 alpha = value;
                 foreach (KeyValuePair<SpriteRenderer,float> keyValuePair in spriteRendererToInitialAlpha)
                 {
@@ -44,7 +49,7 @@ namespace Summoner.Utilities.VFX
 
         private void Awake()
         {
-            SetInitialAlphaValues();
+            SetInitialAlphaValuesIfNotAlreadySet();
         }
         
         private void Update()
@@ -66,7 +71,7 @@ namespace Summoner.Utilities.VFX
             }
         }
 
-        public SpriteRendererFadeGroup Fade(float to, float duration, Action onComplete = null)
+        public SpriteRendererGroup Fade(float to, float duration, Action onComplete = null)
         {
             if (to == Alpha)
             {
@@ -84,7 +89,7 @@ namespace Summoner.Utilities.VFX
             return this;
         }
 
-        public SpriteRendererFadeGroup From(float from)
+        public SpriteRendererGroup From(float from)
         {
             fadeFrom = from;
             sign = Mathf.Sign(fadeTo - fadeFrom);
@@ -93,14 +98,14 @@ namespace Summoner.Utilities.VFX
             return this;
         }
 
-        public SpriteRendererFadeGroup SetCurve(CurveType curveType)
+        public SpriteRendererGroup SetCurve(CurveType curveType)
         {
             curve = curveType;
             
             return this;
         }
         
-        private void SetInitialAlphaValues()
+        private void SetInitialAlphaValuesIfNotAlreadySet()
         {
             if (hasSetInitialAlphaValues)
             {
@@ -114,7 +119,7 @@ namespace Summoner.Utilities.VFX
 #if UNITY_EDITOR
         public void EDITOR_GetComponentsInChildren()
         {
-            spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+            spriteRenderers = GetComponentsInChildren<SpriteRenderer>(includeInactive: true);
         }
 #endif
     }

@@ -20,13 +20,13 @@ namespace Summoner.Game.Ship
         public Rigidbody2D ShipRigidBody => shipRigidbody;
         
         [SerializeField][Required] private Collider2D playerCollider2D;
-        public Collider2D PlayerCollider2D => playerCollider2D;
-        
         [SerializeField][Required] private StateMachine stateMachine;
+        
         [Space]
+
         [SerializeField] private SpriteShapeRenderer jetsRenderer;
         public SpriteShapeRenderer JetsRenderer => jetsRenderer;
-        
+
         public float LastShotTime { get; set; }
         public float FlickerElapsed { get; set; }
         

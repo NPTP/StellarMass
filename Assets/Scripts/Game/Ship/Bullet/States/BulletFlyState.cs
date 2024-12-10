@@ -13,22 +13,22 @@ namespace Summoner.Game.Ship.Bullet.States
     {
         private readonly GameObject bulletTrailPrefab;
         private readonly Transform bulletTransform;
-        private readonly SpriteRendererFadeGroup spriteRendererFadeGroup;
+        private readonly SpriteRendererGroup spriteRendererGroup;
         private readonly Collider2D collider;
         
         private float elapsedTimeAlive;
         private float elapsedTimeSinceLastTrail;
 
-        public BulletFlyState(GameObject bulletTrailPrefab, Transform bulletTransform, SpriteRendererFadeGroup spriteRendererFadeGroup, Collider2D collider)
+        public BulletFlyState(GameObject bulletTrailPrefab, Transform bulletTransform, SpriteRendererGroup spriteRendererGroup, Collider2D collider)
         {
             this.bulletTrailPrefab = bulletTrailPrefab;
             this.bulletTransform = bulletTransform;
-            this.spriteRendererFadeGroup = spriteRendererFadeGroup;
+            this.spriteRendererGroup = spriteRendererGroup;
             this.collider = collider;
         }
         public override void BeginState()
         {
-            spriteRendererFadeGroup.Alpha = 1;
+            spriteRendererGroup.Alpha = 1;
             bulletTransform.ApplyToChildren(child => child.rotation = Quaternion.identity);
         }
         
@@ -38,9 +38,9 @@ namespace Summoner.Game.Ship.Bullet.States
             {
                 elapsedTimeSinceLastTrail = 0;
                 GameObject bulletTrail = ObjectPooler.Instantiate(bulletTrailPrefab, bulletTransform.position, bulletTransform.rotation);
-                SpriteRendererFadeGroup fadeGroup = bulletTrail.GetComponent<SpriteRendererFadeGroup>();
-                fadeGroup.Alpha = 1;
-                fadeGroup.Fade(0, PD.Player.TrailFadeTime, () => ObjectPooler.Pool(bulletTrail))
+                SpriteRendererGroup group = bulletTrail.GetComponent<SpriteRendererGroup>();
+                group.Alpha = 1;
+                group.Fade(0, PD.Player.TrailFadeTime, () => ObjectPooler.Pool(bulletTrail))
                     .SetCurve(CurveType.EaseOutExp);
             }
 
@@ -50,7 +50,7 @@ namespace Summoner.Game.Ship.Bullet.States
             elapsedTimeAlive += Time.deltaTime;
             if (elapsedTimeAlive >= PersistentData.Player.BulletLifetime)
             {
-                Queue(new BulletExpireState(spriteRendererFadeGroup, collider));
+                Queue(new BulletExpireState(spriteRendererGroup, collider));
             }
         }
     }

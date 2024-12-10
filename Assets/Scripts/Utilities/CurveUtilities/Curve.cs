@@ -24,6 +24,7 @@ namespace Summoner.Utilities.CurveUtilities
             return curveType switch
             {
                 CurveType.EaseOutExp => Curves.EaseOutExp,
+                CurveType.EaseInExp => Curves.EaseInExp,
                 CurveType.EaseOutQuad => Curves.EaseOutQuad,
                 CurveType.EaseOutCubic => Curves.EaseOutCubic,
                 CurveType.EaseOutQuart => Curves.EaseOutQuart,
