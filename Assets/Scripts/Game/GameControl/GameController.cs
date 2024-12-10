@@ -28,6 +28,7 @@ namespace Summoner.Game.GameControl
         private void Start()
         {
             CameraController.PostProcessProfile = PD.Camera.GameProfile;
+            CameraController.EnablePostProcessVolume(true);
             
             if (playAmbienceOnStart) ambience = PersistentAudioPlayer.PlayPersistentAudio(PersistentData.Audio.Ambience);
             

@@ -26,6 +26,8 @@ namespace Summoner.Systems.Camera
         {
             Enable<PostProcessingUpdater>(true);
         }
+
+        public static void EnablePostProcessVolume(bool enable) => Instance.postProcessVolume.enabled = enable;
         
         public static void Enable<TCustomUpdater>(bool enable) where TCustomUpdater : CustomUpdater =>
             Instance.EnablePrivate<TCustomUpdater>(enable);

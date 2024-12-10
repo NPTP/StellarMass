@@ -4,7 +4,6 @@ using FMODUnity;
 using Summoner.Utilities.FMODUtilities;
 using Summoner.Game.SaveAndLoad;
 using Summoner.Systems.Camera;
-using Summoner.Systems.Data.Persistent;
 using Summoner.Systems.SaveAndLoad;
 using Summoner.Systems.SceneManagement;
 using Summoner.Utilities.Attributes;
@@ -39,7 +38,7 @@ namespace Summoner.Game.Splash
 
         private IEnumerator Start()
         {
-            CameraController.PostProcessProfile = PD.Camera.SplashProfile;
+            CameraController.EnablePostProcessVolume(false);
             tmpText.color = Color.black;
             
             // Ensure splash screen audio is loaded ahead of time so it syncs to animation.
