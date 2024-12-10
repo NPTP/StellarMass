@@ -36,8 +36,7 @@ namespace Summoner.Game.Ship
         public Transform Transform { get; private set; }
         public float Direction { get; private set; }
 
-        private bool CanShoot => stateMachine.CurrentStateIsNot<ShipHyperspaceState, ShipShootState>();
-        private bool CanHyperspace => stateMachine.CurrentStateIsNot<ShipHyperspaceState, ShipShootState>();
+        private ShipState CurrentShipState => (ShipState)stateMachine.CurrentState;
 
         private void Awake()
         {
@@ -80,11 +79,10 @@ namespace Summoner.Game.Ship
         {
             Thrusting = context.started || context.performed;
         }
-
-
+        
         private void OnShoot(InputAction.CallbackContext context)
         {
-            if (context.started && CanShoot)
+            if (context.started && !CurrentShipState.IsTransitionDisallowed<ShipShootState>())
             {
                 stateMachine.Queue(new ShipShootState(this));
             }
@@ -98,7 +96,7 @@ namespace Summoner.Game.Ship
 
         private void OnHyperspace(InputAction.CallbackContext context)
         {
-            if (context.started && CanHyperspace)
+            if (context.started && !CurrentShipState.IsTransitionDisallowed<ShipHyperspaceState>())
             {
                 stateMachine.Queue(new ShipHyperspaceState(this));
             }

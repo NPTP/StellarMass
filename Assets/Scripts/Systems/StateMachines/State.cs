@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Summoner.Systems.StateMachines
 {
@@ -6,6 +7,14 @@ namespace Summoner.Systems.StateMachines
     {
         public event Action<State> OnRequestedQueueState;
         public event Action<State> OnEnded;
+
+        /// <summary>
+        /// Specify State Types that cannot be reached from this State.
+        /// </summary>
+        protected virtual Type[] DisallowedTransitions => Array.Empty<Type>();
+        
+        public bool IsTransitionDisallowed<T>() where T : State => DisallowedTransitions.Contains(typeof(T));
+        public bool IsTransitionDisallowed(State state) => DisallowedTransitions.Contains(state.GetType());
 
         public virtual void BeginState() { }
 
