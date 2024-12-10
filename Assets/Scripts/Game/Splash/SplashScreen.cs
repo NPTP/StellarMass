@@ -63,7 +63,7 @@ namespace Summoner.Game.Splash
         private void HandleAnimationStateExit() => StopAnimationAndLoadNextScene();
         private void StopAnimationAndLoadNextScene()
         {
-            splashScreenFmodEventInstance.StopImmediate(ReleaseOption.ReleaseAndClearHandle);
+            splashScreenFmodEventInstance.Stop(StopFlags.Immediate | StopFlags.Release | StopFlags.ClearHandle);
             splashScreenFmodEventRef.UnloadSampleData();
             
             Input.OnAnyButtonPress -= HandleAnyButtonPress;

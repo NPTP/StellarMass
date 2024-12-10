@@ -17,7 +17,7 @@ namespace Summoner.Systems.AudioSystem
                 return;
             }
 
-            currentEventInstance.StopFadeOut(ReleaseOption.Release);
+            currentEventInstance.Stop(StopFlags.Release);
 
             currentEventReference = newEventReference;
             currentEventInstance = newEventReference.CreateInstance();
@@ -36,7 +36,7 @@ namespace Summoner.Systems.AudioSystem
 
         public void Stop()
         {
-            currentEventInstance.StopFadeOut(ReleaseOption.Release);
+            currentEventInstance.Stop(StopFlags.Release);
         }
     }
 }
