@@ -129,6 +129,7 @@ namespace Summoner.Editor
 				{
 					if (AssetDatabaseUtility.TryLoadAsset(out ScenesPersistentData scenesPersistentData))
 					{
+						EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 						EditorSceneManager.OpenScene(scenesPersistentData.Bootstrap.Path, OpenSceneMode.Single);
 					}
 				}
@@ -137,6 +138,7 @@ namespace Summoner.Editor
 				{
 					if (AssetDatabaseUtility.TryLoadAsset(out ScenesPersistentData scenesPersistentData))
 					{
+						EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 						EditorSceneManager.OpenScene(scenesPersistentData.Bootstrap.Path, OpenSceneMode.Single);
 						EditorSceneManager.OpenScene(scenesPersistentData.Splash.Path, OpenSceneMode.Additive);
 					}
@@ -146,6 +148,7 @@ namespace Summoner.Editor
 				{
 					if (AssetDatabaseUtility.TryLoadAsset(out ScenesPersistentData scenesPersistentData))
 					{
+						EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo();
 						EditorSceneManager.OpenScene(scenesPersistentData.Bootstrap.Path, OpenSceneMode.Single);
 						EditorSceneManager.OpenScene(scenesPersistentData.Game.Path, OpenSceneMode.Additive);
 					}
