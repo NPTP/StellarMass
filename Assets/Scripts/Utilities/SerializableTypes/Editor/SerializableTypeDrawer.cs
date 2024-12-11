@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Summoner.Editor.Utilities;
 using UnityEditor;
 using UnityEngine;
 
 namespace Summoner.Utilities.SerializableTypes.Editor
 {
+    /// <summary>
+    /// Code from Nick's personal vault
+    /// </summary>
     [CustomPropertyDrawer(typeof(SerializableType<>))]
     public class SerializableTypeDrawer : PropertyDrawer
     {
@@ -20,8 +24,7 @@ namespace Summoner.Utilities.SerializableTypes.Editor
         {
             inheritingTypes.Clear();
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            object targetObject = property.serializedObject.targetObject;
-            serializableType = targetObject.GetField<SerializableType>(property.name);
+            serializableType = EditorInspectorUtility.GetTargetObject<SerializableType>(property);
             Type baseType = ReflectionUtility.GetGenericArgumentForType(serializableType);
             if (baseType == null)
             {
