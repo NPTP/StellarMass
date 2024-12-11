@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Summoner.Systems.Camera.CameraComponents
 {
-    public sealed class PostProcessingUpdater : CameraExtension
+    public sealed class PostProcessingUpdater : CameraComponent
     {
         private BloomSettings bloomSettings;
 

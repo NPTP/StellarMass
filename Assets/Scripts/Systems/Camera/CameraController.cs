@@ -27,13 +27,13 @@ namespace Summoner.Systems.Camera
         
         public static void EnablePostProcessVolume(bool enable) => Instance.postProcessVolume.enabled = enable;
         
-        public static void Enable<T>(bool enable) where T : CameraExtension => Instance.EnablePrivate<T>(enable);
-        private void EnablePrivate<T>(bool enable) where T : CameraExtension
+        public static void Enable<T>(bool enable) where T : CameraComponent => Instance.EnablePrivate<T>(enable);
+        private void EnablePrivate<T>(bool enable) where T : CameraComponent
         {
             if (enable)
-                CameraExtension.Create<T>(this);
+                CameraComponent.Create<T>(this);
             else
-                CameraExtension.Remove<T>(this);
+                CameraComponent.Remove<T>(this);
         }
     }
 }

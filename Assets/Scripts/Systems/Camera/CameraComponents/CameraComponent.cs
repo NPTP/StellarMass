@@ -3,17 +3,17 @@ using UnityEngine;
 
 namespace Summoner.Systems.Camera.CameraComponents
 {
-    public abstract class CameraExtension : MonoBehaviour
+    public abstract class CameraComponent : MonoBehaviour
     {
         private bool initialized;
 
-        public static void Create<T>(CameraController cameraController) where T : CameraExtension
+        public static void Create<T>(CameraController cameraController) where T : CameraComponent
         {
             T customUpdater = cameraController.gameObject.GetOrAddComponent<T>();
             customUpdater.OnCreated(cameraController);
         }
         
-        public static void Remove<T>(CameraController cameraController) where T : CameraExtension
+        public static void Remove<T>(CameraController cameraController) where T : CameraComponent
         {
             cameraController.gameObject.DestroyComponent<T>();
         }

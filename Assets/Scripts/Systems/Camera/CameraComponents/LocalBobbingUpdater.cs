@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Summoner.Systems.Camera.CameraComponents
 {
-    public class LocalBobbingUpdater : CameraExtension
+    public class LocalBobbingUpdater : CameraComponent
     {
         private Transform cameraTransform;
         
