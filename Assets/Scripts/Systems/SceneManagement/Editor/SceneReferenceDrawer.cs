@@ -7,8 +7,9 @@ namespace Summoner.Systems.SceneManagement.Editor
     [CustomPropertyDrawer(typeof(SceneReference))]
     public class SceneReferenceDrawer : PropertyDrawer
     {
-        private const string GUID_FIELD_NAME = "guid";
-        private const string BUILD_INDEX_FIELD_NAME = "buildIndex";
+        private const string GUID = "guid";
+        private const string PATH = "path";
+        private const string BUILD_INDEX = "buildIndex";
         private const string BOOTSTRAP = "Bootstrap";
         
         private static EditorBuildSettingsScene[] GetActiveBuildSettingsScenesWithoutBootstrap()
@@ -43,7 +44,7 @@ namespace Summoner.Systems.SceneManagement.Editor
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorBuildSettingsScene[] scenes = GetActiveBuildSettingsScenesWithoutBootstrap();
+            EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
 
             if (scenes.Length <= 1)
             {
@@ -52,8 +53,9 @@ namespace Summoner.Systems.SceneManagement.Editor
                 return;
             }
 
-            SerializedProperty sceneGuidProperty = property.FindPropertyRelative(GUID_FIELD_NAME);
-            SerializedProperty buildIndexProperty = property.FindPropertyRelative(BUILD_INDEX_FIELD_NAME);
+            SerializedProperty guidProperty = property.FindPropertyRelative(GUID);
+            SerializedProperty pathProperty = property.FindPropertyRelative(PATH);
+            SerializedProperty buildIndexProperty = property.FindPropertyRelative(BUILD_INDEX);
             
             int index = -1;
             List<string> guids = new List<string>();
@@ -65,7 +67,7 @@ namespace Summoner.Systems.SceneManagement.Editor
                 string path = scene.path.Replace("Assets/Scenes/", string.Empty).Replace(".unity", string.Empty);
                 guids.Add(guid);
                 paths.Add(path);
-                if (guid == sceneGuidProperty.stringValue)
+                if (guid == guidProperty.stringValue)
                 {
                     index = i;
                 }
@@ -74,8 +76,9 @@ namespace Summoner.Systems.SceneManagement.Editor
             index = Mathf.Clamp(index, 0, scenes.Length - 1);
             Rect dropdownPosition = new Rect(position.x, position.y, position.width, position.height);
             index = EditorGUI.Popup(dropdownPosition, property.displayName, index, paths.ToArray());
-            sceneGuidProperty.stringValue = guids[index];
+            guidProperty.stringValue = guids[index];
             string fullPath = "Assets/Scenes/" + paths[index] + ".unity";
+            pathProperty.stringValue = fullPath;
             SceneAsset chosen = AssetDatabase.LoadAssetAtPath<SceneAsset>(fullPath);
             if (!TryGetSceneBuildIndex(chosen, out int buildIndex))
             {
@@ -83,7 +86,7 @@ namespace Summoner.Systems.SceneManagement.Editor
             }
 
             buildIndexProperty.intValue = buildIndex;
-
+            
             property.serializedObject.ApplyModifiedProperties();
         }
     }

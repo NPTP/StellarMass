@@ -8,6 +8,8 @@ namespace Summoner.Systems.SceneManagement
     {
 #if UNITY_EDITOR
         [SerializeField] private string guid;
+        [SerializeField] private string path;
+        public string Path => path;
 #endif
         
         [SerializeField] private int buildIndex;

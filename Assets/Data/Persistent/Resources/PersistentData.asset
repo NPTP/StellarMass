@@ -17,3 +17,4 @@ MonoBehaviour:
   player: {fileID: 11400000, guid: 913f09000efdc1249a4cf0c31e0ba550, type: 2}
   audio: {fileID: 11400000, guid: b017db16c7d4715449d0a6ce5a12894f, type: 2}
   camera: {fileID: 11400000, guid: 21c12635dbece134f9e54bdd7554e170, type: 2}
+  scenes: {fileID: 11400000, guid: aec2ca0da6b13fb44a025d02e386ab14, type: 2}

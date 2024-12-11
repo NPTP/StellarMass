@@ -13,5 +13,6 @@ namespace Summoner.Systems.Data.Persistent
         public static PlayerPersistentData Player => PersistentData.Player;
         public static AudioPersistentData Audio => PersistentData.Audio;
         public static CameraPersistentData Camera => PersistentData.Camera;
+        public static ScenesPersistentData Scenes => PersistentData.Scenes;
     }
 }

@@ -9,20 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 068b58abaa4f3814ca22377dfcaf7078, type: 3}
-  m_Name: InitializationOptions
+  m_Script: {fileID: 11500000, guid: 302a93e05a1540444b1a3529c7b17f5a, type: 3}
+  m_Name: ScenesPersistentData
   m_EditorClassIdentifier: 
-  hideCursorInPlayer: 1
-  hideCursorInEditor: 0
-  loadFirstSceneInEditor: 1
-  splashScreenFmodEvent:
-    Guid:
-      Data1: -170758721
-      Data2: 1335026707
-      Data3: -239042118
-      Data4: -2139217581
-    Path: event:/Splash/SummonerSplash
-  firstScene:
+  bootstrap:
+    guid: cb60c82ff94a7c54e95bfc06d0adaff2
+    path: Assets/Scenes/01 - Bootstrap.unity
+    buildIndex: 0
+  splash:
     guid: 980eb1e7a9c1b5f49b9fe0d7c2225711
     path: Assets/Scenes/02 - Splash.unity
     buildIndex: 1
+  game:
+    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/03 - Game.unity
+    buildIndex: 2

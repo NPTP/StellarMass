@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Summoner.Editor.Utilities;
 using Summoner.Utilities;
 using Summoner.Utilities.Extensions;
 using Summoner.Game.ScreenLoop;
 using Summoner.Systems.Camera;
 using Summoner.Systems.Data;
+using Summoner.Systems.Data.Persistent;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using Object = UnityEngine.Object;
@@ -83,8 +86,12 @@ namespace Summoner.Editor
 
 			GUILayout.BeginVertical();
 			{
-				PostProcessingToggle();
-				BoundsVisualizeToggle();
+				GUILayout.BeginHorizontal();
+				{
+					PostProcessingToggle();
+					BoundsVisualizeToggle();
+				}
+				GUILayout.EndHorizontal();
 			}
 			GUILayout.EndVertical();
 
@@ -101,6 +108,66 @@ namespace Summoner.Editor
 					ShowAssetAndFolderShortcuts();
 				}
 				GUILayout.EndVertical();
+			}
+			GUILayout.EndHorizontal();
+			
+			GUILayout.BeginVertical();
+			{
+				GUILayout.Space(10);
+				ShowSceneQuickLoad();
+			}
+			GUILayout.EndVertical();
+		}
+
+		private void ShowSceneQuickLoad()
+		{
+			CenteredLabel("Scene Quick-Load");
+
+			GUILayout.BeginHorizontal();
+			{
+				if (GUILayout.Button("Bootstrap"))
+				{
+					if (AssetDatabaseUtility.TryLoadAsset(out ScenesPersistentData scenesPersistentData))
+					{
+						EditorSceneManager.OpenScene(scenesPersistentData.Bootstrap.Path, OpenSceneMode.Single);
+					}
+				}
+
+				if (GUILayout.Button("Splash"))
+				{
+					if (AssetDatabaseUtility.TryLoadAsset(out ScenesPersistentData scenesPersistentData))
+					{
+						EditorSceneManager.OpenScene(scenesPersistentData.Bootstrap.Path, OpenSceneMode.Single);
+						EditorSceneManager.OpenScene(scenesPersistentData.Splash.Path, OpenSceneMode.Additive);
+					}
+				}
+
+				if (GUILayout.Button("Game"))
+				{
+					if (AssetDatabaseUtility.TryLoadAsset(out ScenesPersistentData scenesPersistentData))
+					{
+						EditorSceneManager.OpenScene(scenesPersistentData.Bootstrap.Path, OpenSceneMode.Single);
+						EditorSceneManager.OpenScene(scenesPersistentData.Game.Path, OpenSceneMode.Additive);
+					}
+				}
+			}
+			GUILayout.EndHorizontal();
+		}
+
+		private static void CenteredLabel(string text)
+		{
+			GUIStyle centeredStyle = new GUIStyle(GUI.skin.label)
+			{
+				alignment = TextAnchor.MiddleCenter,
+				fontSize = 12,
+				fontStyle = FontStyle.Bold
+			};
+			
+			GUILayout.BeginHorizontal();
+			{
+				GUILayout.FlexibleSpace();
+				GUILayout.Label(text, centeredStyle);
+				GUILayout.FlexibleSpace();
 			}
 			GUILayout.EndHorizontal();
 		}
@@ -149,7 +216,7 @@ namespace Summoner.Editor
 
 		private void ShowDataShortcuts()
 		{
-			GUILayout.Label("Data");
+			CenteredLabel("Data");
 			
 			foreach (DataScriptable scriptable in dataScriptables)
 			{
@@ -188,7 +255,7 @@ namespace Summoner.Editor
 
 		private void ShowAssetAndFolderShortcuts()
 		{
-			GUILayout.Label("Assets & Folders");
+			CenteredLabel("Assets & Folders");
 
 			foreach (WindowItem item in assetAndFolderShortcuts)
 			{

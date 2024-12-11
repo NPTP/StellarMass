@@ -44,6 +44,9 @@ namespace Summoner.Systems.Data.Persistent
         
         [SerializeField] private CameraPersistentData camera;
         public static CameraPersistentData Camera => Instance.camera;
+        
+        [SerializeField] private ScenesPersistentData scenes;
+        public static ScenesPersistentData Scenes => Instance.scenes;
 
         private void OnEnable()
         {
