@@ -5,7 +5,6 @@ using Summoner.Utilities;
 using Summoner.Utilities.Extensions;
 using Summoner.Game.ScreenLoop;
 using Summoner.Systems.Camera;
-using Summoner.Systems.Camera.CustomUpdaters;
 using Summoner.Systems.Data;
 using UnityEditor;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace Summoner.Editor
 {
 	public class ShortcutsWindow : EditorWindow
 	{
-		private const string VOLUME = "volume";
+		private const string VOLUME = "postProcessVolume";
 		
 		private class WindowItem { }
 		private abstract class Shortcut : WindowItem
@@ -49,7 +48,7 @@ namespace Summoner.Editor
 
 		private bool RefreshRequired => cameraController == null || loopBoundingBox == null || dataScriptables.IsEmpty();
 
-		private PostProcessingUpdater cameraController;
+		private CameraController cameraController;
 		private bool postProcessingEnabled;
 		private LoopBoundingBox loopBoundingBox;
 		private bool loopBoundingBoxVisualizerEnabled;
@@ -67,7 +66,7 @@ namespace Summoner.Editor
 
 		private void Refresh()
 		{
-			cameraController = FindObjectOfType<PostProcessingUpdater>(includeInactive: true);
+			cameraController = FindObjectOfType<CameraController>(includeInactive: true);
 			if (cameraController != null) postProcessingEnabled = cameraController.GetField<PostProcessVolume>(VOLUME).enabled;
 			loopBoundingBox = FindObjectOfType<LoopBoundingBox>(includeInactive: true);
 			if (loopBoundingBox != null) loopBoundingBoxVisualizerEnabled = loopBoundingBox.BoundsVisualizer.enabled;

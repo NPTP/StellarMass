@@ -154,8 +154,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2228307434415441090}
   - component: {fileID: 24281399574458031}
-  - component: {fileID: 2027303226792608543}
-  - component: {fileID: 9135721029880938203}
   m_Layer: 0
   m_Name: CameraRig
   m_TagString: Untagged
@@ -194,36 +192,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0675d064a0c5a334989742bf9e0ce54b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fmodStudioListener: {fileID: 7609401886956575532}
-  customUpdaters:
-  - {fileID: 2027303226792608543}
-  - {fileID: 9135721029880938203}
---- !u!114 &2027303226792608543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2167665776524504895}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 818702446d9ef5241914d5f34ff10a33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   cameraTransform: {fileID: 3177527714348334489}
---- !u!114 &9135721029880938203
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2167665776524504895}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1eb27adf90a38b24da09513667858e73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volume: {fileID: 5996263545220805937}
+  postProcessVolume: {fileID: 5996263545220805937}
+  fmodStudioListener: {fileID: 7609401886956575532}
 --- !u!1 &2447294096420380781
 GameObject:
   m_ObjectHideFlags: 0
