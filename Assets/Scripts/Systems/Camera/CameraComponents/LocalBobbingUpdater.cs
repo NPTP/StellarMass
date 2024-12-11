@@ -1,12 +1,17 @@
 using Summoner.Systems.Data.Persistent;
 using UnityEngine;
 
-namespace Summoner.Systems.Camera.CustomUpdaters
+namespace Summoner.Systems.Camera.CameraComponents
 {
-    public class LocalBobbingUpdater : CustomUpdater
+    public class LocalBobbingUpdater : CameraExtension
     {
-        [SerializeField] private Transform cameraTransform;
-
+        private Transform cameraTransform;
+        
+        protected override void OnCreated(CameraController cameraController)
+        {
+            cameraTransform = cameraController.CameraTransform;
+        }
+        
         private void OnDisable()
         {
             cameraTransform.localPosition = Vector3.zero;

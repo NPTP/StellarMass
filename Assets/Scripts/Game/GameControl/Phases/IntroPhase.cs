@@ -1,7 +1,7 @@
 using System.Collections;
 using Summoner.Systems.Animation;
 using Summoner.Systems.Camera;
-using Summoner.Systems.Camera.CustomUpdaters;
+using Summoner.Systems.Camera.CameraComponents;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Input = NPTP.InputSystemWrapper.Input;

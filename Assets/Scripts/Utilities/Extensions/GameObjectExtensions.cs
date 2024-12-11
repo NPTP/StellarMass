@@ -13,5 +13,13 @@ namespace Summoner.Utilities.Extensions
 
             return component;
         }
+
+        public static void DestroyComponent<T>(this GameObject gameObject) where T : Component
+        {
+            if (gameObject.TryGetComponent(out T component))
+            {
+                Object.Destroy(component);
+            }
+        }
     }
 }

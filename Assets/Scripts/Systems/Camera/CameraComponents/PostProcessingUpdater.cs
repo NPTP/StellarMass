@@ -1,19 +1,16 @@
 using Summoner.Game.VFX.PostProcessing;
 using Summoner.Systems.Data.Persistent;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 
-namespace Summoner.Systems.Camera.CustomUpdaters
+namespace Summoner.Systems.Camera.CameraComponents
 {
-    public sealed class PostProcessingUpdater : CustomUpdater
+    public sealed class PostProcessingUpdater : CameraExtension
     {
-        [SerializeField] private PostProcessVolume volume;
-        
         private BloomSettings bloomSettings;
 
-        protected sealed override void Initialize()
+        protected override void OnCreated(CameraController cameraController)
         {
-            bloomSettings = new BloomSettings(volume.profile);
+            bloomSettings = new BloomSettings(cameraController.PostProcessVolume.profile);
         }
         
         protected override void Update()
