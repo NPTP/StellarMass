@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Summoner.Systems.SceneManagement;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Summoner.Systems.MonoReferences
